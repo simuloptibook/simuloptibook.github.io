@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Exact methods – Simulation and Optimization: A Model-Driven Approach</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./metaheuristics.html" rel="next">
+<link href="./optimization_basics.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e48e5d47e6899f26dc5bcf87b02f963a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./optimization_basics.html">PART II: OPTIMIZATION</a></li><li class="breadcrumb-item"><a href="./exact_methods.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exact methods</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Simulation and Optimization: A Model-Driven Approach</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">PART I: SIMULATION</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./simulation_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Simulation basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./monte_carlo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./discrete_event.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Discrete events and Queuing Theory</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">PART II: OPTIMIZATION</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Optimization basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exact_methods.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exact methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metaheuristics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Metaheuristics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization_in_ml.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization and Simulation in Machine Learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">6.1</span> Introduction</a>
+  <ul class="collapse">
+  <li><a href="#using-geometry-to-solve-lps" id="toc-using-geometry-to-solve-lps" class="nav-link" data-scroll-target="#using-geometry-to-solve-lps"><span class="header-section-number">6.1.1</span> Using Geometry to Solve LPs</a></li>
+  </ul></li>
+  <li><a href="#the-simplex-method" id="toc-the-simplex-method" class="nav-link" data-scroll-target="#the-simplex-method"><span class="header-section-number">6.2</span> The Simplex Method</a>
+  <ul class="collapse">
+  <li><a href="#a-step-by-step-example" id="toc-a-step-by-step-example" class="nav-link" data-scroll-target="#a-step-by-step-example"><span class="header-section-number">6.2.1</span> A Step-by-Step Example</a></li>
+  <li><a href="#solving-lps-using-the-simplex-method-in-python" id="toc-solving-lps-using-the-simplex-method-in-python" class="nav-link" data-scroll-target="#solving-lps-using-the-simplex-method-in-python"><span class="header-section-number">6.2.2</span> Solving LPs using the Simplex Method in Python</a></li>
+  </ul></li>
+  <li><a href="#integer-linear-programming" id="toc-integer-linear-programming" class="nav-link" data-scroll-target="#integer-linear-programming"><span class="header-section-number">6.3</span> Integer Linear Programming</a>
+  <ul class="collapse">
+  <li><a href="#definition-and-variants" id="toc-definition-and-variants" class="nav-link" data-scroll-target="#definition-and-variants"><span class="header-section-number">6.3.1</span> Definition and Variants</a></li>
+  <li><a href="#the-branch-and-bound-algorithm" id="toc-the-branch-and-bound-algorithm" class="nav-link" data-scroll-target="#the-branch-and-bound-algorithm"><span class="header-section-number">6.3.2</span> The Branch and Bound Algorithm</a></li>
+  <li><a href="#coding-example" id="toc-coding-example" class="nav-link" data-scroll-target="#coding-example"><span class="header-section-number">6.3.3</span> Coding Example</a></li>
+  </ul></li>
+  <li><a href="#the-limits-of-exact-methods" id="toc-the-limits-of-exact-methods" class="nav-link" data-scroll-target="#the-limits-of-exact-methods"><span class="header-section-number">6.4</span> The Limits of Exact Methods</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">6.5</span> Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.6</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./optimization_basics.html">PART II: OPTIMIZATION</a></li><li class="breadcrumb-item"><a href="./exact_methods.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exact methods</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-exact-methods" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exact methods</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">6.1</span> Introduction</h2>
+<p>Linear Programming (LP) is arguably the most successful algorithmic framework in history. Developed independently by Kantorovich and Dantzig in the 1940s, it remains the standard tool for allocating resources, from routing internet traffic to optimizing global supply chains. At the core of LP lies the assumption that the world behaves in a <strong>linear</strong> way. For instance, if it costs 10€ to run a server, it will costs 100€ to run 10 servers (proportionality). This also means that we discard scale effects or diminishing returns. Additionally, we assume that total costs are always the sum of individual costs. There are no second- or higher-order interactions between the variables. While these assumptions may seem restrictive, they approximate a vast number of real-world systems well enough to be useful.</p>
+<p>A linear program in standard form is normally expressed as:</p>
+<p><span id="eq-lp-standard-form"><span class="math display">\[
+\begin{aligned}
+\min_x\text{ } &amp; c^T x \\
+\text{subject to  } &amp; Ax\le b \\
+&amp; x\ge 0
+\end{aligned}
+\tag{6.1}\]</span></span></p>
+<p>In this model, <span class="math inline">\(x\in\mathbb{R}^n\)</span> are the decision variables, which we wish to determine. The vector <span class="math inline">\(c\in\mathbb{R}^n\)</span> is the <strong>cost vector</strong>. The matrix <span class="math inline">\(A\in\mathbb{R}^{m\times n}\)</span> contains all the linear constraints (one per row), describing how the variables interact with resources. The vector <span class="math inline">\(b\in\mathbb{R}^m\)</span> thus represents a <strong>resource limit vector</strong>, establishing an upper bound on resource usage. The non-negativity constraint <span class="math inline">\(x\ge 0\)</span> implies that we can’t produce negative units of a product.</p>
+<p>At first sight, this formulation seems somewhat restrictive. The reason is that it assumes a very specific interpretation in terms of minimimization of costs and limits on resources, and some solvers actually expect the problem to be described in this form. However, with some changes, we can express more general problems:</p>
+<ul>
+<li>Maximization instead of minimization: replace <span class="math inline">\(\min_x c^Tx\)</span> with <span class="math inline">\(\max_x -c^Tx\)</span>.</li>
+<li>Use of equality constraints: a constraint <span class="math inline">\(a^Tx=b\)</span> can be expressed by two inequality constraints <span class="math inline">\(a^Tx\le b\)</span> and <span class="math inline">\(-a^Tx\le -b\)</span>.</li>
+<li>If <span class="math inline">\(x\)</span> can be negative, we can replace x with two non-negative variables <span class="math inline">\(u,v\)</span> such that <span class="math inline">\(x=u-v\)</span>.</li>
+</ul>
+<p>As an example, consider the following <strong>Server Allocation Problem</strong>: A cloud provider has two types of jobs: CPU-bound and memory-bound. Each job type requires a certain amount of CPU and memory resources, and generates a specific revenue. The provider has a limited amount of CPU and memory resources available. The goal is to determine how many jobs of each type to run in order to maximize the total revenue, without exceeding the available resources. Let’s define the decision variables: let <span class="math inline">\(x_1\)</span> be the number of CPU-bound jobs to run, and <span class="math inline">\(x_2\)</span> be the number of memory-bound jobs to run. The revenue generated by each CPU-bound job is 5€, and each memory-bound job generates 8€. The cloud provider has a total of 100 CPU units and 80 memory units available. Each CPU-bound job requires 2 CPU units and 1 memory unit, while each memory-bound job requires 1 CPU unit and 3 memory units. We can formulate this problem as a linear program as follows:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\max_{x_1,x_2}\text{ } &amp; 5x_1 + 8x_2 \\
+\text{subject to  } &amp; 2x_1 + 1x_2 \le 100 \quad \text{(CPU constraint)}\\
+&amp; 1x_1 + 3x_2 \le 80 \quad \text{(Memory constraint)}\\
+&amp; x_1, x_2 \ge 0 \quad \text{(Non-negativity constraint)}
+\end{aligned}
+\]</span></p>
+<p>In this formulation, the objective function <span class="math inline">\(5x_1 + 8x_2\)</span> represents the total revenue from running <span class="math inline">\(x_1\)</span> CPU-bound jobs and <span class="math inline">\(x_2\)</span> memory-bound jobs. The constraints ensure that the total CPU and memory usage does not exceed the available resources.</p>
+<section id="using-geometry-to-solve-lps" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="using-geometry-to-solve-lps"><span class="header-section-number">6.1.1</span> Using Geometry to Solve LPs</h3>
+<p>Linear programs can be solved using various algorithms, with the most common being the Simplex method and Interior Point methods. Both methods leverage the geometric properties of linear programs.</p>
+<p>Think about a linear inequality in the form <span class="math inline">\(a^Tx\le b\)</span>. This inequality describes a half-space in <span class="math inline">\(n\)</span>-dimensional space, where <span class="math inline">\(a\)</span> is the normal vector to the hyperplane defined by <span class="math inline">\(a^Tx=b\)</span>. The feasible region of a linear program is the intersection of all such half-spaces defined by the constraints. This feasible region is a convex polyhedron (or polytope), meaning that any line segment connecting two points within the region lies entirely within the region.</p>
+<ul>
+<li>In 2D, this feasible region appears as a polygon.</li>
+<li>In 3D, it appears as a polyhedron.</li>
+<li>In higher dimensions, it is referred to as a polytope (a “hyper-diamond” shape).</li>
+</ul>
+<p>Because the intersection of convex sets is convex, the feasible region of an LP is always convex. This guarantees that if we find a local minimum, it is also the global minimum (see <a href="optimization_basics.html" class="quarto-xref"><span>Chapter 5</span></a>).</p>
+<p>Now consider the objective function <span class="math inline">\(c^Tx\)</span>. This function defines a family of parallel hyperplanes in <span class="math inline">\(n\)</span>-dimensional space, each corresponding to a different value of the objective function. The goal of the LP is to find the point in the feasible region that lies on the hyperplane with the lowest (or highest, for maximization problems) value of <span class="math inline">\(c^Tx\)</span>. Now if the polytope is bounded (a polytope rather than a polyhedron), the optimal solution will always be located at one of the vertices (or corners) of the polytope. This is because the objective function is linear, and thus its maximum or minimum value over a convex set occurs at an extreme point of that set. This result is known as the <strong>Fundamental Theorem of Linear Programming</strong> and is the foundation for algorithms like the Simplex method, which systematically explores the vertices of the feasible region to find the optimal solution.</p>
+</section>
+</section>
+<section id="the-simplex-method" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="the-simplex-method"><span class="header-section-number">6.2</span> The Simplex Method</h2>
+<p>The Simplex method is an iterative algorithm that starts at a vertex of the feasible region and moves along the edges of the polytope to adjacent vertices, seeking to improve the objective function value at each step. The algorithm continues this process until it reaches a vertex where no adjacent vertices offer a better objective function value, indicating that the optimal solution has been found. Invented by George Dantzig in 1947, the Simplex method is widely considered one of the top 10 algorithms of the 20th century. It transforms the continuous optimization problem into a graph traversal problem.</p>
+<p>The Simplex method can be summarized in the following steps:</p>
+<ol type="1">
+<li><strong>Initialization</strong>: The algorithm starts at an arbitrary vertex of the polytope. If the origin (<span class="math inline">\(x=0\)</span>) is feasible, it can be used as the starting point; otherwise, an auxiliary sub-problem is solved to find an initial feasible vertex.</li>
+<li><strong>Optimality Check</strong>: From the current vertex, the algorithm looks along the edges connecting to neighboring vertices. Then it calculates the “reduced cost” (gradient) along each edge. If an edge leads “downhill” (improves the objective), the algorithm moves along that edge to the next vertex. If all edges leading out from the current vertex go “uphill” (worsen the objective), then—due to convexity—we know we are at the global minimum. We stop.</li>
+<li><strong>Pivoting</strong>: If an adjacent vertex offers a better objective function value, move to that vertex by performing a pivot operation.</li>
+<li><strong>Iteration</strong>: Repeat the optimality check and pivoting steps until the optimal solution is found.</li>
+</ol>
+<p>Let’s dive a bit deeper into the pivot operation. In a system with <span class="math inline">\(n\)</span> variables and <span class="math inline">\(m\)</span> constraints, a vertex is obtained by setting <span class="math inline">\(n-m\)</span> variables to zero (these are called the non-basic variables) and solving for the remaining <span class="math inline">\(m\)</span> variables (the basic variables). The pivot operation involves selecting one non-basic variable to enter the basis (i.e., become a basic variable) and one basic variable to leave the basis (i.e., become a non-basic variable). This is done in such a way that the new vertex remains feasible and improves the objective function value.</p>
+<section id="a-step-by-step-example" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="a-step-by-step-example"><span class="header-section-number">6.2.1</span> A Step-by-Step Example</h3>
+<p>Consider the following example problem: Imagine a factory that produces two products, A and B. We denote by <span class="math inline">\(x_1\)</span> the number of units of product A and by <span class="math inline">\(x_2\)</span> the number of units of product B. The profit from each unit of product A is 3€, and from each unit of product B is 2€. There are in total 4 machine hours to produce, and it takes 1 hour to produce one unit of product A and 1 hour to produce one unit of product B. The factory has a limited amount of resources: product A requires 2 units of raw material per unit produced, and product B requires 1 unit of raw material per unit produced. The factory has a total of 6 units of raw material available.</p>
+<p>We can formulate this problem as a linear program as follows:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\max_{x_1,x_2}\text{ } &amp; Z = 3x_1 + 2x_2 \\
+\text{subject to  } &amp; 1x_1 + 1x_2 \le 4 \quad \text{(Machine hours constraint)}\\
+&amp; 2x_1 + 1x_2 \le 6 \quad \text{(Raw material constraint)}\\
+&amp; x_1, x_2 \ge 0
+\end{aligned}
+\]</span></p>
+<p><strong>Step 1: Standarization</strong></p>
+<p>As a first step, we move the objective function to the left side to express it in standard form: <span class="math display">\[
+\begin{aligned}
+Z -3x_1 - 2x_2 + 0s_1 + 0s_2 &amp; = 0 \quad \text{(Objective function)}
+\end{aligned}
+\]</span></p>
+<p>The Simplex method requires all constraints to be in the form of equalities. We can convert the inequalities into equalities by introducing slack variables. Let <span class="math inline">\(s_1\)</span> be the slack variable for the machine hours constraint and <span class="math inline">\(s_2\)</span> be the slack variable for the raw material constraint. The constraints become: <span class="math display">\[
+\begin{aligned}
+1x_1 + 1x_2 + s_1 &amp; = 4 \quad \text{(Machine hours constraint)}\\
+2x_1 + 1x_2 + s_2 &amp; = 6 \quad \text{(Raw material constraint)}\\
+s_1, s_2 &amp; \ge 0
+\end{aligned}
+\]</span></p>
+<p>So we have <span class="math inline">\(n=4\)</span> variables (<span class="math inline">\(x_1, x_2, s_1, s_2\)</span>) and <span class="math inline">\(m=2\)</span> constraints. This means that we need to set <span class="math inline">\(n-m=2\)</span> variables to zero to find a vertex.</p>
+<p><strong>Step 2: Initial Basic Feasible Solution</strong></p>
+<p>We can start by setting the decision variables <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> to zero, which gives us the initial basic feasible solution (solving the system of equations for <span class="math inline">\(s_1\)</span> and <span class="math inline">\(s_2\)</span>): <span class="math display">\[
+\begin{aligned}
+x_1 &amp; = 0 \\
+x_2 &amp; = 0 \\
+s_1 &amp; = 4 \\
+s_2 &amp; = 6
+\end{aligned}
+\]</span></p>
+<p>We now represent the current state as a , which is a compact way to keep track of the coefficients of the variables in the constraints and the objective function:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Basis</th>
+<th><span class="math inline">\(x_1\)</span></th>
+<th><span class="math inline">\(x_2\)</span></th>
+<th><span class="math inline">\(s_1\)</span></th>
+<th><span class="math inline">\(s_2\)</span></th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(s_1\)</span></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(s_2\)</span></td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(Z\)</span></td>
+<td>-3</td>
+<td>-2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 3: Optimality Check and Pivoting</strong></p>
+<p>Looking at the objective function row (the last row), we see that both <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> have negative coefficients (-3 and -2, respectively). This indicates that increasing either variable will improve the objective function value. We choose to increase <span class="math inline">\(x_1\)</span> since it has the most negative coefficient. <strong>This is the variable that will enter the basis</strong>.</p>
+<p>Next, we need to determine which variable will leave the basis. This will be the variable that, when decreased, causes the solution to become infeasible. For this, we perform the minimum ratio test by dividing the solution values by the corresponding coefficients of <span class="math inline">\(x_1\)</span> in each constraint row: - For <span class="math inline">\(s_1\)</span>: <span class="math inline">\(4 / 1 = 4\)</span> - For <span class="math inline">\(s_2\)</span>: <span class="math inline">\(6 / 2 = 3\)</span> The minimum ratio is 3, so <span class="math inline">\(s_2\)</span> will leave the basis. We now perform a pivot operation to update the tableau. The main idea of the pivot operation is to make the coefficient of the entering variable (<span class="math inline">\(x_1\)</span>) equal to 1 in the leaving variable’s row (<span class="math inline">\(s_2\)</span>) and 0 in all other rows by performing row additions and subtractions.</p>
+<ul>
+<li>We divide the entire row of <span class="math inline">\(s_2\)</span> by 2 to make the coefficient of <span class="math inline">\(x_1\)</span> equal to 1: <span class="math inline">\([1, 0.5, 0, 0.5, 3]\)</span>.</li>
+<li>Next, we update the row of <span class="math inline">\(s_1\)</span> by subtracting 1 times the new row of <span class="math inline">\(s_2\)</span> from it: <span class="math inline">\([0, 0.5, 1, -0.5, 1]\)</span>.</li>
+<li>Finally, we update the objective function row by adding 3 times the new row of <span class="math inline">\(s_2\)</span> to it: <span class="math inline">\([0, -0.5, 0, 1.5, 9]\)</span>.</li>
+</ul>
+<p>The updated tableau looks like this:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Basis</th>
+<th><span class="math inline">\(x_1\)</span></th>
+<th><span class="math inline">\(x_2\)</span></th>
+<th><span class="math inline">\(s_1\)</span></th>
+<th><span class="math inline">\(s_2\)</span></th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(s_1\)</span></td>
+<td>0</td>
+<td>0.5</td>
+<td>1</td>
+<td>-0.5</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(x_1\)</span></td>
+<td>1</td>
+<td>0.5</td>
+<td>0</td>
+<td>0.5</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(Z\)</span></td>
+<td>0</td>
+<td>-0.5</td>
+<td>0</td>
+<td>1.5</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<p>Now we have moved along the <span class="math inline">\(x_1\)</span> axis to a new vertex, which is (3,0) with an objective function value of 9. To find this new vertex, we need to solve the system of equations again using the new basis variables <span class="math inline">\(x_1\)</span> and <span class="math inline">\(s_1\)</span>.</p>
+<p>Continuing with the optimality check, we see that <span class="math inline">\(x_2\)</span> still has a negative coefficient (-0.5) in the objective function row. This means we can still improve the objective function by increasing <span class="math inline">\(x_2\)</span>. We repeat the pivoting process. The minimum ratio test gives us: - For <span class="math inline">\(s_1\)</span>: <span class="math inline">\(1 / 0.5 = 2\)</span> - For <span class="math inline">\(x_1\)</span>: <span class="math inline">\(3 / 0.5 = 6\)</span> The minimum ratio is 2, so <span class="math inline">\(s_1\)</span> will leave the basis. Performing the pivot operation, we get the new tableau:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Basis</th>
+<th><span class="math inline">\(x_1\)</span></th>
+<th><span class="math inline">\(x_2\)</span></th>
+<th><span class="math inline">\(s_1\)</span></th>
+<th><span class="math inline">\(s_2\)</span></th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(x_2\)</span></td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>-1</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(x_1\)</span></td>
+<td>1</td>
+<td>0</td>
+<td>-1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(Z\)</span></td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p>At this point, all coefficients in the objective function row are non-negative, indicating that we have reached the optimal solution. The optimal solution is <span class="math inline">\(x_1 = 2\)</span> and <span class="math inline">\(x_2 = 2\)</span>, with a maximum profit of 10€.</p>
+</section>
+<section id="solving-lps-using-the-simplex-method-in-python" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="solving-lps-using-the-simplex-method-in-python"><span class="header-section-number">6.2.2</span> Solving LPs using the Simplex Method in Python</h3>
+<p>The Simplex method is efficient in practice and can solve large-scale linear programs quickly, although its worst-case time complexity is indeed exponential. However, it remains one of the most widely used algorithms for solving LPs due to its practical performance and simplicity. Let’s see how to solve the example using the Simplex method in Python implemented in the <code>scipy.optimize.linprog</code> function.</p>
+<div id="ef200300" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> linprog</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Coefficients for the objective function (to be maximized)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> [<span class="op">-</span><span class="dv">3</span>, <span class="op">-</span><span class="dv">2</span>]  <span class="co"># Negated for maximization</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Coefficients for the inequality constraints</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> [[<span class="dv">1</span>, <span class="dv">1</span>],</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>     [<span class="dv">2</span>, <span class="dv">1</span>]]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Right-hand side of the inequality constraints</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">6</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve the linear program using the Simplex method</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> linprog(c, A_ub<span class="op">=</span>A, b_ub<span class="op">=</span>b, method<span class="op">=</span><span class="st">'highs'</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the results</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Optimal value (max revenue):"</span>, <span class="op">-</span>res.fun)  <span class="co"># Negate to get the original maximized value</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Optimal solution (Product A, Product B):"</span>, res.x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimal value (max revenue): 10.0
+Optimal solution (Product A, Product B): [2. 2.]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="integer-linear-programming" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="integer-linear-programming"><span class="header-section-number">6.3</span> Integer Linear Programming</h2>
+<p>In the previous example, the optimal solution happened to be integer-valued. However, this is not always the case. Linear programming allows decision variables to take on any real values, which can lead to solutions that are not practical in certain contexts. For example, you cannot produce a fraction of a product or hire half an employee. This leads us to the field of <strong>Integer Linear Programming (ILP)</strong>, where some or all decision variables are constrained to be integers.</p>
+<p>Mathematicall, we “just” need to add integrality constraints to the LP formulation <a href="#eq-lp-standard-form" class="quarto-xref">Equation&nbsp;<span>6.1</span></a>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\min_x\text{ } &amp; c^T x \\
+\text{subject to  } &amp; Ax\le b \\
+&amp; x\ge 0 \\
+&amp; x_i \in \mathbb{Z} \quad \text{for some or all } i
+\end{aligned}
+\]</span></p>
+<p>This single constraint changes . It transforms the problem from a convex, polynomial-time task (P) into a <strong>non-convex, NP-Hard</strong> challenge. The nice, smooth edges of the polytope are replaced by a discrete grid of valid points, destroying the gradient information that the Simplex and other methods for LP rely on.</p>
+<section id="definition-and-variants" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="definition-and-variants"><span class="header-section-number">6.3.1</span> Definition and Variants</h3>
+<p>Depending on which variables are constrained to be integers, we have different variants of ILP:</p>
+<ol type="1">
+<li><strong>Pure Integer Linear Programming</strong>: All decision variables are required to be integers. Example: the Knapsack Problem, where items can either be included or excluded from the knapsack (see <a href="intro.html" class="quarto-xref"><span>Chapter 1</span></a>).</li>
+<li><strong>Mixed-Integer Linear Programming (MILP)</strong>: Some decision variables are constrained to be integers, while others can take on continuous values. Example: a power plant optimization problem, where the number of power units to activate is an integer, but the amount of power generated can be continuous.</li>
+<li><strong>Binary Integer Programming</strong>: A special case of ILP where decision variables are restricted to binary values (0 or 1). Example: facility location problems, where a facility is either built (1) or not built (0). Additionally, this is the language of <em>logic</em> and <em>choice</em>. We can model logical propositions using linear constraints, for instance:
+<ul>
+<li>If we select option A, we cannot select option B: <span class="math inline">\(x_A + x_B \leq 1\)</span> where <span class="math inline">\(x_A, x_B \in \{0, 1\}\)</span>.</li>
+<li>If we build a warehouse, we can ship up to <span class="math inline">\(C\)</span> units from it: <span class="math inline">\(y \leq C x\)</span> where <span class="math inline">\(y\)</span> is the number of units shipped and <span class="math inline">\(x \in \{0, 1\}\)</span> indicates if the warehouse is built.</li>
+</ul></li>
+</ol>
+<p>In principle, one could round the solution of a linear program to the nearest integers to solve an ILP. However, this naive approach often leads to suboptimal or even infeasible solutions. For instance, consider the constraint <span class="math inline">\(3x\le 10\)</span>. The LP solution might yield <span class="math inline">\(x=3.33\)</span>, which rounds to <span class="math inline">\(x=3\)</span> (which is feasible), however if the constraint would be <span class="math inline">\(3x\ge 10\)</span> instead, the rounded solution would be infeasible.</p>
+<p>We could try to enumerate all possible integer solutions and select the best one, but this approach quickly becomes computationally infeasible as the number of variables increases, due to the combinatorial explosion of possible solutions. Because we cannot rely on gradients or rounding, we need a systematic way to search the discrete space without checking every single possibility. This leads us to the <strong>Branch and Bound</strong> algorithm.</p>
+</section>
+<section id="the-branch-and-bound-algorithm" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="the-branch-and-bound-algorithm"><span class="header-section-number">6.3.2</span> The Branch and Bound Algorithm</h3>
+<p>Since we cannot round LP solutions, and we cannot brute-force check every integer combination (which would take billions of years for even moderate problems), we need a middle ground. We need a smart way to enumerate solutions that allows us to discard vast sections of the search space that are guaranteed to be suboptimal. The <strong>Branch and Bound (B&amp;B)</strong> algorithm is a systematic method for solving ILPs by exploring the solution space in a tree-like structure. The main idea is to divide the problem into smaller subproblems (branching) and use bounds on the objective function to eliminate subproblems that cannot yield better solutions than the best one found so far (bounding).</p>
+<p>The main idea for doing so is to work with the LP relaxation of the ILP. The LP relaxation is obtained by removing the integrality constraints from the ILP, allowing the decision variables to take on continuous values. This relaxed problem can be solved efficiently using LP methods like the Simplex method and provides a lower bound (for minimization problems) or an upper bound (for maximization problems) on the optimal ILP solution.</p>
+<p>Imagine we are solving the LP relaxation of an ILP as a maximization problem, and we find <span class="math inline">\(x_1=3.7\)</span>. We know that the optimal integer solution must be an integer <span class="math inline">\(\le 3\)</span> or <span class="math inline">\(\ge 4\)</span>. Thus, we can create two new subproblems (branches):</p>
+<ol type="1">
+<li><strong>Branch Left</strong>: Add the constraint <span class="math inline">\(x_1 \le 3\)</span> to the original ILP.</li>
+<li><strong>Branch Right</strong>: Add the constraint <span class="math inline">\(x_1 \ge 4\)</span> to the original ILP.</li>
+</ol>
+<p>We have now effectively removed the fractional region <span class="math inline">\((3,4)\)</span> from the search space. We then solve the LP relaxation for each of these subproblems. If the solution to a subproblem is integer-valued, we compare it to the best-known integer solution and update our best solution if necessary. If the solution is fractional, we repeat the branching process on that subproblem. However, doing this blindly would lead to an explosion in the number of subproblems. This is where bounding comes into play. We use the <em>objective value</em> of the LP relaxation as a <em>bound</em>, as follows:</p>
+<p><strong>Step 1: Bounding:</strong> Let <span class="math inline">\(Z^*\)</span> be the best-known integer solution found so far (called the <em>incumbent</em> solution). If the objective value of the LP relaxation of a subproblem is less than or equal to <span class="math inline">\(Z^*\)</span> (for maximization problems), we can discard that subproblem from further consideration, as it cannot yield a better integer solution.</p>
+<p><strong>Step 2: Pruning:</strong> We stop exploring a branch when:</p>
+<ul>
+<li>The LP relaxation has no solution (infeasible).</li>
+<li>The LP relaxation is integer-valued (we have found a candidate solution). We compare it to <span class="math inline">\(Z^*\)</span> and update if it’s better. We stop because adding more constraints to this node will only make the objective worse.</li>
+<li>The objective value of the LP relaxation is worse than <span class="math inline">\(Z^*\)</span> (we can prune this branch).</li>
+</ul>
+<p><strong>Step 3: Branching:</strong> If the LP relaxation yields a fractional solution, we select a variable with a fractional value and create two new subproblems by adding constraints to force that variable to take on integer values (as described above).</p>
+<p>This process continues until all branches have been either explored or pruned. The best integer solution found during this process is the optimal solution to the original ILP.</p>
+</section>
+<section id="coding-example" class="level3" data-number="6.3.3">
+<h3 data-number="6.3.3" class="anchored" data-anchor-id="coding-example"><span class="header-section-number">6.3.3</span> Coding Example</h3>
+<p>We will now illustrate the Branch and Bound algorithm using Python’s <code>PuLP</code> library, which provides a convenient interface for defining and solving ILPs. Let’s consider a simple ILP example (Knapsack Problem): We have a knapsack which can hold 10 kg. There are four items available: A (value 15€, weight 4 kg), B (value 10€, weight 3 kg), C (value 9€, weight 2 kg) and D (value 5€, weight 1 kg). We want to maximize the total value of items in the knapsack without exceeding its weight capacity.</p>
+<div id="ff3a51d8" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pulp</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pulp <span class="im">import</span> PULP_CBC_CMD</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Initialize the Model (Maximization)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> pulp.LpProblem(<span class="st">"The_Knapsack_Problem"</span>, pulp.LpMaximize)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Define Decision Variables</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># cat='Binary' tells the solver these are 0 or 1 integers.</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># This triggers the Branch and Bound algorithm under the hood.</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> [<span class="st">'A'</span>, <span class="st">'B'</span>, <span class="st">'C'</span>, <span class="st">'D'</span>]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> {<span class="st">'A'</span>: <span class="dv">4</span>, <span class="st">'B'</span>: <span class="dv">3</span>, <span class="st">'C'</span>: <span class="dv">2</span>, <span class="st">'D'</span>: <span class="dv">1</span>}</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>values  <span class="op">=</span> {<span class="st">'A'</span>: <span class="dv">15</span>, <span class="st">'B'</span>: <span class="dv">10</span>, <span class="st">'C'</span>: <span class="dv">9</span>, <span class="st">'D'</span>: <span class="dv">5</span>}</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> pulp.LpVariable.dicts(<span class="st">"Select"</span>, items, cat<span class="op">=</span><span class="st">'Binary'</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Define Objective Function</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>model <span class="op">+=</span> pulp.lpSum([values[i] <span class="op">*</span> x[i] <span class="cf">for</span> i <span class="kw">in</span> items]), <span class="st">"Total Value"</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Define Constraint (Capacity &lt;= 10)</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>model <span class="op">+=</span> pulp.lpSum([weights[i] <span class="op">*</span> x[i] <span class="cf">for</span> i <span class="kw">in</span> items]) <span class="op">&lt;=</span> <span class="dv">10</span>, <span class="st">"Capacity"</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Solve</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>model.solve(PULP_CBC_CMD(msg<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Output Results</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Status: </span><span class="sc">{</span>pulp<span class="sc">.</span>LpStatus[model.status]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Max Value: $</span><span class="sc">{</span>pulp<span class="sc">.</span>value(model.objective)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Selected Items:"</span>)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> items:</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> pulp.value(x[i]) <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f" - Item </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> (Value: </span><span class="sc">{</span>values[i]<span class="sc">}</span><span class="ss">, Weight: </span><span class="sc">{</span>weights[i]<span class="sc">}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Status: Optimal
+Max Value: $39.0
+Selected Items:
+ - Item A (Value: 15, Weight: 4)
+ - Item B (Value: 10, Weight: 3)
+ - Item C (Value: 9, Weight: 2)
+ - Item D (Value: 5, Weight: 1)</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="the-limits-of-exact-methods" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="the-limits-of-exact-methods"><span class="header-section-number">6.4</span> The Limits of Exact Methods</h2>
+<p>We have now seen two powerful algorithms: Simplex for Linear Programming and Branch &amp; Bound for Integer Programming. In the examples provided (allocating server resources or packing a knapsack) these methods returned the provably optimal solution in milliseconds. It is tempting thus to conclude that optimization is a solved problem: If we can model it, we can solve it. Alas, this is an illusion: as we scale up the problem size, exact methods quickly become impractical. The Simplex method, while efficient for many practical problems, can exhibit exponential time complexity in the worst case. More critically, Integer Linear Programming is NP-Hard, meaning that no known polynomial-time algorithm exists to solve all instances of ILP optimally. As the number of variables and constraints increases, the time required to solve ILPs can grow exponentially, making them infeasible for large-scale problems.</p>
+<p>In practice, the performance of B&amp;B depends on the <em>quality of the bounds</em>: the tighter the bounds, the more branches can be pruned, and the faster the algorithm runs. However, for many real-world problems, especially those with a large number of variables or complex constraints, even state-of-the-art ILP solvers can struggle to find optimal solutions within a reasonable timeframe. In the worst case, Branch and Bound degenerates into a brute force search.</p>
+<p>In modern AI applications, such as optimizing the weights of a neural network (millions of variables) or routing a fleet of 10,000 delivery drones, exact methods simply cease to function. When exact methods fail, we must change our goal. We stop asking for the <em>best</em> solution and start asking for a <em>good</em> solution found fast.</p>
+<p>This is the domain of <strong>heuristic</strong> and <strong>metaheuristic</strong> algorithms, which we will explore in the next chapter. Heuristics are meant to solve the following challenges of exact methods:</p>
+<ul>
+<li><strong>Latency:</strong> A ride-sharing app like Uber needs to match a driver to a rider in milliseconds. It cannot run a 20-minute Branch and Bound job every time a user opens the app. It accepts a slightly suboptimal match (maybe the driver is 1 minute further away than the perfect choice) to ensure the system is responsive.</li>
+<li><strong>Data Uncertainty:</strong> Why spend 100 hours computing the “perfect” supply chain schedule if the demand forecast is only 90% accurate? The noise in the data renders the precision of the exact solver meaningless.</li>
+<li><strong>Good enough Solutions:</strong> In many cases, a solution that is 95% as good as the optimal one is perfectly acceptable, especially if it can be found in a fraction of the time. For example, in logistics, a delivery route that is slightly longer than the optimal route may still meet customer expectations while significantly reducing computation time.</li>
+</ul>
+<p>In the next chapter, we will abandon the guarantee of optimality. We will explore metaheuristics: algorithms like Genetic Algorithms, Simulated Annealing, and Tabu Search. These methods do not use gradients, and they do not prove optimality. Instead, they use metaphors from nature (evolution, thermodynamics) to navigate the rugged, non-convex landscapes where Simplex and Branch &amp; Bound do not perform well.</p>
+</section>
+<section id="summary" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="summary"><span class="header-section-number">6.5</span> Summary</h2>
+<p>In this chapter, we explored exact methods for solving optimization problems, focusing on Linear Programming (LP) and Integer Linear Programming (ILP). We discussed the Simplex method, which efficiently solves LPs by navigating the vertices of the feasible region, and the Branch and Bound algorithm, which systematically explores the solution space of ILPs while pruning suboptimal branches. While these methods are powerful and can provide optimal solutions for many problems, they face significant challenges as problem size increases, particularly for ILPs, which are NP-Hard. This limitation motivates the need for heuristic and metaheuristic approaches in scenarios where quick, good-enough solutions are more practical than guaranteed optimality.</p>
+</section>
+<section id="exercises" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.6</span> Exercises</h2>
+<ol type="1">
+<li><p><strong>Formulating an LP</strong>: A factory produces two products, X and Y. Each unit of product X requires 2 hours of labor and 3 units of raw material, while each unit of product Y requires 4 hours of labor and 2 units of raw material. The factory has a total of 100 hours of labor and 120 units of raw material available. The profit from each unit of product X is 30€, and from each unit of product Y is 20€. Formulate this as a linear programming problem to maximize profit.</p></li>
+<li><p><strong>Solving an LP using Simplex</strong>: Using the formulation from Exercise 1, implement the Simplex method in Python using <code>scipy.optimize.linprog</code> to find the optimal production quantities of products X and Y.</p></li>
+<li><p><strong>Branch and Bound for ILP</strong>: Consider the following integer linear programming problem: Maximize <span class="math inline">\(Z = 10x_1 + 15x_2\)</span> subject to the constraints <span class="math inline">\(2x_1 + 3x_2 \leq 12\)</span>, <span class="math inline">\(x_1 + x_2 \leq 5\)</span>, and <span class="math inline">\(x_1, x_2 \geq 0\)</span>, with the additional constraint that <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> must be integers. Use the Branch and Bound method to solve this ILP manually, showing each step of the process.</p></li>
+<li><p><strong>Implementing Branch and Bound</strong>: Using the ILP from Exercise 3, implement the Branch and Bound algorithm in Python using the <code>PuLP</code> library to find the optimal integer solution.</p></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./optimization_basics.html" class="pagination-link" aria-label="Optimization basics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Optimization basics</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./metaheuristics.html" class="pagination-link" aria-label="Metaheuristics">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Metaheuristics</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

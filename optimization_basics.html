@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Optimization basics – Simulation and Optimization: A Model-Driven Approach</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./exact_methods.html" rel="next">
+<link href="./discrete_event.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e48e5d47e6899f26dc5bcf87b02f963a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./optimization_basics.html">PART II: OPTIMIZATION</a></li><li class="breadcrumb-item"><a href="./optimization_basics.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Optimization basics</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Simulation and Optimization: A Model-Driven Approach</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">PART I: SIMULATION</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./simulation_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Simulation basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./monte_carlo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./discrete_event.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Discrete events and Queuing Theory</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">PART II: OPTIMIZATION</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization_basics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Optimization basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exact_methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exact methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metaheuristics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Metaheuristics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization_in_ml.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization and Simulation in Machine Learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">5.1</span> Introduction</a></li>
+  <li><a href="#general-problem-formulation" id="toc-general-problem-formulation" class="nav-link" data-scroll-target="#general-problem-formulation"><span class="header-section-number">5.2</span> General Problem Formulation</a></li>
+  <li><a href="#classification-of-problems" id="toc-classification-of-problems" class="nav-link" data-scroll-target="#classification-of-problems"><span class="header-section-number">5.3</span> Classification of Problems</a>
+  <ul class="collapse">
+  <li><a href="#continuous-vs.-discrete" id="toc-continuous-vs.-discrete" class="nav-link" data-scroll-target="#continuous-vs.-discrete"><span class="header-section-number">5.3.1</span> Continuous vs.&nbsp;Discrete</a></li>
+  <li><a href="#unconstrained-vs.-constrained" id="toc-unconstrained-vs.-constrained" class="nav-link" data-scroll-target="#unconstrained-vs.-constrained"><span class="header-section-number">5.3.2</span> Unconstrained vs.&nbsp;Constrained</a></li>
+  <li><a href="#deterministic-vs.-stochastic" id="toc-deterministic-vs.-stochastic" class="nav-link" data-scroll-target="#deterministic-vs.-stochastic"><span class="header-section-number">5.3.3</span> Deterministic vs.&nbsp;Stochastic</a></li>
+  <li><a href="#linearity-and-convexity" id="toc-linearity-and-convexity" class="nav-link" data-scroll-target="#linearity-and-convexity"><span class="header-section-number">5.3.4</span> Linearity and Convexity</a></li>
+  </ul></li>
+  <li><a href="#mathematical-prerequisites" id="toc-mathematical-prerequisites" class="nav-link" data-scroll-target="#mathematical-prerequisites"><span class="header-section-number">5.4</span> Mathematical Prerequisites</a>
+  <ul class="collapse">
+  <li><a href="#vector-spaces-and-norms" id="toc-vector-spaces-and-norms" class="nav-link" data-scroll-target="#vector-spaces-and-norms"><span class="header-section-number">5.4.1</span> Vector spaces and norms</a></li>
+  <li><a href="#matrix-calculus" id="toc-matrix-calculus" class="nav-link" data-scroll-target="#matrix-calculus"><span class="header-section-number">5.4.2</span> Matrix Calculus</a></li>
+  <li><a href="#eigenvalues-and-definiteness" id="toc-eigenvalues-and-definiteness" class="nav-link" data-scroll-target="#eigenvalues-and-definiteness"><span class="header-section-number">5.4.3</span> Eigenvalues and Definiteness</a></li>
+  </ul></li>
+  <li><a href="#why-convexity-is-good" id="toc-why-convexity-is-good" class="nav-link" data-scroll-target="#why-convexity-is-good"><span class="header-section-number">5.5</span> Why Convexity Is Good?</a></li>
+  <li><a href="#optimality-conditions" id="toc-optimality-conditions" class="nav-link" data-scroll-target="#optimality-conditions"><span class="header-section-number">5.6</span> Optimality Conditions</a>
+  <ul class="collapse">
+  <li><a href="#unconstrained-optimization" id="toc-unconstrained-optimization" class="nav-link" data-scroll-target="#unconstrained-optimization"><span class="header-section-number">5.6.1</span> Unconstrained optimization</a></li>
+  <li><a href="#constrained-optimization-the-kkt-conditions" id="toc-constrained-optimization-the-kkt-conditions" class="nav-link" data-scroll-target="#constrained-optimization-the-kkt-conditions"><span class="header-section-number">5.6.2</span> Constrained Optimization: The KKT Conditions</a></li>
+  </ul></li>
+  <li><a href="#optimization-in-ai-and-ml" id="toc-optimization-in-ai-and-ml" class="nav-link" data-scroll-target="#optimization-in-ai-and-ml"><span class="header-section-number">5.7</span> Optimization in AI and ML</a>
+  <ul class="collapse">
+  <li><a href="#gradient-descent" id="toc-gradient-descent" class="nav-link" data-scroll-target="#gradient-descent"><span class="header-section-number">5.7.1</span> Gradient descent</a></li>
+  <li><a href="#regularization" id="toc-regularization" class="nav-link" data-scroll-target="#regularization"><span class="header-section-number">5.7.2</span> Regularization</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">5.8</span> Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">5.9</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./optimization_basics.html">PART II: OPTIMIZATION</a></li><li class="breadcrumb-item"><a href="./optimization_basics.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Optimization basics</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-optimization-basics" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Optimization basics</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">5.1</span> Introduction</h2>
+<p>We now switch our focus to the theory and practice of optimization as one of the building blocks of modern AI. <em>Optimization</em> is the mathematical discipline concerned with finding the “best” solution from a set of available alternatives. It is the invisible utility that powers the modern world. When you type a query into a search engine, an optimization algorithm determines the most relevant ranking of results. When a packet travels across the internet, routing protocols solve shortest-path optimization problems to minimize latency. When a logistics company schedules thousands of deliveries, they are solving complex integer programming problems to minimize fuel consumption and time.</p>
+<p>Optimization is not only a new toolbox of solvers: it’s a fundamental language for modeling the world. Beyond the digital realm, optimization bridges software with the physical world. This is the domain of <strong>Operations Research</strong>, where mathematical models dictate the efficiency of e.g.</p>
+<ul>
+<li>Energy grids, where the goal is to balance electricity generation with demand in real-time to prevent blackouts while minimizing costs.</li>
+<li>Suppy chains, where the goal is to determine how many units of a product to ship from a specific set of warehouses to a set of retailers.</li>
+<li>Finance, where the goal is to construct investment portfolios that maximize returns for a specific level of risk.</li>
+</ul>
+<p>However, one of the most compelling reasons for a modern computer scientist to master optimization lies in the current revolution in Artificial Intelligence and Machine Learning (ML). It is no exaggeration to say that <strong>Machine Learning is optimization</strong>. While the architecture of a model (e.g., a Convolutional Neural Network or a Transformer) dictates how information flows, optimization dictates <em>what</em> the model actually learns. When we “train” a model, we are mathematically traversing a high-dimensional landscape, searching for a specific set of parameters (weights and biases) that minimizes a loss function. Whether it is a simple Linear Regression minimizing mean squared error or a Large Language Model (LLM) minimizing next-token prediction error, the mechanism is an optimization algorithm—typically a variant of Stochastic Gradient Descent (SGD). In Reinforcement Learning (RL), agents are explicitly designed to maximize a cumulative reward function over time, often requiring complex policy optimization techniques.</p>
+<p>As we proceed through this part of the book, you will learn that finding the true best solution is not always computationally feasible. In Linear Programming, we can often find the exact global optimum efficiently. In Integer Programming, the problem becomes NP-hard, forcing us to rely on clever search techniques like Branch and Bound. In the rugged, non-convex landscapes of Deep Learning, we often settle for local optima, relying on Heuristics to guide us.</p>
+<p>Understanding the mathematical foundations of optimization—convexity, gradients, duality, and complexity—allows you to distinguish between a problem that can be solved perfectly in milliseconds and one that requires an approximation to solve before the heat death of the universe. This chapter provides the roadmap for making those distinctions.</p>
+</section>
+<section id="general-problem-formulation" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="general-problem-formulation"><span class="header-section-number">5.2</span> General Problem Formulation</h2>
+<p>We will now start developing the mathematical machinery needed to understand this part of the book. To treat optimization as a computational discipline, we must abstract away the specific details of the application (whether it is protein folding or portfolio management) and map the problem into a standardized mathematical structure.</p>
+<p>Almost all optimization problems can be expressed in the following canonical form:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\min_x &amp; f(x) \\
+\text{subject to: } &amp; g_i(x) \le 0\text{, for }i=1,\dots, m \\
+&amp; h_j(x) = 0\text{, for }j=1,\dots, p
+\end{aligned}
+\]</span></p>
+<p>This canonical structure contains several distinct components that dictate the difficulty and the strategy of the solution.</p>
+<p>The <strong>decision variables</strong> <span class="math inline">\(x\in\mathbb{R}^n\)</span> represent the unknowns we wish to determine. In computer science contexts, these are often referred to as <em>parameters</em> or <em>weights</em>. In linear programming, <span class="math inline">\(x\)</span> might represent the flow of traffic across <span class="math inline">\(n\)</span> network edges. In deep learning, <span class="math inline">\(x\)</span> might represent the billions of parameters of a deep neural network. In integer programming, <span class="math inline">\(x\)</span> is restricted to integer values <span class="math inline">\(\mathbb{Z}^n\)</span> which might represent discrete choices (e.g.&nbsp;to select a specific server, whether to invest in an asset or not).</p>
+<p>The <strong>objective function</strong> <span class="math inline">\(f:\mathbb{R}^n\rightarrow\mathbb{R}\)</span> represents the <em>cost</em> or <em>quality</em> of the solution. Usually, the convention is that we solve minimization problems, so if the problem requires to maximize a measure of utility <span class="math inline">\(u(x)\)</span> instead, we minimize the negative <span class="math inline">\(\min_x -u(x)\)</span>. The specific form of the objective function is an important part of the difficulty of the problem. If <span class="math inline">\(f\)</span> is just is a linear “plane”, the direction of improvement is constant. However, if <span class="math inline">\(f\)</span> is a rugged “mountain landscape” (common in non-convex neural network loss surfaces), the direction changes constantly depending on where you are in the space.</p>
+<p>The <strong>constraints</strong> <span class="math inline">\(g_i\)</span> and <span class="math inline">\(h_j\)</span> represents limits or restrictions we are bound to in real systems, like physical, financial and logical limits. Inequality constraints (<span class="math inline">\(g_i(x)\le 0\)</span>) usually represent resource limits or thresholds. For instance, if we want to express that the latency has to be under 100 ms, we might write <span class="math inline">\(\operatorname{latency}(x)\le 100\)</span>, or in the canonical form <span class="math inline">\(\operatorname{latency}(x)-100\le 0\)</span>. On the other side, equality constraints (<span class="math inline">\(h_j(x)=0\)</span>) usually represent strict structural requirements. For instance, the conservation of flow equations we saw in <span class="quarto-unresolved-ref">?sec-sec-monte-carlo</span>. If both <span class="math inline">\(m=0\)</span> and <span class="math inline">\(p=0\)</span>, we call the problem <em>unconstrained</em> and handle it usually by means of techniques like gradient descent.</p>
+<p>The intersection of all constraints is usually referred to as the <strong>feasible region</strong>, denoted by <span class="math inline">\(\Omega\)</span>:</p>
+<p><span id="eq-feasible-region"><span class="math display">\[
+\Omega=\{ x\in\mathbb{R}^n \text{ }| \text{ } g_i(x)\le 0\text{, } \forall i\text{, }h_j(x)=0\text{, }\forall j  \}
+\tag{5.1}\]</span></span></p>
+<p>Our task is then to find a point <span class="math inline">\(x^*\in\Omega\)</span>, such that <span class="math inline">\(f(x^*)\le f(x)\)</span> for all <span class="math inline">\(x\in\Omega\)</span>. We then call <span class="math inline">\(x^*\)</span> a <strong>global optimum</strong> of <span class="math inline">\(f\)</span> to distinguish it from <strong>local optima</strong> where the point is merely better than its immediate neighbours.</p>
+<p>If <span class="math inline">\(f\)</span> and its constraints turn out to be <strong>convex</strong>, there are usually guarantees that any local minimum will be a global minimum as well, making the problem solvable efficiently. A function <span class="math inline">\(f\)</span> is said to be convex if it satisfies the following property: For any <span class="math inline">\(t\in[0,1]\)</span> and any two points <span class="math inline">\(x_1,x_2\)</span> in the domain of the function, we have:</p>
+<p><span id="eq-convexity"><span class="math display">\[
+f(tx_1+(1-t)x_2)\le tf(x_1)+(1-t)f(x_2)
+\tag{5.2}\]</span></span></p>
+<p>Prominent examples of convex functions include linear, quadratic and exponential functions. Intuitively, this means that if we draw a line segment between any points in the function’s curve <span class="math inline">\(f(x_1)\)</span> and <span class="math inline">\(f(x_2)\)</span>, this line will always be either above or on the curve itself. When the function to optimize or any of the constraints are non-convex (e.g.&nbsp;deep learning), finding the global optimum becomes NP-hard (although usually reasonable approximations are good enough in practice).</p>
+</section>
+<section id="classification-of-problems" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="classification-of-problems"><span class="header-section-number">5.3</span> Classification of Problems</h2>
+<p>Depending on the form of the function to be optimized, the constraints and the domains of the decision variables, we obtain different types of optimization problems. We will now explore the different classifications used for characterizing optimization problems.</p>
+<section id="continuous-vs.-discrete" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="continuous-vs.-discrete"><span class="header-section-number">5.3.1</span> Continuous vs.&nbsp;Discrete</h3>
+<p>One of the most significant criteria is whether the decision variables are continuous or discrete.</p>
+<p>In <strong>continuous optimization</strong> problems, the decision variables live in a continuous space (usually <span class="math inline">\(\mathbb{R}^n\)</span>). If the objective function is smooth (i.e.&nbsp;differentiable), we can then calculate gradients and use a method like gradient descent to find an optimum of the function. For example, training a neural network under the usual circumstances is a continuous optimization problem.</p>
+<p>In <strong>discrete optimization</strong> problems, the decision variables belong to a discrete set like <span class="math inline">\(\mathbb{Z}\)</span> or <span class="math inline">\(\{0,1\}\)</span> and therefore combinatorial in nature. In this case, we can’t rely on gradients to optimize the function, and other (more computationally complex) are needed. For instance, the traveling salesman problem already presented in <a href="intro.html" class="quarto-xref"><span>Chapter 1</span></a> is a typical example of a discrete optimization problem. These problems often face <em>combinatorial explosion</em>. As the number of variables increases, the number of possible configurations grows exponentially. Consequently, many discrete problems are NP-Hard.</p>
+<p>In <strong>mixed-integer optimization</strong>, the decision variables contain both discrete and continuous variables. For instance, a power plant might optimize the continuous amount of power to generate (Megawatts) while making discrete decisions about which generators to turn on or off. Mixed-integer problems are therefore combinatorial in nature as well and face the same kind of problems than purely discrete optimization problems.</p>
+</section>
+<section id="unconstrained-vs.-constrained" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="unconstrained-vs.-constrained"><span class="header-section-number">5.3.2</span> Unconstrained vs.&nbsp;Constrained</h3>
+<p>When the feasible region is equals to the domain of the objective function, we say that the problem is <strong>unconstrained</strong>. In this case, we just want to find the minimum of <span class="math inline">\(f\)</span> anywhere in the domain of the function. This is usually the case in neural network training, where our goal is to find network weights which are normally not constrained in any specific way.</p>
+<p>By contrast, <strong>constrained optimization</strong> problems place a special focus on finding optimal solutions that satisfy a specific set of conditions. For example, a self-driving car controller might minimize travel time (objective) subject to the strict constraint that the car must stay within the lane boundaries (constraints). Solving these requires specialized techniques like Lagrange Multipliers or projection methods.</p>
+</section>
+<section id="deterministic-vs.-stochastic" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="deterministic-vs.-stochastic"><span class="header-section-number">5.3.3</span> Deterministic vs.&nbsp;Stochastic</h3>
+<p>In <strong>deterministic optimization</strong> problems, we assume that the objective function and constraints are known perfectly and do not change. There is no uncertainty when evaluating the objective function: any given input will deterministically produce the same output.</p>
+<p>In <strong>stochastic optimization</strong>, the objective function involves some random quantity, so we usually resort to minimizing expectations instead. This is the native language of ML. Since we cannot calculate the loss over the true data distribution (which is unknown), we estimate it using finite, noisy batches of data. Stochastic Gradient Descent (SGD) is named precisely because it treats the true gradient as a random variable to be estimated.</p>
+</section>
+<section id="linearity-and-convexity" class="level3" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="linearity-and-convexity"><span class="header-section-number">5.3.4</span> Linearity and Convexity</h3>
+<p>Finally, it is the <em>geometry</em> of the function and the constraints which largely determines the computational complexity of the problem. There are three cases that we might face:</p>
+<ul>
+<li>Both the objective and the constraints are <strong>linear</strong>: We call this <strong>linear programming (LP)</strong> and there are efficient methods for solving this type of problems.</li>
+<li>All functions are convex, but some are <strong>non-linear</strong>: The objective is curved, but has only one minimum. These are solvable in polynomial time.</li>
+<li>There is some <strong>non-convex</strong> function: The landscape has hills, valleys, and saddle points. Finding the global minimum is generally intractable. Most modern DL falls into this category, forcing us to rely on heuristics and accept “good enough” approximations or local optima.</li>
+</ul>
+</section>
+</section>
+<section id="mathematical-prerequisites" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="mathematical-prerequisites"><span class="header-section-number">5.4</span> Mathematical Prerequisites</h2>
+<p>In this section, we will review some mathematical background knowledge that will be needed across this part of the book. We will frame some fundamental concepts in linear algebra and calculus though the lens of optimization theory to provide a strong foundation for the chapters to come.</p>
+<p>In optimization, we treat data and parameters as vectors in space. We use norms to measure errors, gradients to find directions of improvement, and Hessians to understand the landscape’s terrain.</p>
+<section id="vector-spaces-and-norms" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="vector-spaces-and-norms"><span class="header-section-number">5.4.1</span> Vector spaces and norms</h3>
+<p>Optimization algorithms operate in vector spaces like <span class="math inline">\(\mathbb{R}^n\)</span>. To determine if one solution is “better” or “closer” to the target than another, we need a rigorous way to measure size and distance. This is the role of the <strong>norm</strong>, which is a function <span class="math inline">\(\lVert \cdot \rVert:\mathbb{R}^n\rightarrow\mathbb{R}\)</span> that takes a vector and returns a non-negative value that indicates its “size”. Some typical examples of norms widely used in ML and optimization are the <span class="math inline">\(L_2\)</span>, <span class="math inline">\(L_1\)</span> and <span class="math inline">\(L_\infty\)</span> norms.</p>
+<p>The <span class="math inline">\(L_2\)</span> norm is also known as <strong>Euclidean norm</strong> and is defined by:</p>
+<p><span class="math display">\[
+\lVert x \rVert _2 = \sqrt{\sum_{i=1}^n x_i^2} = \sqrt{x^Tx}
+\]</span></p>
+<p>This norm can be interpreted as the usual, “straight-line” distance. Geometrically, constraining the <span class="math inline">\(L_2\)</span> norm of a vector using an upper value e.g.&nbsp;<span class="math inline">\(\lVert x \rVert _2 \le 1\)</span> results in a sphere.</p>
+<p>The <span class="math inline">\(L_1\)</span> norm is also known as the <strong>Manhattan norm</strong> and is defined by:</p>
+<p><span class="math display">\[
+\lVert x \rVert _1 = \sum_{i=1}^n |x_i|
+\]</span></p>
+<p>Instead of using the sums of squares like the <span class="math inline">\(L_2\)</span> norm, the <span class="math inline">\(L_1\)</span> norm just uses the absolute values. Geometrically, a region like <span class="math inline">\(\lVert x \rVert _1 \le 1\)</span> can be interpreted as a polytope (i.e.&nbsp;a “diamond” form).</p>
+<p>Lastly, the <strong>infinity norm</strong> is defined by:</p>
+<p><span class="math display">\[
+\lVert x \rVert _\infty = \max_i |x_i|
+\]</span></p>
+<p>which represents the magnitue of the largest single component of <span class="math inline">\(x\)</span>. It is frequently used in robust optimization and analyzing worst-case scenarios (e.g., adversarial attacks on neural networks).</p>
+</section>
+<section id="matrix-calculus" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="matrix-calculus"><span class="header-section-number">5.4.2</span> Matrix Calculus</h3>
+<p>In general, in order to miminize a function <span class="math inline">\(f(x)\)</span>, we need to know how <span class="math inline">\(f\)</span> changes with slight perturbations of <span class="math inline">\(x\)</span>. In high dimensions, single-variable derivatives are replaced by vectors and matrices of derivatives.</p>
+<p>The <strong>gradient</strong> is the vector of first-order partial derivatives:</p>
+<p><span class="math display">\[
+\nabla f(x)=\left[\begin{array}{c}
+\dfrac{\partial f(x)}{\partial x_1}\\
+\dfrac{\partial f(x)}{\partial x_2}\\
+\vdots \\
+\dfrac{\partial f(x)}{\partial x_n}
+\end{array}\right]
+\]</span></p>
+<p>The gradient has a distinct geometric interpretation: it points in the direction of steepest ascent. Consequently, the direction of steepest descent, which is the path used by nearly all training algorithms in DL is <span class="math inline">\(-\nabla f(x)\)</span>.</p>
+<p>While the gradient tells us the slope, it tells us nothing about the curvature. This information is captured by the <strong>Hessian</strong>, the symmetric <span class="math inline">\(n\times n\)</span> matrix of second-order partial derivatives:</p>
+<p><span class="math display">\[
+\nabla^2 f(x)=
+\begin{bmatrix}
+    \dfrac{\partial^2 f}{\partial x_1^2} &amp; \dfrac{\partial^2 f}{\partial x_1 \partial x_2} &amp; \dots \\
+    \vdots &amp; \ddots &amp; \\
+    \dfrac{\partial^2 f}{\partial x_n\partial x_1} &amp;        &amp; \dfrac{\partial^2 f}{\partial x_n^2}
+\end{bmatrix}
+\]</span></p>
+<p>Intuitively, ff the Hessian is “large” (high curvature), the gradient changes rapidly, and algorithms must take small steps to avoid overshooting. If the Hessian is “small” (flat curvature), algorithms can take larger steps.</p>
+</section>
+<section id="eigenvalues-and-definiteness" class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="eigenvalues-and-definiteness"><span class="header-section-number">5.4.3</span> Eigenvalues and Definiteness</h3>
+<p>In optimization, it is usually important to know whether the Hessian is <em>positive definite</em>. This is the matrix analogue of a number (scalar) being positive. In a nutshell, (semi-)positive definiteness of the Hessian will indicate convexity (in general) and also if a local optimum is a maximum or a minimum.</p>
+<p>We say that a symmetric matrix <span class="math inline">\(A\)</span> is <strong>positive semidefinite (PSD)</strong> if and only if <span class="math inline">\(x^T A x \ge 0\)</span> for all <span class="math inline">\(x\)</span> different from zero. Alternatively, <span class="math inline">\(A\)</span> is PSD if and only if all eigenvalues are non-negative <span class="math inline">\(\lambda_i\ge 0\)</span>.</p>
+<p>For a square matrix <span class="math inline">\(A\)</span>, an eigenvector <span class="math inline">\(v\)</span> and eigenvalue <span class="math inline">\(\lambda\)</span> satisfy <span class="math inline">\(Av=\lambda v\)</span>. The eigenvalues represent the “scaling factors” of the matrix along its principal axes. In the context of a loss landscape, the eigenvalues of the Hessian describe the curvature in different directions: large <span class="math inline">\(\lambda\)</span> (in absolute value) indicates steep curvature, while small <span class="math inline">\(\lambda\)</span> (in absolute value) indicates flat curvature.</p>
+<p>Let <span class="math inline">\(x\)</span> be such that <span class="math inline">\(\nabla f(x)=0\)</span> (i.e.&nbsp;<span class="math inline">\(x\)</span> is a singular point). In order to check if <span class="math inline">\(x\)</span> is a maximum, minimum or a saddle point, we check the Hessian:</p>
+<ul>
+<li>If <span class="math inline">\(\nabla^2f(x)\)</span> is positive definite, then <span class="math inline">\(x\)</span> is a <strong>local minimum</strong>.</li>
+<li>If <span class="math inline">\(\nabla^2f(x)\)</span> is positive negative, then <span class="math inline">\(x\)</span> is a <strong>local maximum</strong>.</li>
+<li>If <span class="math inline">\(\nabla^2f(x)\)</span> has mixed signs, then <span class="math inline">\(x\)</span> is a <strong>saddle point</strong>.</li>
+</ul>
+<p>Importantly, a function is convex if and only if <em>its Hessian is positive semidefinite everywhere</em>. This guarantees that any local minimum is <strong>global</strong>.</p>
+</section>
+</section>
+<section id="why-convexity-is-good" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="why-convexity-is-good"><span class="header-section-number">5.5</span> Why Convexity Is Good?</h2>
+<p>In mathematics in general, the distinction between easy and hard problems is done based on whether the problems are linear (easy) or non-linear (hard). However, in optimization, this distinction would be misleading. The defining property for optimization problems to be easily solvable or not is actually <strong>convexity</strong>. If a problem is convex, we can generally solve it efficiently and guarantee that our solution is the global optimum. If it is non-convex, we are entering a world of NP-hardness, local traps, and heuristics.</p>
+<p>Optimization problems are constrained to a feasible region <span class="math inline">\(\Omega\)</span> (see <a href="#eq-feasible-region" class="quarto-xref">Equation&nbsp;<span>5.1</span></a>). The geometry of this region dictates how we can move through the search space. In general, a set <span class="math inline">\(C\subseteq\mathbb{R}^n\)</span> is said to be <strong>convex</strong> if and only if for any two points <span class="math inline">\(x,y\in C\)</span>, the line segment that joins those two points is entirely contained in <span class="math inline">\(C\)</span>. More formally:</p>
+<p><span class="math display">\[
+\theta x + (1-\theta)y \in C\text{,    for all }x,y\in C\text{, and }\theta \in [0,1]
+\]</span></p>
+<p>Intuitively, a circle and a square are convex; a star shape or a crescent moon are not.</p>
+<p>While convex sets describe the constraints, convex functions describe the objective <span class="math inline">\(f(x)\)</span>. For the sake of completeness, we re-state the definition of a convex function: for all <span class="math inline">\(x,y\)</span> in the domain of the function, we have:</p>
+<p><span class="math display">\[
+f(\theta x+(1-\theta)y) \le \theta f(x) + (1-\theta)f(y)\text{, }\forall \theta \in [0,1]
+\]</span></p>
+<p>To analyze algorithms, we rely on differential definitions of convexity. The <strong>first-order condition</strong> states that</p>
+<p><span class="math display">\[
+f(y) \ge f(x) + \nabla f(x)^T(y-x)
+\]</span></p>
+<p>which means that the tangent plane (the first-order Taylor approximation of the function around any point <span class="math inline">\(x\)</span>) is always <em>below</em> the function everywhere (for all <span class="math inline">\(y\)</span>). So if we have that <span class="math inline">\(x\)</span> is a singular point (<span class="math inline">\(\nabla f(x)=0\)</span>), this automatically means that <span class="math inline">\(x\)</span> is a global minimum (since <span class="math inline">\(f(y)\ge f(x)\)</span>).</p>
+<p>The <strong>second-order condition</strong> states that the Hessian is positive semidefinite everywhere <span class="math inline">\(\nabla^2 f(x) \succeq 0\)</span>, which means that the curvature is always “upwards”. This implies that the function is convex everywhere.</p>
+<p>Now if the objective function <span class="math inline">\(f(x)\)</span> is convex <em>and</em> the feasible region <span class="math inline">\(\Omega\)</span> is a convex set, we have:</p>
+<ol type="1">
+<li>Any local minimum is a <strong>global minimum</strong>.</li>
+<li>The set of global minima is itself a <strong>convex set</strong> (so any convex combination of global minima is itself a global minimum).</li>
+</ol>
+<p>This means that, in a convex optimization problem (e.g., linear regression, Support Vector Machines, Linear Programming), we do not need to worry about initialization. We can start the algorithm anywhere in the feasible region, follow the negative gradient, and we are mathematically guaranteed to converge to the best possible solution. However, in a non-convex optimization problem (e.g., DL), this guarantee vanishes. The loss landscape of a neural network is riddled with local minima, saddle points, and flat plateaus. A gradient descent algorithm might get stuck in a suboptimal valley, which is why training deep networks requires “tricks” like random restarts, momentum, and stochastic noise to escape local traps.</p>
+</section>
+<section id="optimality-conditions" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="optimality-conditions"><span class="header-section-number">5.6</span> Optimality Conditions</h2>
+<p>We now turn our attention to the problem of certifying if a singular point <span class="math inline">\(x\)</span> found by an optimization algorithm is indeed a global minimum (i.e.&nbsp;a stopping condition). In a sorting algorithm, we stop when the list is ordered. In optimization, we stop when we satisfy a specific set of mathematical conditions. These conditions differ depending on whether we are free to move anywhere (unconstrained) or are bounded by limits (constrained). Therefore, we will distinguish between unconstrained and constrained optimization problems, since the optimality conditions here differ most significantly.</p>
+<section id="unconstrained-optimization" class="level3" data-number="5.6.1">
+<h3 data-number="5.6.1" class="anchored" data-anchor-id="unconstrained-optimization"><span class="header-section-number">5.6.1</span> Unconstrained optimization</h3>
+<p>In the case where we have no boundaries (constraints), we rely on calculus to identify “flat” spots in the landscape. The first condition is a necessary condition related to stationarity. If a candidate point <span class="math inline">\(x*\)</span> is a local minimizer and <span class="math inline">\(f\)</span> is continuously differentiable, then the gradient must vanish: <span class="math inline">\(\nabla f(x^*)=0\)</span>. However, this condition is not enough, since <span class="math inline">\(x^*\)</span> could now be a maximum, a minimum or a saddle point.</p>
+<p>The sufficient condition is the previously mentioned second-order condition for positive semidefiniteness of the Hessian: if <span class="math inline">\(\nabla f(x^*)=0\)</span> <em>and</em> <span class="math inline">\(\nabla^2 f(x^*)\)</span> is positive definite (i.e.&nbsp;all eigenvalues are positive), then <span class="math inline">\(x^*\)</span> is a <strong>strict local</strong> minimizer.</p>
+<p>In high-dimensional non-convex optimization (like DL), the Hessian often has both positive and negative eigenvalues. These are saddle points. In high dimensions, local minima are actually rare, and the vast majority of critical points are saddle points. Standard Gradient Descent can get “stuck” near saddle points because the gradient is zero, but the Hessian reveals there is still a direction to escape (which is the eigenvector corresponding to the negative eigenvalue).</p>
+</section>
+<section id="constrained-optimization-the-kkt-conditions" class="level3" data-number="5.6.2">
+<h3 data-number="5.6.2" class="anchored" data-anchor-id="constrained-optimization-the-kkt-conditions"><span class="header-section-number">5.6.2</span> Constrained Optimization: The KKT Conditions</h3>
+<p>When we add constraints, the gradient does not have to be zero. Imagine a ball rolling down a hill but hitting a fence. The ball stops at the fence, even though the hill continues downward on the other side. At this optimal point, the “force” of gravity (the objective gradient) is perfectly balanced by the “force” of the fence (the constraint gradient). To solve this problem, we use the method of <strong>Lagrange Multipliers</strong>.</p>
+<p>The basic idea is to convert the constrained problem into an unconstrained one by means of a new objective function, the Lagrangian:</p>
+<p><span class="math display">\[
+\mathcal{L}(x, \lambda, \nu)=f(x)+\sum_{i=1}^m \lambda_i g_i(x)+\sum_{j=1}^p \nu_j h_j(x)
+\]</span></p>
+<p>We call the <span class="math inline">\(\lambda_i\)</span> and <span class="math inline">\(\nu_j\)</span> the <strong>dual variables</strong>. They represent the cost or penalty of violating a constraint. Using these dual variables, we can state the general <strong>Karush-Kuhn-Tucker (KKT)</strong> conditions, which are fundamental conditions for a point <span class="math inline">\((x^*, \lambda^*, \nu^*)\)</span> to be optimal in any general optimization problem:</p>
+<ol type="1">
+<li><strong>Stationarity:</strong> The gradient of the Lagrangian with respect to <span class="math inline">\(x\)</span> is 0 <span class="math inline">\(\nabla_x \mathcal{L}=0\)</span>.</li>
+</ol>
+<p><span class="math display">\[
+\nabla_x \mathcal{L}(x^*,\lambda^*,\nu^*)=\nabla f(x^*)+\sum_{i=1}^m\lambda_i^*\nabla g_i(x^*)+\sum_{j=1}^p\nu_j^*\nabla h_j(x^*)=0
+\]</span></p>
+<ol start="2" type="1">
+<li><strong>Primal Feasibility:</strong> The solution <span class="math inline">\(x^*\)</span> must satisfy all constraints.</li>
+</ol>
+<p><span class="math display">\[
+g_i(x^*)\le 0\text{, for all }i\text{, }h_j(x^*)=0\text{, for all }j
+\]</span></p>
+<ol start="3" type="1">
+<li><strong>Dual Feasibility:</strong> The Lagrange multipliers for the inequality constraints must be non-negative.</li>
+</ol>
+<p><span class="math display">\[
+\lambda_i^* \ge 0\text{, for all }i
+\]</span></p>
+<ol start="4" type="1">
+<li><strong>Complementary Slackness:</strong> For each inequality constraint, we have:</li>
+</ol>
+<p><span class="math display">\[
+\lambda_i^* g_i(x^*)=0\text{, for all }i
+\]</span></p>
+<p>This last condition is the cornerstone of understanding how constraints interact with the objective function at an optimum. It’s often the most counter-intuitive part of the KKT conditions, but it holds the key to why optimization algorithms work and how they identify the most critical elements of a problem. The core idea is that at an optimal solution <span class="math inline">\(x^*\)</span>, an inequality constraint can behave in one of two possible ways:</p>
+<ul>
+<li>The constraint is <strong>active</strong>: this is the case when <span class="math inline">\(g_i(x^*)=0\)</span>, which means that <span class="math inline">\(x^*\)</span> lies <em>exactly on the boundary</em> defined by the constraint, like the ball hitting the fence. This makes automatically the product <span class="math inline">\(\lambda_i^* g_i(x^*)=0\)</span>, so <span class="math inline">\(\lambda_i^*\)</span> can take any non-negative value. Any non-zero value for <span class="math inline">\(\lambda_i^*\)</span> indicates that the constraint is actively influencing the optimum. We can think of this multiplier as the <em>marginal cost</em> of the constraint. If we would relax the constraint by a small amount <span class="math inline">\(\epsilon\)</span> (<span class="math inline">\(g_i(x^*)\le \epsilon\)</span>), the optimal value would improve by about <span class="math inline">\(\lambda_i^*\epsilon\)</span>. The constraint is “pushing back” so that <span class="math inline">\(x^*\)</span> cannot move further.</li>
+<li>The constraint is <strong>inactive</strong>: this is the case when <span class="math inline">\(g_i(x^*)&lt;0\)</span>, which means that <span class="math inline">\(x^*\)</span> lies <em>inside the feasible region</em> specified by the constraint, like the ball away from the fence (but inside). In this case, for the product <span class="math inline">\(\lambda_i^* g_i(x^*)\)</span> to be zero, then <span class="math inline">\(\lambda_i^*\)</span> must be zero as well. This means that the constraint is not actively influencing the optimal solution. The constraint is effectively irrelevant for finding the optimum.</li>
+</ul>
+</section>
+</section>
+<section id="optimization-in-ai-and-ml" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="optimization-in-ai-and-ml"><span class="header-section-number">5.7</span> Optimization in AI and ML</h2>
+<p>For many decades, the field of AI was dominated by logic, search, and symbolic reasoning. However, most current AI systems are data-driven, and the engine that drives learning from data is mathematical optimization. In this paradigm, “learning” is simply a synonym for “minimizing a loss function”. Every time a ML model is trained, whether it is a simple linear regressor or a trillion-parameter Large Language Model (LLM), we are solving an optimization problem. The translation from a learning task to an optimization problem follows a standard recipe:</p>
+<ol type="1">
+<li><p><strong>The Hypothesis Space:</strong> We define a model <span class="math inline">\(f(x;\theta)\)</span> parametrized by a vector <span class="math inline">\(\theta\)</span> which represents the decision variables of the corresponding optimization problem. For instance, in a neural network, <span class="math inline">\(\theta\)</span> represents all the weights and biases of the network.</p></li>
+<li><p><strong>The Loss Function:</strong> We define a scalar function <span class="math inline">\(L(\theta)\)</span> that measures the discrepancy between the model’s predictions and the ground truth. In regression problems, this function takes often the form of the mean squared error (MSE). In classification problems, we use other functions like the cross-entropy loss.</p></li>
+</ol>
+<p>The goal is then to find <span class="math inline">\(\theta^* = \arg \min_\theta L(\theta)\)</span>.</p>
+<section id="gradient-descent" class="level3" data-number="5.7.1">
+<h3 data-number="5.7.1" class="anchored" data-anchor-id="gradient-descent"><span class="header-section-number">5.7.1</span> Gradient descent</h3>
+<p>Since solving analytically (e.g.&nbsp;by setting <span class="math inline">\(\nabla L(\theta)=0\)</span> and solving for <span class="math inline">\(\theta\)</span>) is most commonly not feasible, we rely on iterative algorithms like <strong>Gradient Descent</strong>. The most basic (and computationally efficient) variant is to move in the direction of steepest descent by following the negative gradient:</p>
+<p><span class="math display">\[
+\theta_{t+1} = \theta_t + \eta \nabla L(\theta_t)
+\]</span></p>
+<p>where <span class="math inline">\(\eta\)</span> is called <em>step size</em>. The main idea is therefore to move in small steps towards the minimum so that we don’t get lost on the way by taking too large steps.</p>
+<p>In modern ML, calculating the gradient exactly requires summing over the entire dataset, which might be composed of millions of data points (images, documents, etc). This is computationally prohibitive. Instead, we estimate the gradient using a small random subset (also called a <em>minibatch</em>) of data.</p>
+<p><span class="math display">\[
+\theta_{t+1} = \theta_t + \eta \hat{g}_t
+\]</span></p>
+<p>where <span class="math inline">\(E[\hat{g}_t]=\nabla L(\theta)\)</span>. This is called <strong>Stochastic Gradient Descent (SGD)</strong> and is a cornerstone of modern ML training procedures. Because the gradient is noisy, SGD does not settle at a single point but “bounces around” the minimum. This noise can actually be beneficial, helping the algorithm escape shallow local minima and saddle points.</p>
+</section>
+<section id="regularization" class="level3" data-number="5.7.2">
+<h3 data-number="5.7.2" class="anchored" data-anchor-id="regularization"><span class="header-section-number">5.7.2</span> Regularization</h3>
+<p>One of the biggest challenges in ML is overfitting: memorizing the training data rather than learning general patterns. We combat this using <strong>regularization</strong>, which is mathematically equivalent to constrained optimization. Consider for instance Ridge Regression, which involves adding a penalty term to the loss function:</p>
+<p><span class="math display">\[
+\min_\theta L(\theta) + \lambda \lVert \theta \rVert_2^2
+\]</span></p>
+<p>Does this ring a bell? This is, in fact, equivalent to using Lagrange multipliers to solve the equivalent constrained optimization problem:</p>
+<p><span class="math display">\[
+\min_\theta L(\theta)\text{ subject to } \lVert \theta \rVert_2^2 \le C
+\]</span></p>
+<p>By constraining the Euclidean norm of the weights, we force the model to be smooth and more simple. Similarly, Lasso regression uses the <span class="math inline">\(L_1\)</span> norm instead. As discussed in Section 2.1, the geometry of the <span class="math inline">\(L_1\)</span> ball (a diamond) tends to touch the loss contours at the axes, forcing many weights to become exactly zero. This performs automatic feature selection, identifying the most important variables in the dataset.</p>
+</section>
+</section>
+<section id="summary" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="summary"><span class="header-section-number">5.8</span> Summary</h2>
+<p>Optimization is the mathematical tool that transforms the question of “is this possible?” into “what is the best way to do this?”. This chapter established the mathematical framework necessary to understand and design the algorithms that power everything from network routing to Large Language Models.</p>
+<p>We began by reviewing the essential tools of multivariate calculus and linear algebra, focusing on how gradients define the direction of improvement and how Hessians and eigenvalues characterize the curvature of the search landscape. We identified convexity as the fundamental concept in optimization theory. Unlike the distinction between linear and non-linear, the distinction between convex and non-convex determines tractability: convex problems guarantee that any local minimum is a global minimum, allowing for efficient polynomial-time solutions.</p>
+<p>We stated the Karush-Kuhn-Tucker (KKT) conditions, the universal set of requirements (stationarity, primal/dual feasibility, and complementary slackness) that certify whether a solution is optimal in constrained environments. We also explored the computational complexity of these problems, noting how discrete variables (Integer Programming) and high-dimensional non-convex landscapes (Deep Learning) introduce NP-hardness and the “curse of dimensionality”, forcing us to rely on approximations and heuristics.</p>
+<p>Finally, we connected these abstract principles to AI and ML, demonstrating that training a machine learning model is fundamentally an optimization task. By framing learning as loss minimization, we saw how concepts like Stochastic Gradient Descent and regularization are direct applications of the calculus and geometric constraints discussed throughout the chapter. This foundation sets the stage for other specialized techniques covered in the remainder of this book.</p>
+</section>
+<section id="exercises" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">5.9</span> Exercises</h2>
+<ol type="1">
+<li><p>A data center has <span class="math inline">\(N\)</span> servers. Each server <span class="math inline">\(i\)</span> has a maximum CPU capacity <span class="math inline">\(C_i\)</span> and a maximum RAM capacity <span class="math inline">\(R_i\)</span>. It is needed to schedule <span class="math inline">\(M\)</span> different jobs. Each job <span class="math inline">\(j\)</span> requires <span class="math inline">\(c_i\)</span> units of CPU and <span class="math inline">\(r_j\)</span> units of RAM to run. Let <span class="math inline">\(x_{ij}\)</span> be a binary variable indicating if job <span class="math inline">\(j\)</span> is assigned to server <span class="math inline">\(i\)</span> (<span class="math inline">\(x_{ij}=1\)</span>) or not (<span class="math inline">\(x_{ij}=0\)</span>). Write down the full mathematical optimization model. Identify the objective function, the decision variables, and the constraints. Is this a convex optimization problem? Why?</p></li>
+<li><p>Consider the following function <span class="math inline">\(f:\mathbb{R}^2\rightarrow \mathbb{R}\)</span>: <span class="math display">\[
+f(x,y)=x^3+y^3-3xy
+\]</span> Compute the gradient <span class="math inline">\(\nabla f(x,y)\)</span> and the Hessian <span class="math inline">\(\nabla^2 f(x,y)\)</span>. Find all critical points (<span class="math inline">\(\nabla f(x,y)=0\)</span>). Evaluate the Hessian at the critical points and calculate the eigenvalues of the Hessian there. Then, classify each critical point as maximum, minimum or saddle point. Is <span class="math inline">\(f(x,y)\)</span> globally convex?</p></li>
+<li><p>Solve the following constrained optimization problem using the KKT conditions: <span class="math display">\[
+\begin{aligned}
+\min_{x,y} &amp; f(x,y)=x^2+y^2 \\
+\text{subject to  } &amp; 2x+y \ge 5
+\end{aligned}
+\]</span> Specifically, formulate the Lagrangian <span class="math inline">\(\mathcal{L}(x,y,\lambda)\)</span> and write down the four KKT conditions for this problem. Solve the system of equations and consider two cases based on complementary slackness: either <span class="math inline">\(\lambda=0\)</span> (constraint is inactive) or <span class="math inline">\(\lambda &gt; 0\)</span> (constraint is active). Verify which case yields a valid solution and state the optimal <span class="math inline">\(x^*,y^*\)</span>.</p></li>
+<li><p>In ML, Ridge Regression aims to fit a linear model <span class="math inline">\(y=Xw\)</span> while at the same time keeping the weights small to prevent overfitting. This can be formulated using the following objective function: <span class="math display">\[
+L(w)=\lVert y - Xw \rVert_2^2 + \lambda \lVert w \rVert_2^2
+\]</span> where <span class="math inline">\(y\in\mathbb{R}^m\)</span> is the vector of labels, <span class="math inline">\(X\in\mathbb{R}^{m\times n}\)</span> is the training data matrix, <span class="math inline">\(w\in\mathbb{R}^n\)</span> is the weight vector, and <span class="math inline">\(\lambda&gt;0\)</span> is a regularization hyperparameter. Compute the gradient <span class="math inline">\(\nabla_w L(w)\)</span> with respect to <span class="math inline">\(w\)</span> (Hint: <span class="math inline">\(\lVert v \rVert_2^2=v^T v\)</span>) and equate it to zero to solve for <span class="math inline">\(w\)</span>. If you solved correctly, you should get: <span class="math display">\[
+w^*=(X^TX+\lambda I)^{-1}X^Ty
+\]</span> What does the <span class="math inline">\(\lambda I\)</span> term mean in terms of invertibility and convexity?</p></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./discrete_event.html" class="pagination-link" aria-label="Discrete events and Queuing Theory">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Discrete events and Queuing Theory</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./exact_methods.html" class="pagination-link" aria-label="Exact methods">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exact methods</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
