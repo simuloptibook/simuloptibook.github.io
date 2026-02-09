@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>8&nbsp; Optimization and Simulation in Machine Learning – Simulation and Optimization: A Model-Driven Approach</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./summary.html" rel="next">
+<link href="./metaheuristics.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e48e5d47e6899f26dc5bcf87b02f963a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./optimization_in_ml.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization and Simulation in Machine Learning</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Simulation and Optimization: A Model-Driven Approach</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">PART I: SIMULATION</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./simulation_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Simulation basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./monte_carlo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./discrete_event.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Discrete events and Queuing Theory</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">PART II: OPTIMIZATION</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Optimization basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exact_methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exact methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metaheuristics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Metaheuristics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization_in_ml.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization and Simulation in Machine Learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">8.1</span> Introduction</a></li>
+  <li><a href="#optimization-in-deep-learning" id="toc-optimization-in-deep-learning" class="nav-link" data-scroll-target="#optimization-in-deep-learning"><span class="header-section-number">8.2</span> Optimization in Deep Learning</a>
+  <ul class="collapse">
+  <li><a href="#the-loss-landscape-in-dl" id="toc-the-loss-landscape-in-dl" class="nav-link" data-scroll-target="#the-loss-landscape-in-dl"><span class="header-section-number">8.2.1</span> The Loss Landscape in DL</a></li>
+  <li><a href="#backpropagation-and-stochastic-gradient-descent" id="toc-backpropagation-and-stochastic-gradient-descent" class="nav-link" data-scroll-target="#backpropagation-and-stochastic-gradient-descent"><span class="header-section-number">8.2.2</span> Backpropagation and Stochastic Gradient Descent</a></li>
+  </ul></li>
+  <li><a href="#monte-carlo-tree-search" id="toc-monte-carlo-tree-search" class="nav-link" data-scroll-target="#monte-carlo-tree-search"><span class="header-section-number">8.3</span> Monte Carlo Tree Search</a></li>
+  <li><a href="#reinforcement-learning" id="toc-reinforcement-learning" class="nav-link" data-scroll-target="#reinforcement-learning"><span class="header-section-number">8.4</span> Reinforcement Learning</a>
+  <ul class="collapse">
+  <li><a href="#markov-decision-processes" id="toc-markov-decision-processes" class="nav-link" data-scroll-target="#markov-decision-processes"><span class="header-section-number">8.4.1</span> Markov Decision Processes</a></li>
+  <li><a href="#value-based-methods" id="toc-value-based-methods" class="nav-link" data-scroll-target="#value-based-methods"><span class="header-section-number">8.4.2</span> Value-based Methods</a></li>
+  <li><a href="#policy-based-methods" id="toc-policy-based-methods" class="nav-link" data-scroll-target="#policy-based-methods"><span class="header-section-number">8.4.3</span> Policy-Based Methods</a></li>
+  <li><a href="#model-based-reinforcement-learning" id="toc-model-based-reinforcement-learning" class="nav-link" data-scroll-target="#model-based-reinforcement-learning"><span class="header-section-number">8.4.4</span> Model-Based Reinforcement Learning</a></li>
+  </ul></li>
+  <li><a href="#case-study-alphazero" id="toc-case-study-alphazero" class="nav-link" data-scroll-target="#case-study-alphazero"><span class="header-section-number">8.5</span> Case Study: AlphaZero</a>
+  <ul class="collapse">
+  <li><a href="#the-training-process" id="toc-the-training-process" class="nav-link" data-scroll-target="#the-training-process"><span class="header-section-number">8.5.1</span> The Training Process</a></li>
+  <li><a href="#simulation-becomes-intuition" id="toc-simulation-becomes-intuition" class="nav-link" data-scroll-target="#simulation-becomes-intuition"><span class="header-section-number">8.5.2</span> Simulation becomes Intuition</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">8.6</span> Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">8.7</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-opt-ml" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization and Simulation in Machine Learning</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">8.1</span> Introduction</h2>
+<p>In the previous chapters, we treated optimization as a tool for decision-making, like finding the best shipping route or the optimal factory schedule. In these scenarios, the “model” was explicit. We knew the constraints, we knew the objective function, and we simply needed to find the variable values <span class="math inline">\(x\)</span> that optimized the objective function. In Machine Learning (ML) and Artificial Intelligence (AI), the change the paradigm. We are no longer optimizing a specific decision, but rather <em>learning a function</em> that makes decisions.</p>
+<p>From this perspective, ML is not magic, but simply optimization applied to function approximation. When we say a neural network “learns” to recognize a cat, we mean that an optimization algorithm has traversed a high-dimensional landscape and found a specific configuration of parameters (weights and biases) that minimizes the error between the network’s output and the label “cat.”</p>
+<p>In general, we use a very specific notation when applying optimization to ML problems. We denote the input data as <span class="math inline">\(X\)</span> and the output data (or labels) as <span class="math inline">\(y\)</span>. The model we are trying to learn is a function <span class="math inline">\(f(X; \theta)\)</span>, where <span class="math inline">\(\theta\)</span> represents the parameters of the model (e.g., weights in a neural network). The goal of training the model is to find the optimal parameters <span class="math inline">\(\theta^*\)</span> that minimize a loss function <span class="math inline">\(\mathcal{L}(y, f(X; \theta))\)</span>, which quantifies the difference between the predicted outputs and the true labels.</p>
+<p><span class="math display">\[
+\theta^* = \arg\min_{\theta}\frac{1}{n} \sum_{i=1}^n \mathcal{L}(y_i, f(x_i; \theta))
+\]</span></p>
+<p>However, not all problems come with a static dataset. In Reinforcement Learning (RL) or game playing (like Go or Chess), the “data” is generated dynamically by the agent’s interactions with the world. In this case, we often do not have an explicit formula for the objective function (e.g., “Win the game”) and we cannot calculate the gradient of “winning” directly. Instead, we must rely on <strong>simulation</strong>: We run the system forward in time (simulate a game, simulate a robot arm moving), observe the outcome, and use that empirical data to estimate the gradient or value.</p>
+<p>Thus, modern AI is the marriage of <strong>optimization</strong> (improving parameters based on data) and <strong>simulation</strong> (generating data based on parameters).</p>
+<p>In this chapter, we will explore how these concepts manifest in three distinct phases of the AI lifecycle:</p>
+<ol type="1">
+<li><p><strong>Training:</strong> The process of optimizing model parameters using data samples. In this case, we rely on Stochastic Gradient Descent (SGD) and its adaptive variants (like Adam). These methods use the “noise” inherent in data sampling to navigate complex terrains where traditional Newton-type methods fail.</p></li>
+<li><p><strong>Planning:</strong> The process of simulating future states of the world to make better decisions in the present. Here, we will explore techniques like Monte Carlo Tree Search (MCTS) that allow agents to evaluate potential future actions by simulating their outcomes.</p></li>
+<li><p><strong>Interaction:</strong> The process of learning from real-time feedback as the agent interacts with its environment. This involves methods like Q-learning and Policy Gradients, which use simulations of the agent’s actions to improve its decision-making policy over time.</p></li>
+</ol>
+</section>
+<section id="optimization-in-deep-learning" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="optimization-in-deep-learning"><span class="header-section-number">8.2</span> Optimization in Deep Learning</h2>
+<p>In <a href="optimization_basics.html" class="quarto-xref"><span>Chapter 5</span></a>, we established that convex problems are “easy” and non-convex problems are “hard.” Deep Learning places us firmly in the “hard” category. A modern neural network may have billions of parameters, and the relationship between these parameters and the loss function is highly non-linear. Despite this, we routinely train these models to near-perfect accuracy. How is this possible? The answer lies in the specific geometry of high-dimensional spaces and the specific properties of the algorithms we use.</p>
+<section id="the-loss-landscape-in-dl" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="the-loss-landscape-in-dl"><span class="header-section-number">8.2.1</span> The Loss Landscape in DL</h3>
+<p>For decades, researchers and practitioners in ML feared local minima: small valleys where the algorithm might get stuck, far higher than the global minimum. However, intuition derived from 2D or 3D surfaces is misleading in high dimensions. In 2D, a local minimum is a point where all directions lead uphill. In high dimensions, however, the number of directions increases dramatically. As a result, the probability of encountering a true local minimum (where all directions are uphill) decreases significantly. Instead, we often find “saddle points” or “flat regions” where some directions lead uphill while others lead downhill.</p>
+<p>Probability theory tells us this is incredibly rare. In high-dimensional landscapes, most points where the gradient vanishes (<span class="math inline">\(\nabla \mathcal{L} = 0\)</span>) are not minima, but saddle points. These are points that curve up in some directions but down in others. The main implication is that algorithms that rely solely on Newton’s method (using the Hessian) struggle here because the Hessian has both positive and negative eigenvalues. Gradient-based methods, however, can usually “slide off” the saddle point along the downward-sloping dimensions.</p>
+</section>
+<section id="backpropagation-and-stochastic-gradient-descent" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="backpropagation-and-stochastic-gradient-descent"><span class="header-section-number">8.2.2</span> Backpropagation and Stochastic Gradient Descent</h3>
+<p>In general, to minimize the loss <span class="math inline">\(\mathcal{L}(\theta)\)</span>, we need the gradient <span class="math inline">\(\nabla \mathcal{L}(\theta)\)</span>. For a deep network, deriving this analytically is impossible. Instead, we use <strong>backpropagation</strong>. Put simply, backpropagation is simply the recursive application of the familiar chain rule of calculus on a computational graph. It involves two passes through the network: a <strong>forward pass</strong> to compute the output and loss, and a <strong>backward pass</strong> to compute the gradients of the loss with respect to each parameter. Modern Deep Learning frameworks like PyTorch utilize Automatic Differentiation (AutoDiff): only the forward pass is needed, and the software automatically constructs the graph to compute the backward pass.</p>
+<p>Standard Gradient Descent (Batch GD) computes the gradient over the entire dataset before taking a step.</p>
+<p><span class="math display">\[
+\theta_{k+1} = \theta_k - \eta \frac{1}{n} \sum_{i=1}^n \nabla \mathcal{L}_i(\theta_k)
+\]</span></p>
+<p>where <span class="math inline">\(\mathcal{L}_i\)</span> is the loss for the <span class="math inline">\(i\)</span>-th data point, and <span class="math inline">\(\eta\)</span> is the learning rate. However, for large datasets, this is computationally expensive. Instead, we use <strong>Stochastic Gradient Descent (SGD)</strong>, which approximates the gradient using a small batch of data points.</p>
+<p><span class="math display">\[
+\theta_{k+1} = \theta_k - \eta \frac{1}{m} \sum_{i=1}^m \nabla \mathcal{L}_{j_i}(\theta_k)
+\]</span></p>
+<p>where <span class="math inline">\(m\)</span> is the batch size, and <span class="math inline">\(j_i\)</span> are randomly selected indices from the dataset. This introduces noise into the gradient estimate, which can help the optimization process escape saddle points and explore the loss landscape more effectively.</p>
+<p>The landscape of a neural network often features <em>ravines</em>: areas that are steep in one dimension but flat in another. Standard SGD tends to oscillate wildly across the steep slopes while making slow progress along the flat bottom. To fix this, we use algorithms that adapt the update step for each parameter individually.</p>
+<p><strong>Momentum</strong></p>
+<p>Momentum is a technique that helps accelerate SGD in the relevant direction and dampens oscillations. It does this by maintaining a velocity vector that accumulates the gradients over time. <span class="math display">\[
+v_{k+1} = \beta v_k + (1 - \beta) \nabla \mathcal{L}(\theta_k)
+\]</span> <span class="math display">\[
+\theta_{k+1} = \theta_k - \eta v_{k+1}
+\]</span></p>
+<p>Where <span class="math inline">\(\beta\)</span> is a new hyperparameter that we call momentum and takes values between 0 and 1. In practice, this parameter is usually set to around 0.9.</p>
+<p><strong>Adam</strong></p>
+<p>The other idea is called <em>Adaptive Moment Estimation</em> (Adam). Adam maintains two moving averages: one for the gradients (first moment) and one for the squared gradients (second moment).</p>
+<p><span class="math display">\[
+m_{k+1} = \beta_1 m_k + (1 - \beta_1) \nabla \mathcal{L}(\theta_k)
+\]</span> <span class="math display">\[
+v_{k+1} = \beta_2 v_k + (1 - \beta_2) (\nabla \mathcal{L}(\theta_k))^2
+\]</span></p>
+<p><span class="math display">\[
+\theta_{k+1} = \theta_k - \eta \frac{m_{k+1}}{\sqrt{v_{k+1}} + \epsilon}
+\]</span></p>
+<p>Where <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> are hyperparameters that control the decay rates of these moving averages, typically set to 0.9 and 0.999, respectively. The small constant <span class="math inline">\(\epsilon\)</span> is added to prevent division by zero.</p>
+<p>Let’s take a look at a scratch implementation of Vanilla SGD and Adam in Python:</p>
+<div id="7c122426" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Define a "Ravine" Function: f(x,y) = 0.1x^2 + 2y^2</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># It is much steeper in Y than in X.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loss_function(x, y):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.1</span> <span class="op">*</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> y<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gradient(x, y):</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array([<span class="fl">0.2</span> <span class="op">*</span> x, <span class="dv">4</span> <span class="op">*</span> y])</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Vanilla SGD Implementation</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_sgd(start_pos, lr, steps):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> [start_pos]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    curr <span class="op">=</span> np.array(start_pos)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(steps):</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        grad <span class="op">=</span> gradient(curr[<span class="dv">0</span>], curr[<span class="dv">1</span>])</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        curr <span class="op">=</span> curr <span class="op">-</span> lr <span class="op">*</span> grad</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        path.append(curr)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now we implement Adam:</p>
+<div id="b2e69779" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Adam Implementation (Simplified)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_adam(start_pos, lr, steps, beta1<span class="op">=</span><span class="fl">0.9</span>, beta2<span class="op">=</span><span class="fl">0.999</span>, epsilon<span class="op">=</span><span class="fl">1e-8</span>):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> [start_pos]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    curr <span class="op">=</span> np.array(start_pos)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> np.zeros(<span class="dv">2</span>) <span class="co"># First moment (Momentum)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> np.zeros(<span class="dv">2</span>) <span class="co"># Second moment (Variance)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, steps <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        grad <span class="op">=</span> gradient(curr[<span class="dv">0</span>], curr[<span class="dv">1</span>])</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Update moments</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> beta1 <span class="op">*</span> m <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> beta1) <span class="op">*</span> grad</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        v <span class="op">=</span> beta2 <span class="op">*</span> v <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> beta2) <span class="op">*</span> (grad<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Bias correction (important for early steps)</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        m_hat <span class="op">=</span> m <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> beta1<span class="op">**</span>t)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        v_hat <span class="op">=</span> v <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> beta2<span class="op">**</span>t)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Update parameters</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        curr <span class="op">=</span> curr <span class="op">-</span> lr <span class="op">*</span> m_hat <span class="op">/</span> (np.sqrt(v_hat) <span class="op">+</span> epsilon)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        path.append(curr)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>In this implementation, we have added a <em>bias correction</em> step to the moment estimates. This is crucial, especially in the early stages of training, to ensure that the estimates are unbiased. Now we visualize the results:</p>
+<div id="e4a9b1e5" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> [<span class="op">-</span><span class="fl">10.0</span>, <span class="op">-</span><span class="fl">2.0</span>] <span class="co"># Start far away</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>steps <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>path_sgd <span class="op">=</span> run_sgd(start, lr, steps)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>path_adam <span class="op">=</span> run_adam(start, lr, steps)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create contour map</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(np.linspace(<span class="op">-</span><span class="dv">12</span>, <span class="dv">2</span>, <span class="dv">100</span>), np.linspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">100</span>))</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> loss_function(X, Y)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>plt.contour(X, Y, Z, levels<span class="op">=</span><span class="dv">20</span>, cmap<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>plt.plot(path_sgd[:,<span class="dv">0</span>], path_sgd[:,<span class="dv">1</span>], <span class="st">'o-'</span>, label<span class="op">=</span><span class="st">'SGD'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>plt.plot(path_adam[:,<span class="dv">0</span>], path_adam[:,<span class="dv">1</span>], <span class="st">'o-'</span>, label<span class="op">=</span><span class="st">'Adam'</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Optimization Trajectories: Ravine Problem"</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="optimization_in_ml_files/figure-html/cell-4-output-1.png" width="573" height="431" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In this graph, SGD oscillates vertically (along the steep <span class="math inline">\(Y\)</span>-axis) while making very slow progress horizontally (along the flat <span class="math inline">\(X\)</span>-axis). It struggles to find the right step size for both dimensions simultaneously. In contrast, Adam quickly adapts. It dampens the step size in <span class="math inline">\(Y\)</span> (high gradient) and boosts the step size in <span class="math inline">\(X\)</span> (low gradient), shooting directly toward the center minimum. This behavior is why Adam is the standard for training deep networks.</p>
+</section>
+</section>
+<section id="monte-carlo-tree-search" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="monte-carlo-tree-search"><span class="header-section-number">8.3</span> Monte Carlo Tree Search</h2>
+<p>In the previous section, we discussed optimizing a static function (the loss of a neural network). Now, we turn to planning: deciding what action to take in a complex, sequential environment, such as playing chess, routing a fleet of drones, or folding a protein. Historically, AI planning relied on Minimax search with heuristic evaluation functions. To know if a chess board state was “good,” a human expert had to write a scoring function (e.g.&nbsp;<span class="math inline">\(10\times\)</span> if queens are on the board + <span class="math inline">\(5\times\)</span> number of rooks, etc). However, for complex situations like playing a game of Go or folding proteins, writing a good evaluation function gets too challenging.</p>
+<p>This is where Monte Carlo simulation comes in. Instead of asking an expert “Is this state good?”, we ask the computer to play it out. We simulate thousands of random games starting from the current state. If we win 80% of those random games, the state is likely “good”. If we win only 10%, it is likely “bad”.</p>
+<p>In the planning context, we call this a <strong>rollout</strong>:</p>
+<ol type="1">
+<li>Start at initial state <span class="math inline">\(S_t\)</span>.</li>
+<li>Select actions <span class="math inline">\(a_t, a_{t+1}, \dots\)</span> until a terminal state (Win/Loss) is reached.</li>
+<li>Record the result: +1 if win, 0 if loss.</li>
+<li>Repeat <span class="math inline">\(N\)</span> times.</li>
+<li>Estimate the value of <span class="math inline">\(S_t\)</span> as <span class="math inline">\(\text{Total Wins}/N\)</span>.</li>
+</ol>
+<p>However, classical Monte Carlo Simulation has a flaw: it wastes computational resources exploring obviously bad moves. If you hang your queen in chess, you don’t need 1,000 simulations to know it’s a bad idea; you need 1.</p>
+<p><strong>Monte Carlo Tree Search (MCTS)</strong> solves this by building a search tree <em>asymmetrically</em>. It uses the results of previous simulations to guide future simulations toward more promising parts of the tree, trying to balance exploitation (by focusing on moves with a high win rate) and exploration (by simulting moves that have few visits, just in case they turn out to be good).</p>
+<p>MCTS runs a loop of four steps as many times as the computing budget allows:</p>
+<ol type="1">
+<li><strong>Selection:</strong> We start at the root and traverse down the tree by selecting child nodes. At each step, we choose the child that maximizes the <strong>Upper Confidence Bound (UCT)</strong> formula (see <a href="#eq-ucb" class="quarto-xref">Equation&nbsp;<span>8.1</span></a>), stopping when a node that has not been fully expanded is reached.</li>
+<li><strong>Expansion:</strong> Add one or more child nodes to the tree (representing available moves from that state).</li>
+<li><strong>Simulation:</strong> From the new child node, play a random game to the end (rollout).</li>
+<li><strong>Backpropagation:</strong> Take the result of the simulation (Win/Loss) and walk back up the tree to the root, updating the statistics (wins and visits) for every node on the path.</li>
+</ol>
+<p>The UCB formula is given by:</p>
+<p><span id="eq-ucb"><span class="math display">\[
+UCT_i = \frac{w_i}{n_i}+c\sqrt{\frac{\ln N}{n_i}}
+\tag{8.1}\]</span></span></p>
+<p>where <span class="math inline">\(w_i\)</span> denotes the number of wins for child node <span class="math inline">\(i\)</span>, <span class="math inline">\(n_i\)</span> is the number of times that node <span class="math inline">\(i\)</span> has been visited, <span class="math inline">\(N\)</span> is the total number of visits to the parent node, and <span class="math inline">\(c\)</span> is an exploration constant (typically <span class="math inline">\(c=\sqrt{2}\)</span>).</p>
+<p>We can interpret <span class="math inline">\(w_i/n_i\)</span> as the average win rate, which encourages exploitation. The other term (<span class="math inline">\(\sqrt{\dots}\)</span>) is an uncertainty “bonus”: if a node is rarely visited (<span class="math inline">\(n_i\)</span> is small), this term becomes larger, which encourages exploration. As we proceed and visit more nodes, <span class="math inline">\(n_i\)</span> becomes larger and the search concentrates more on the exploitation term.</p>
+<p>MCTS allows an agent to plan in environments where it has no prior knowledge. It does not need to know strategy; it discovers strategy by simulating thousands of futures. E.g. in <em>AlphaZero</em>, this simulation data is used to train a Neural Network, which in turn guides the MCTS Selection phase, creating a cycle of self-improvement.</p>
+<p>We now take a look at a sample generic implementation of MCTS. We start by defining a node in the search tree.</p>
+<div id="88fd9f78" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> copy</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MCTSNode:</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, state, parent<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state <span class="op">=</span> state</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.parent <span class="op">=</span> parent</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.children <span class="op">=</span> []</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.wins <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.visits <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.untried_moves <span class="op">=</span> state.get_legal_moves()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> uct_select_child(<span class="va">self</span>, c<span class="op">=</span><span class="fl">1.41</span>):</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Sort children by UCT formula</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        s <span class="op">=</span> <span class="bu">sorted</span>(<span class="va">self</span>.children, key<span class="op">=</span><span class="kw">lambda</span> child: </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            (child.wins <span class="op">/</span> child.visits) <span class="op">+</span> c <span class="op">*</span> math.sqrt(math.log(<span class="va">self</span>.visits) <span class="op">/</span> child.visits))</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> s[<span class="op">-</span><span class="dv">1</span>] <span class="co"># Return the best</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>An MCTS node tracks the number of wins, visits, the problem-dependent state, and the number of untried moves. Additionally, is provides a method for selectin the best child according to <a href="#eq-ucb" class="quarto-xref">Equation&nbsp;<span>8.1</span></a>.</p>
+<p>The main MCTS algorithm with the four phases mentioned before can be implemented as follows:</p>
+<div id="4541bb04" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_mcts(root_state, iterations<span class="op">=</span><span class="dv">1000</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    root_node <span class="op">=</span> MCTSNode(root_state)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(iterations):</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> root_node</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        state <span class="op">=</span> copy.deepcopy(root_state)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Phase 1: Selection</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Go down the tree until we hit a node with untried moves or a terminal state</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> node.untried_moves <span class="op">==</span> [] <span class="kw">and</span> node.children <span class="op">!=</span> []:</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            node <span class="op">=</span> node.uct_select_child()</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            state <span class="op">=</span> state.make_move(node.move_from_parent) <span class="co"># Need to track moves in real impl</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Phase 2: Expansion</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># If we can expand, add one child</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> node.untried_moves <span class="op">!=</span> []:</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>            m <span class="op">=</span> random.choice(node.untried_moves) </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            state <span class="op">=</span> state.make_move(m)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>            node <span class="op">=</span> node.add_child(m, state) <span class="co"># Pseudo-code: create child logic</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Phase 3: Simulation (Rollout)</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Play randomly until end</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> state.check_winner() <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>            state <span class="op">=</span> state.make_move(random.choice(state.get_legal_moves()))</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Phase 4: Backpropagation</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Update stats up the tree</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        winner <span class="op">=</span> state.check_winner()</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> node <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>            node.visits <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>            <span class="co"># If the player at this node won, increment wins</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>            <span class="co"># (Note: In real MCTS, we must be careful about whose turn it is)</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> winner <span class="op">==</span> node.state.player_who_just_moved: </span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>                node.wins <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>            node <span class="op">=</span> node.parent</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the move with the most visits (most robust)</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sorted</span>(root_node.children, key<span class="op">=</span><span class="kw">lambda</span> c: c.visits)[<span class="op">-</span><span class="dv">1</span>].move_from_parent</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The <code>make_move</code> and <code>check_winner</code> methods would need to be implemented for the specific problem at hand.</p>
+</section>
+<section id="reinforcement-learning" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="reinforcement-learning"><span class="header-section-number">8.4</span> Reinforcement Learning</h2>
+<p>We now very briefly introduce Reinforcement Learning and frame it as an optimization method. In Supervised Learning, the optimization target is static (minimize the training error on a fixed dataset). In constrast, in <strong>Reinforcement Learning (RL)</strong>, the target is dynamic. We are optimizing a sequence of decisions over time, where a decision made now determines the data we see later. The mathematical foundation of RL is based on the concept of a <em>Markov Decision Process (MDP)</em>, as we will see next.</p>
+<section id="markov-decision-processes" class="level3" data-number="8.4.1">
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="markov-decision-processes"><span class="header-section-number">8.4.1</span> Markov Decision Processes</h3>
+<p>The mathematical formalism of Markov Decision Processes underpins how optimization in RL is framed. We start with the following elements:</p>
+<ul>
+<li><strong>State Space <span class="math inline">\(S\)</span>:</strong> The set of all possible configurations (e.g.&nbsp;in chess, the set of all legal chess board states).</li>
+<li><strong>Action Space <span class="math inline">\(A:\)</span></strong> The set of all possible actions that an agent can take (e.g.&nbsp;the set of all legal moves in a game).</li>
+<li><strong>Transition Probabilities <span class="math inline">\(P\)</span>:</strong> The rules for transitioning from one state to another. In general, this is represented by a probability distribution <span class="math inline">\(P(s'|s,a)\)</span> of states conditional on the previous state <span class="math inline">\(s\)</span> and the action taken <span class="math inline">\(a\)</span>.</li>
+<li><strong>Reward Function <span class="math inline">\(R\)</span>:</strong> The immediate reward <span class="math inline">\(R(s,a)\)</span> the agent collects on state <span class="math inline">\(s\)</span> after performing action <span class="math inline">\(a\)</span>.</li>
+<li><strong>Discount Factor <span class="math inline">\(\gamma\)</span>:</strong> A number between 0 and 1 that weighs immediate rewards against future rewards.</li>
+</ul>
+<p>Our goal is to find a <strong>policy</strong> <span class="math inline">\(\pi(a|s)\)</span> that maps states to actions that maximizes the expected discounted return:</p>
+<p><span class="math display">\[
+J(\pi)=E\left[\sum_{t=0}^\infty \gamma^t r_t\right]
+\]</span></p>
+<p>This can be framed as a constrained optimization problem: maximize <span class="math inline">\(J\)</span> subject to the constraints of the environment dynamics.</p>
+</section>
+<section id="value-based-methods" class="level3" data-number="8.4.2">
+<h3 data-number="8.4.2" class="anchored" data-anchor-id="value-based-methods"><span class="header-section-number">8.4.2</span> Value-based Methods</h3>
+<p>One approach to solving this is to ignore the policy initially and focus on maximizing a notion of <em>value</em>. If we knew exactly how good every state was (the “Value Function”), the optimal policy would simply be “move to the state with the highest value”. We can define the value of a state-action pair <span class="math inline">\(Q(s,a)\)</span> recursively as follows (<strong>Bellman equation</strong>):</p>
+<p><span class="math display">\[
+Q(s,a)=R(s,a)+\gamma \max_{a'} Q(s',a')
+\]</span></p>
+<p>which means that the value of an action is the <em>immediate reward</em> plus the <em>best possible future value</em>.</p>
+<p>We can approximate the true <span class="math inline">\(Q(s,a)\)</span> using a deep neural network <span class="math inline">\(Q(s,a;\theta)\)</span>, in what we call <strong>Deep Q-Learning (DQN)</strong>. We can train this network by minimizing the mean squared error (also called Bellman error, or Temporal Differences error):</p>
+<p><span id="eq-value-based"><span class="math display">\[
+\mathcal{L}(\theta)=E\left[ \left( r+\gamma\max_{a'}Q(s',a';\theta_{target})-Q(s,a;\theta) \right)^2\right]
+\tag{8.2}\]</span></span></p>
+<p>In this function, we measure the difference between the prediction from the neural network <span class="math inline">\(Q(s,a;\theta)\)</span> and the current estimate of the target term:</p>
+<p><span class="math display">\[
+y=r+\gamma\max_{a'}Q(s',a';\theta_{target})
+\]</span></p>
+<p>In this target, <span class="math inline">\(r\)</span> is the reward which was <em>actually experienced</em> by the agent. However, the second term is just the current best estimate on how much reward it is expected in the future. In summary, we are using the network’s own prediction of the future to train its prediction of the present. This is sometimes referred to as <strong>bootstrapping</strong>.</p>
+<p>This method is also referred to as an instance of <strong>model-free</strong> RL. In this case, we do not have a model of how the physical world works, but we can simulate several actions of the agent to obtain tuples <span class="math inline">\((s,a,r,s',\text{done})\)</span> that we store in a so-called <em>replay buffer</em>. Once we have this buffer, we can feed these data on a training episode and use <a href="#eq-value-based" class="quarto-xref">Equation&nbsp;<span>8.2</span></a> to update the weights <span class="math inline">\(\theta\)</span> of the neural network. Note that in this equation, we have two sets of weights <span class="math inline">\(\theta_{target}\)</span> and <span class="math inline">\(\theta\)</span>. The weights which are currently being optimized are <span class="math inline">\(\theta\)</span>, while <span class="math inline">\(\theta_{target}\)</span> is a frozen copy used for calculating the <span class="math inline">\(\max\)</span> term. This is done in order to prevent the training process from “chasing its own tail”, as otherwise the network predictions would change with each gradient update.</p>
+</section>
+<section id="policy-based-methods" class="level3" data-number="8.4.3">
+<h3 data-number="8.4.3" class="anchored" data-anchor-id="policy-based-methods"><span class="header-section-number">8.4.3</span> Policy-Based Methods</h3>
+<p>Alternatively, we can try to optimize the policy <span class="math inline">\(\pi_{\theta}(a|s)\)</span> directly instead of the value function <span class="math inline">\(Q(s,a)\)</span>. However, because the environment is usually a “black-box” or a discrete simulation, we cannot calculate the gradient <span class="math inline">\(\nabla_\theta J(\theta)\)</span> directly.</p>
+<p><span class="math display">\[
+\nabla_\theta J(\theta)=\nabla_\theta E_{\tau\sim\pi}\left[ R(\tau) \right]=\nabla_\theta \int P(\tau|\theta)R(\tau)d\tau
+\]</span></p>
+<p>The main difficulty with this calculation is that we cannot differentiate this integral to obtain the gradient. However, we can use a property of the derivative of a logarithm (the <em>log-derivative trick</em>) to transform it into the integral of a derivative instead.</p>
+<p><span class="math display">\[
+\frac{d}{dx}\ln f(x)=\frac{f'(x)}{f(x)} \Rightarrow f'(x)=f(x)\frac{d}{dx}\ln f(x)
+\]</span> <span class="math display">\[
+\nabla_\theta P(\tau|\theta)=P(\tau|\theta)\cdot\nabla_\theta \ln P(\tau|\theta)
+\]</span></p>
+<p>which converts the previous integral in:</p>
+<p><span class="math display">\[
+\nabla_\theta J(\theta)=\int P(\tau|\theta)\nabla_\theta \ln P(\tau|\theta)\cdot R(\tau)d\tau=E_{\tau\sim\pi}\left[ \nabla_\theta\ln P(\theta|\phi)\cdot R(\theta) \right]
+\]</span></p>
+<p>Using the estimates that we have, we can approximate the gradient of the expected reward as follows:</p>
+<p><span class="math display">\[
+\nabla_\theta J(\theta)\approx E\left[ \sum_{t=0}^T \nabla_\theta \ln \pi_\theta(a_t|s_t)\cdot G_t \right]
+\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(G_t\)</span> is the total return obtained from time <span class="math inline">\(t\)</span> onwards. <span class="math display">\[
+  G_t=r_t+\gamma r_{t+1}+\gamma^2 r_{t+2}+\dots
+  \]</span></li>
+<li><span class="math inline">\(\nabla \ln \pi(a|s)\)</span> tells us how to change <span class="math inline">\(\theta\)</span> to make action <span class="math inline">\(a\)</span> more or less probable.</li>
+</ul>
+<p>In other words, if <span class="math inline">\(G_t\)</span> is positive (good outcome), we move <span class="math inline">\(\theta\)</span> to <em>increase</em> the probability of the action. Otherwise, if <span class="math inline">\(G_t\)</span> is negative (bad outcome), we move <span class="math inline">\(\theta\)</span> to <em>decrease</em> that probability. This is known as the <strong>REINFORCE</strong> algorithm, and it’s another instance of model-free RL.</p>
+</section>
+<section id="model-based-reinforcement-learning" class="level3" data-number="8.4.4">
+<h3 data-number="8.4.4" class="anchored" data-anchor-id="model-based-reinforcement-learning"><span class="header-section-number">8.4.4</span> Model-Based Reinforcement Learning</h3>
+<p>The methods mentioned above are model-free: they learn purely from experience without having any knowledge about how those experiences are formed. By contrast, in <strong>model-based RL</strong> our goal is to learn a model of the world, i.e.&nbsp;the transition function <span class="math inline">\(P(s'|s,a)\)</span>. Once that the agent has learnt this model, we can use techniques like DQL more efficiently by, for instance, simulating training data and using real and synthetic data to train the agent.</p>
+</section>
+</section>
+<section id="case-study-alphazero" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="case-study-alphazero"><span class="header-section-number">8.5</span> Case Study: AlphaZero</h2>
+<p>In 2017, DeepMind introduced AlphaZero, a system that mastered the games of Chess, Shogi, and Go. Unlike its predecessor AlphaGo (which learned from human games) or Deep Blue (which relied on handcrafted heuristics), AlphaZero started from scratch. It knew only the rules of the game. As we will see next, AlphaZero as a case study unifies the themes outlined in this chapter: simulation, function approximation, and optimization.</p>
+<p>At the heart of AlphaZero is a single Deep Residual Network (ResNet), parameterized by weights <span class="math inline">\(\theta\)</span>, which takes board data <span class="math inline">\(s\)</span> as input. Unlike traditional engines that have separate modules for strategy and evaluation, AlphaZero uses a single network with two output “heads”:</p>
+<ol type="1">
+<li><strong>The Policy Head:</strong> Outputs a probability distribution <span class="math inline">\(p(a|s)\)</span> over all legal moves. This represents the “intuition” of the agent.</li>
+<li><strong>The Value Head:</strong> Outputs a single scalar <span class="math inline">\(v(s)\in[-1,1]\)</span> as the expected outcome from state <span class="math inline">\(s\)</span> (+1 for win, -1 for loss). This represents the “judgement” of the agent.</li>
+</ol>
+<p>Now the critical insight of AlphaZero is how it uses MCTS. In traditional AI, search is used only at runtime to play the game. In AlphaZero, search is used during <em>training</em> to <em>generate</em> the data. AlphaZero uses a neural network to guide the MCTS selection process. For this, we need a modified UCT formula to include the network’s prior probability <span class="math inline">\(P(s,a)\)</span>:</p>
+<p><span id="eq-uct-alphazero"><span class="math display">\[
+UCT(s,a)=Q(s,a)+c\cdot P(s,a)\cdot\frac{\sqrt{N(s)}}{1+N(s,a)}
+\tag{8.3}\]</span></span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(Q(s,a)\)</span> is the average value of all simulations that passed through this specific state-action pair. It is calculated as the average of the Value Head outputs <span class="math inline">\(v\)</span> of the leaf nodes reached by this branch. Its role is <em>exploitation</em> by representing the empirical evidence gathered so far: “Does this move actually lead to a win?”.</li>
+<li><span class="math inline">\(P(s,a)\)</span> is the probability assigned to action <span class="math inline">\(a\)</span> by the Policy Head when it first evaluated state <span class="math inline">\(s\)</span>. It represents the agent’s intuition: “Does this move look like a good move?”.</li>
+<li><span class="math inline">\(N(s)\)</span> is the parent visit count, or total number of times the parent node (state <span class="math inline">\(s\)</span>) has been visited.</li>
+<li><span class="math inline">\(N(s,a)\)</span> is the child visit count, or number of times a specific action <span class="math inline">\(a\)</span> has been selected from state <span class="math inline">\(s\)</span>. Since this appears in the denominator, as we visit a specific move more often, this term grows, reducing the influence of the exploration bonus.</li>
+<li><span class="math inline">\(c\)</span> is an exploration constant, a hyperparameter that determines how much we rely on the prior <span class="math inline">\(P(s,a)\)</span> versus the empirical value <span class="math inline">\(Q(s,a)\)</span>.</li>
+</ul>
+<p>After running a large number of simulations for a single move, the MCTS produces a visit count distribution. We normalize these visit counts to create a new probability distribution <span class="math inline">\(\pi\)</span>. This distribution represents a stronger policy than the raw network output <span class="math inline">\(p_\theta(s)\)</span>, since the search process has “purified” the intuition (the prior).</p>
+<section id="the-training-process" class="level3" data-number="8.5.1">
+<h3 data-number="8.5.1" class="anchored" data-anchor-id="the-training-process"><span class="header-section-number">8.5.1</span> The Training Process</h3>
+<p>The training process is a continuous loop of self-improvement.</p>
+<ol type="1">
+<li><strong>Self-Play (Simulation):</strong> The agent plays games against itself. At every step, it runs MCTS to generate the improved policy <span class="math inline">\(\pi\)</span> and selects a move. It plays until the game ends, producing a final outcome <span class="math inline">\(z\in\{-1,+1\}\)</span>.</li>
+<li><strong>Data Generation:</strong> For every position in the game, we store a training example <span class="math inline">\((s,\pi,z)\)</span>, where <span class="math inline">\(s\)</span> represents the board state, <span class="math inline">\(\pi\)</span> is what MCTS said was the best action and <span class="math inline">\(z\)</span> represents the actual result (who won the game).</li>
+<li><strong>Optimization:</strong> We optimize the network parameters <span class="math inline">\(\theta\)</span> to minimize the error between its predictions and the MCTS data.</li>
+</ol>
+<p><span class="math display">\[
+\mathcal{L}(\theta)=\underbrace{(z-v_\theta(s))^2}_{\text{Value loss}}
+- \underbrace{\pi^T\log p_\theta(s)}_{\text{Policy loss}}
++ \underbrace{c\lVert \theta \rVert^2}_{\text{Regularization}}
+\]</span></p>
+<p>where the <em>value loss</em> is the MSE of the network predictions regarding the actual winner <span class="math inline">\(z\)</span> and the <em>policy loss</em> is the cross-entropy of the network trying to mimic the MCTS search probabilities (<span class="math inline">\(\pi\)</span>).</p>
+</section>
+<section id="simulation-becomes-intuition" class="level3" data-number="8.5.2">
+<h3 data-number="8.5.2" class="anchored" data-anchor-id="simulation-becomes-intuition"><span class="header-section-number">8.5.2</span> Simulation becomes Intuition</h3>
+<p>AlphaZero then learns the following way: Initially, the network is random and MCTS relies heavily on random rollouts. However, over time MCTS starts discovering winning strategies and the optimization steps forces the neural network to learn those strategies. As the neural network improves, its predictions (<span class="math inline">\(p\)</span> and <span class="math inline">\(v\)</span>) become more accurate, which improves MCTS (since <span class="math inline">\(p\)</span> guides the search) to look deeper and find more subtle strategies.</p>
+<p>This is the essence of optimization and simulation in ML: We use computationally expensive simulation (MCTS) to generate high-quality ground truth data, and then use optimization (SGD) to distill that complex simulation into a fast, efficient function approximator (the neural network). The result is an agent that possesses the “instinct” of a grandmaster.</p>
+</section>
+</section>
+<section id="summary" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">8.6</span> Summary</h2>
+<p>In this chapter, we crossed the threshold from classical optimization—where the goal is to find the best value for a variable—to Machine Learning, where the goal is to find the best function to approximate reality.</p>
+<p>We began by framing Deep Learning as a high-dimensional, non-convex optimization problem. We saw that the primary obstacles in training neural networks are not local minima, but saddle points and ill-conditioned curvature (ravines). We explored how Stochastic Gradient Descent (SGD) utilizes the noise of mini-batches to escape these traps, and how adaptive methods like Adam approximate the diagonal of the Hessian to normalize step sizes, allowing for efficient training on rugged landscapes.</p>
+<p>Next, we moved from static functions to dynamic planning using Monte Carlo Tree Search (MCTS). We learned that when an objective function is too complex to define analytically (like the strategy of Go), we can estimate it through Simulation. By balancing exploration and exploitation via the UCT formula, MCTS builds an asymmetric search tree that focuses computational resources on the most promising futures.</p>
+<p>Finally, we unified these concepts under Reinforcement Learning (RL). We framed sequential decision-making as an optimization problem over time, solving it either by approximating the value function (Deep Q-Learning) or by optimizing the policy directly (REINFORCE). We concluded with the case study of AlphaZero, which demonstrated that state-of-the-art AI is not magic, but a virtuous cycle: Simulation (MCTS) generates data to train a Function Approximator (Neural Network), which in turn guides the simulation to be more efficient.</p>
+</section>
+<section id="exercises" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">8.7</span> Exercises</h2>
+<ol type="1">
+<li><p>Consider the 2D “Rosenbrock-like” function, which features a narrow, curved valley: <span class="math display">\[
+f(x,y)=(1-x)^2+100(y-x^2)^2
+\]</span> Implement the gradient <span class="math inline">\(\nabla f(x,y)\)</span> as a Python function and then Vanilla SGD with a fixed learning rate of <span class="math inline">\(\eta=0.001\)</span>. Implement the Adam optimizer with <span class="math inline">\(\eta=0.1\)</span>, <span class="math inline">\(\beta_1=0.9\)</span> and <span class="math inline">\(\beta_2=0.999\)</span>. Start both optimizers at <span class="math inline">\((-1.5, -1.0)\)</span> and run for 200 steps. Visualize the trajectory of both optimizers on a contour plot and explain why SGD oscillates or gets stuck, while Adam follows the valley floor.</p></li>
+<li><p>Consider a node <span class="math inline">\(S\)</span> in a MCTS game tree. The node has been visited <span class="math inline">\(N=50\)</span> times and has two child nodes <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>. The statistics for the child nodes are as follows:</p>
+<ul>
+<li>Child <span class="math inline">\(A\)</span>: Wins = 12, Visits = 20.</li>
+<li>Child <span class="math inline">\(B\)</span>: Wins = 18, Visits = 30.</li>
+</ul>
+<p>The exploration constant is <span class="math inline">\(c=\sqrt{2}\)</span>. Calculate the UCT value for the child nodes <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> and select the next node according to the result. Suppose we visit the parent <span class="math inline">\(S\)</span> an additional 50 times (<span class="math inline">\(N=100\)</span>), but we never visit child <span class="math inline">\(A\)</span> again. Calculate the new UCT value for <span class="math inline">\(A\)</span>.</p></li>
+<li><p>Assume an agent in a Gridworld at state <span class="math inline">\(s=(1,1)\)</span>. When it takes the action “Right”, moving to state <span class="math inline">\(s'=(1,2)\)</span>, it receives a reward <span class="math inline">\(r=-1\)</span>. Let the discount factor be <span class="math inline">\(\gamma=0.9\)</span> and the learning rate <span class="math inline">\(\alpha=0.1\)</span>. The <span class="math inline">\(Q\)</span>-values for the next state are:</p>
+<ul>
+<li><span class="math inline">\(Q(s', \text{Up})=-2.0\)</span>.</li>
+<li><span class="math inline">\(Q(s', \text{Right})=-1.0\)</span>.</li>
+<li><span class="math inline">\(Q(s', \text{Down})=-4.0\)</span>.</li>
+<li><span class="math inline">\(Q(s', \text{Left})=-3.0\)</span>.</li>
+</ul>
+<p>Calculate the temporal differences error and update the <span class="math inline">\(Q\)</span>-value <span class="math inline">\(Q((1,1), \text{Right})\)</span> using the standard Q-Learning update rule.</p></li>
+<li><p>In the context of AlphaZero, let <span class="math inline">\((s,a)\)</span> be state-move pair with a low probability <span class="math inline">\(P(s,a)\)</span>. Imagine that this move is a forced checkmate sequence (win). Taking <a href="#eq-uct-alphazero" class="quarto-xref">Equation&nbsp;<span>8.3</span></a> into account, explain how MCTS can eventually discover and select this move despite the network’s initial bias against it. Which term in the formula drives this correction?</p></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./metaheuristics.html" class="pagination-link" aria-label="Metaheuristics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Metaheuristics</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./summary.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

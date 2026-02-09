@@ -1,0 +1,24 @@
+# Preface {.unnumbered}
+
+This book was created as companion material for a semester graduate course on simulation and optimization. It is the author's 
+opinion that in an age of rapid advances in the field of artificial intelligence, it is of utmost importance to focus not only on
+machine learning, but to study in detail the techniques that make current advances in AI possible. From those, the areas of
+simulation and optimization have the highest potential to reveal how intrincate current AI is intertwined with other
+areas of mathematics, statistics and computer science. 
+
+Simulation techniques are widely used in many scientific disciplines, ranging from climate models, epidemiology, and engineering to finance and logistics. These methods 
+allow researchers and practitioners to analyze complex systems, evaluate scenarios, and make informed decisions when analytical solutions are infeasible or unavailable. 
+Throughout this book, we will explore foundational concepts and practical approaches to simulation and optimization, providing both theoretical background and hands-on examples.
+In the context of AI, simulation approaches can be used to produce synthetic data for training in situations where these data are scarce, expensive, or simply impossible
+to collect. Another uses of simulation approaches include stress-testing algorithms, validating models under various hypothetical scenarios, and supporting decision-making 
+in uncertain environments. By leveraging simulation, practitioners can gain insights into system behavior, identify potential risks, and optimize performance before 
+deploying solutions in real-world settings.
+
+Optimization approaches lie at the core of how machine learning is used in modern AI systems. Foundational algorithms like stochastic gradient descent make it possible to 
+find optimal parameters for machine learning models using training datasets composed of millions of data points. Additionaly, optimization
+algorithms are used for hyperparameter tuning and can be found at the heart of classical approaches like support vector machines and logistic regression. In this context, both 
+classical and metaheuristic approaches play a pivotal role in finding optimal or near-optimal solutions which are used in the broader context of specific applications
+in practice.
+
+Throughout the book, we will assume that the reader has familiarity with linear algebra and calculus and possesses a good command of statistics and the basics 
+of machine learning. Additionally, good background knowledge of the Python programming language is adviced for the practical part of this book.

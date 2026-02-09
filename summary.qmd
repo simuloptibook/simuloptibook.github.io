@@ -1,0 +1,10 @@
+# Summary
+
+Simulation and optimization are not, as one might be tempted to think, mere satellite disciplines in the landscape of current AI. Instead, they are central actors by their own right. The whole of current ML can be written in the language of optimization, and simulation procedures are essential for solving complex problems and estimating quantities which can't be analytically obtained. 
+
+In **Part I** of the book, we focused on **simulation** methods. We learnt the fundamentals of simulation and focused on Monte Carlo simulation as one of the main pillars of simulation techniques used in modern AI. After that, we introduced Discrete Event Simulation (DES) and Queuing Theory to show how discrete simulations about specific systems are performed in practice.
+
+In **Part II** we devoted the contents to **optimization** methods. We reviewed optimization basics and exact methods like Linear and Integer Programming. We transitioned to heuristics and metaheuristics as the go-to methods for finding efficiently good-enough solutions for problems of practical importance, including trajectory and population-based methods. 
+
+Finally, we put everything together to see how simulation and optimization methods are used in current ML, including central topics like Monte Carlo Tree Search and Reinforcement Learning. With this, we hope that the reader has gained a good grasp of the concepts involved that serve as the workhorse of modern AI, and they are able to transform this knowledge into the practice of developing advanced AI systems with relevant applications in practice.
+

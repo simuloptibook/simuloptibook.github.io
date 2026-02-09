@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Simulation basics – Simulation and Optimization: A Model-Driven Approach</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./monte_carlo.html" rel="next">
+<link href="./intro.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e48e5d47e6899f26dc5bcf87b02f963a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./simulation_basics.html">PART I: SIMULATION</a></li><li class="breadcrumb-item"><a href="./simulation_basics.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Simulation basics</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Simulation and Optimization: A Model-Driven Approach</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">PART I: SIMULATION</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./simulation_basics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Simulation basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./monte_carlo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./discrete_event.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Discrete events and Queuing Theory</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">PART II: OPTIMIZATION</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Optimization basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exact_methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exact methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metaheuristics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Metaheuristics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./optimization_in_ml.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization and Simulation in Machine Learning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#what-is-simulation" id="toc-what-is-simulation" class="nav-link active" data-scroll-target="#what-is-simulation"><span class="header-section-number">2.1</span> What is Simulation?</a></li>
+  <li><a href="#dealing-with-random-numbers" id="toc-dealing-with-random-numbers" class="nav-link" data-scroll-target="#dealing-with-random-numbers"><span class="header-section-number">2.2</span> Dealing with Random Numbers</a>
+  <ul class="collapse">
+  <li><a href="#pseudorandom-number-generators" id="toc-pseudorandom-number-generators" class="nav-link" data-scroll-target="#pseudorandom-number-generators"><span class="header-section-number">2.2.1</span> Pseudorandom Number Generators</a></li>
+  </ul></li>
+  <li><a href="#sampling-methods" id="toc-sampling-methods" class="nav-link" data-scroll-target="#sampling-methods"><span class="header-section-number">2.3</span> Sampling Methods</a></li>
+  <li><a href="#stochastic-processes" id="toc-stochastic-processes" class="nav-link" data-scroll-target="#stochastic-processes"><span class="header-section-number">2.4</span> Stochastic Processes</a>
+  <ul class="collapse">
+  <li><a href="#bernoulli-and-binomial-processes" id="toc-bernoulli-and-binomial-processes" class="nav-link" data-scroll-target="#bernoulli-and-binomial-processes"><span class="header-section-number">2.4.1</span> Bernoulli and Binomial Processes</a></li>
+  <li><a href="#poisson-processes" id="toc-poisson-processes" class="nav-link" data-scroll-target="#poisson-processes"><span class="header-section-number">2.4.2</span> Poisson Processes</a></li>
+  <li><a href="#markov-processes" id="toc-markov-processes" class="nav-link" data-scroll-target="#markov-processes"><span class="header-section-number">2.4.3</span> Markov Processes</a></li>
+  </ul></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">2.5</span> Chapter Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">2.6</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./simulation_basics.html">PART I: SIMULATION</a></li><li class="breadcrumb-item"><a href="./simulation_basics.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Simulation basics</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-simulation-basics" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Simulation basics</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="what-is-simulation" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="what-is-simulation"><span class="header-section-number">2.1</span> What is Simulation?</h2>
+<p>In science and engineering, it is of paramount importance to develop reliable quantitative models that capture the essential behavior of real systems. Simulation provides a controlled, repeatable, and cost‑effective way to</p>
+<ul>
+<li>predict system behavior under varied conditions,</li>
+<li>explore “what‑if” scenarios and design alternatives,</li>
+<li>quantify uncertainty and sensitivity to inputs,</li>
+<li>validate hypotheses when experiments are impractical or expensive,</li>
+<li>and support optimization and decision making.</li>
+</ul>
+<p>A simulation study typically involves the following steps:</p>
+<ol type="1">
+<li>Construct a mathematical or computational model.</li>
+<li>Specify inputs and assumptions.</li>
+<li>Run experiments (often many replications with different parameters).</li>
+<li>Analyze outputs and comparing them with data or theoretical expectations.</li>
+</ol>
+<p>Proper validation and uncertainty quantification are critical to ensure that simulation results are trustworthy and useful for engineering practice.</p>
+<p>Simulation can be defined as the methods and procedures to define models of a system of interest and execute it to get raw data <span class="citation" data-cites="osais_computer_2017">(<a href="references.html#ref-osais_computer_2017" role="doc-biblioref">Osais 2017</a>)</span>. In normal simulation studies, we are not interested in the raw data by itself, but use it to calculate measures of interest regarding the system’s performance. For instance, in the example shown in <a href="intro.html" class="quarto-xref"><span>Chapter 1</span></a>, we saw that measures of interest include the average time that a customer has to way in the checkout queue. We sometimes also call these raw data <em>synthetic data</em>, since this is not the actual data that we would collect in the physical world. Synthetic data has by itself sparked interest in recent years due to its potential to enhance how we train and validate machine learning models, especially regarding data privacy and robustness, or when training data is expensive or scarce <span class="citation" data-cites="jordon_synthetic_2022 van_breugel_synthetic_2023">(<a href="references.html#ref-jordon_synthetic_2022" role="doc-biblioref">Jordon et al. 2022</a>; <a href="references.html#ref-van_breugel_synthetic_2023" role="doc-biblioref">Breugel, Qian, and Schaar 2023</a>)</span>.</p>
+<p>In the rest of this chapter, we will introduce the basic principles and notions needed to understand how simulation works. We start with a gentle reminder of random numbers and distributions, and introduce standard methods of random number generation. We then move on into stochastic processes and how discrete-event simulation works. After that, we present common statistical techniques to deal with the output data of simulations and conclude the chapter with considerations about verification and validation of simulation studies.</p>
+</section>
+<section id="dealing-with-random-numbers" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="dealing-with-random-numbers"><span class="header-section-number">2.2</span> Dealing with Random Numbers</h2>
+<p>We refer to <em>random numbers</em> as realizations of random variables that follow probability distributions. The following elements completely determine the statistical behaviour of randon numbers:</p>
+<ul>
+<li>Their <strong>type</strong>: discrete or continuous?</li>
+<li>The form of their <strong>probability distribution</strong>: binomial, normal, exponential, Poisson, etc.</li>
+<li>The <strong>joint</strong> or <strong>conditional</strong> distributions associated with the phenomenon at hand.</li>
+<li>The specific <strong>parameters</strong> used for each probability distribution.</li>
+</ul>
+<p>In this book, we will mainly deal with parametric probability distributions, although everything applies to non-parametric distributions as well. We will hint at specific differences when appropriate.</p>
+<section id="pseudorandom-number-generators" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="pseudorandom-number-generators"><span class="header-section-number">2.2.1</span> Pseudorandom Number Generators</h3>
+<p>In general, any procedure to generate random numbers is called a <em>pseudorandom number generator</em> (PRNB). A PRNB can be defined as a deterministic algorithm that, given an initial seed, produces a long sequence of numbers that mimic the statistical properties of truly random samples. Although the sequence is fully determined by the seed (so it is not truly random, hence <em>pseudorandom</em>), a good PRNG yields values that are uniformly distributed, have minimal serial correlation, and pass standard statistical tests. Important PRNG properties include period length, equidistribution, independence, speed, and reproducibility (the same seed reproduces the same sequence). For simulation work we typically prefer generators with very long periods and strong statistical quality while cryptographic applications require cryptographically secure PRNGs. PRNGs are used to produce uniform variates that are then transformed into other distributions via methods such as inverse transform sampling, acceptance–rejection, or composition.</p>
+<p>Let’s explore the properties of a specific PRNG, the Linear Congruential Generator (LCG) using the following Python code.</p>
+<div id="62f549b7" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> chisquare</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LCG:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    X(n+1) = (a * X(n) + c) mod m</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, seed, a, c, m):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._state <span class="op">=</span> seed</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.a <span class="op">=</span> a</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.c <span class="op">=</span> c</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.m <span class="op">=</span> m</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.seed <span class="op">=</span> seed</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> next_int(<span class="va">self</span>):</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Generates the next pseudo-random integer </span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">        in the sequence."""</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._state <span class="op">=</span> (<span class="va">self</span>.a <span class="op">*</span> <span class="va">self</span>._state <span class="op">+</span> <span class="va">self</span>.c) <span class="op">%</span> <span class="va">self</span>.m</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>._state</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> generate(<span class="va">self</span>, size):</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Generates a sequence of integers and </span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">        normalizes them to [0, 1)."""</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        sequence_int <span class="op">=</span> []</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        sequence_float <span class="op">=</span> []</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Reset state to seed for sequence generation</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._state <span class="op">=</span> <span class="va">self</span>.seed </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(size):</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>            next_val <span class="op">=</span> <span class="va">self</span>.next_int()</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>            sequence_int.append(next_val)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Normalize to a float in [0, 1) by dividing by the modulus</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>            sequence_float.append(next_val <span class="op">/</span> <span class="va">self</span>.m)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.array(sequence_int), np.array(sequence_float)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The LCG is one of the oldest and best known PRNG which are used to date. As can be seen in the code, it uses three integer parameters <span class="math inline">\(a\)</span>, <span class="math inline">\(c\)</span> and the modulo <span class="math inline">\(m\)</span> and computes the next random number using the recurrence:</p>
+<p><span id="eq-1"><span class="math display">\[
+X_{n+1} = (a X_n + c) \operatorname{mod} m
+\tag{2.1}\]</span></span></p>
+<p>Starting at <span class="math inline">\(n=0\)</span>, we initialize <span class="math inline">\(X_0\)</span> to the random seed provided.</p>
+<p>We can now use the generator as follows:</p>
+<div id="39e0ec0d" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LCG Parameters (a 'poor' LCG to highlight the deterministic nature)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A small modulus (m) leads to a short period and visible patterns.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>SEED <span class="op">=</span> <span class="dv">42</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> <span class="dv">65</span>  <span class="co"># Multiplier</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> <span class="dv">1</span>   <span class="co"># Increment</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> <span class="dv">2</span><span class="op">**</span><span class="dv">10</span>  <span class="co"># Modulus (1024) - A small M is used for demonstration purposes</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>SEQUENCE_SIZE <span class="op">=</span> <span class="dv">100000</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Initialize and Generate Sequence</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>prng <span class="op">=</span> LCG(SEED, A, C, M)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>int_sequence, float_sequence <span class="op">=</span> prng.generate(SEQUENCE_SIZE)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>int_sequence[:<span class="dv">10</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>array([683, 364, 109, 942, 815, 752, 753, 818, 947, 116])</code></pre>
+</div>
+</div>
+<p>We have now generated 100000 random numbers using LCG (only first 10 are shown). But how can we ensure if this PRNM works well in practice? We will look now at the <strong>period length</strong>, how to check for <strong>uniformity</strong> and how to assert if there is <strong>serial correlation</strong>.</p>
+<p><strong>Period length</strong></p>
+<p>The period length assesses the number of values generated before the sequence of states returns to the first value (the starting state) for the first time. Note that in general the longer, the better. Note that in this case, the maximum possible period is <span class="math inline">\(m\)</span>, the modulo of the generator. We can calculate this with a simple Python function as follows:</p>
+<div id="17b1a0b4" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_period(lcg_generator):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Calculates the period (cycle length) of the LCG.</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">    The period is the number of values generated before the sequence repeats.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    initial_state <span class="op">=</span> lcg_generator.seed</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    current_state <span class="op">=</span> initial_state</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check for the next state immediately after the seed to start the loop</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    current_state <span class="op">=</span> (lcg_generator.a <span class="op">*</span> current_state <span class="op">+</span> lcg_generator.c) <span class="op">%</span> lcg_generator.m</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    period <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Loop until the state returns to the initial seed</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> current_state <span class="op">!=</span> initial_state:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        current_state <span class="op">=</span> (lcg_generator.a <span class="op">*</span> current_state <span class="op">+</span> lcg_generator.c) <span class="op">%</span> lcg_generator.m</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        period <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Safety break for potentially infinite loops in case of a non-standard LCG</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> period <span class="op">&gt;</span> lcg_generator.m:</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>           <span class="cf">return</span> <span class="ss">f"Period is greater than modulus m (</span><span class="sc">{</span>lcg_generator<span class="sc">.</span>m<span class="sc">}</span><span class="ss">). Check parameters."</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> period</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>period <span class="op">=</span> calculate_period(prng)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>period</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>1024</code></pre>
+</div>
+</div>
+<p>So in this case, our generator reaches the maximum period (1024), which is the best we can do.</p>
+<p><strong>Tests for uniformity</strong></p>
+<p>We want the generated random numbers to be uniformly generated (we will see later how generate numbers with different distributions started with uniformly generated random numbers). For this, we use the <span class="math inline">\(\chi^2\)</span> test for uniformity:</p>
+<ul>
+<li>Null Hypothesis (<span class="math inline">\(H_0\)</span>): The generated numbers are uniformly distributed.</li>
+<li>Alternative Hypothesis (<span class="math inline">\(H_1\)</span>): The generated numbers are not uniformly distributed.</li>
+</ul>
+<p>The main idea of this test is to divide the generated numbers in intervals, and check whether those intervals contain roughly the same number of generated values (e.g.&nbsp;a flat histogram). Like in the classical <span class="math inline">\(\chi^2\)</span> test, we calculate the expected <span class="math inline">\(E_i\)</span> and the observed <span class="math inline">\(O_i\)</span> frequencies for each range and calculate the <span class="math inline">\(\chi^2\)</span> statistic as usual:</p>
+<p><span class="math display">\[
+\chi^2=\sum_{i=1}^k\frac{(O_i-E_i)^2}{E_i}
+\]</span></p>
+<p>We can use the following Python function:</p>
+<div id="22a897ed" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> chi_squared_uniformity_test(data_float, num_bins<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Statistical Test: Chi-Squared Goodness-of-Fit Test for Uniformity.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> <span class="bu">len</span>(data_float)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Bin the data to get observed frequencies</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The bins are equal-sized intervals in [0, 1).</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    observed_frequencies, _ <span class="op">=</span> np.histogram(data_float, bins<span class="op">=</span>num_bins, <span class="bu">range</span><span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. Calculate expected frequencies for a perfectly uniform distribution</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    expected_frequency <span class="op">=</span> N <span class="op">/</span> num_bins</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    expected_frequencies <span class="op">=</span> np.full(num_bins, expected_frequency)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. Perform the Chi-Squared test</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The 'chisquare' function compares observed and expected frequencies.</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># A small p-value (e.g., &lt; 0.05) leads to rejection of H0, meaning non-uniformity.</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    chi2_stat, p_value <span class="op">=</span> chisquare(f_obs<span class="op">=</span>observed_frequencies, f_exp<span class="op">=</span>expected_frequencies)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> chi2_stat, p_value, num_bins</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>chi2_stat, p_value_uniformity, num_bins <span class="op">=</span> chi_squared_uniformity_test(float_sequence)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Chi2 statistic: </span><span class="sc">{</span>chi2_stat<span class="sc">}</span><span class="ss">, p-value: </span><span class="sc">{</span>p_value_uniformity<span class="sc">}</span><span class="ss">, number of bins: </span><span class="sc">{</span>num_bins<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Chi2 statistic: 2.2074, p-value: 0.9877471315220641, number of bins: 10</code></pre>
+</div>
+</div>
+<p>In this case, the p-value is much higher than <span class="math inline">\(\alpha=0.05\)</span> and we <strong>cannot</strong> reject <span class="math inline">\(H_0\)</span>, so the numbers appear to be uniformly random.</p>
+<p><strong>Serial correlation</strong></p>
+<p>The next possible measure to check is the serial correlation between the numbers generated. The <strong>Serial Correlation Check</strong>, also known as <strong>Autocorrelation at Lag 1</strong>, is a diagnostic measure used to characterize and detect a fundamental weakness in simple Pseudorandom Number Generators (PRNGs), such as the Linear Congruential Generator (LCG). The main idea is that the correlation between immediately adjacent numbers (hence lag 1) should be zero.</p>
+<p>To calculate this, we form two sequences: the generated numbers and the same sequence moved by one place:</p>
+<p><span class="math display">\[
+\begin{aligned}
+S_n &amp; = \{X_1,X_2,X_3,\dots,X_{n-1}\} \\
+S_{n+1} &amp; = \{X_2,X_3,X_4,\dots,X_n\}
+\end{aligned}
+\]</span></p>
+<p>And now we calculate the Pearson correlation coefficient between <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span>.</p>
+<p><span class="math display">\[
+r=\frac{\sum (S_1-\bar{S_1})(S_2-\bar{S_2})}{\sqrt{\sum (S_1-\bar{S_1})^2(S_2-\bar{S_2})^2}}
+\]</span></p>
+<p>Our goal is that <span class="math inline">\(r\)</span> is as close to zero as possible (note that <span class="math inline">\(r\in[-1,1]\)</span>). Let’s use the following code:</p>
+<div id="a094625e" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> serial_correlation_check(data_float):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Characterization: Autocorrelation (Serial Correlation) Check.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># X_n: all values except the last one</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    X_n <span class="op">=</span> data_float[:<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># X_{n+1}: all values except the first one</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    X_n_plus_1 <span class="op">=</span> data_float[<span class="dv">1</span>:]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate the Pearson correlation coefficient (r)</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The result is an array, we take the correlation between the two sequences (index 0, 1)</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    correlation_matrix <span class="op">=</span> np.corrcoef(X_n, X_n_plus_1)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    lag_1_correlation <span class="op">=</span> correlation_matrix[<span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> lag_1_correlation</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>lag_1_correlation <span class="op">=</span> serial_correlation_check(float_sequence)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'The lag 1 correlation coefficient is </span><span class="sc">{</span>lag_1_correlation<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The lag 1 correlation coefficient is 0.008943629579226285</code></pre>
+</div>
+</div>
+<p>While the value is low, it’s not as close to zero as it should, which is a known weakness of the LCG (the generated numbers tend to fall onto a number of parallel hyperplanes). This is the reason why PRNM like the LCG are not normally used in practice. The de-facto standard for pseudorandom number generation in practice is the algorithm known as the <strong>Mersenne Twister</strong>. This is the default generator used in Python or MATLAB, and the preferred one for simulation purposes (but <em>not</em> for cryptographic purposes). The basic idea is to use a highly non-linear twisted generalized feedback shift register. Apart from being much faster than LCG, it passes the serial correlation chek with flying colors:</p>
+<div id="ac1ecc06" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>random.seed(SEED)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a sequence of random floats in the range [0.0, 1.0)</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>float_sequence_mt <span class="op">=</span> np.array([random.uniform(<span class="dv">0</span>, <span class="dv">1</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(SEQUENCE_SIZE)])</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Serial Correlation Check</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>lag_1_correlation_mt <span class="op">=</span> serial_correlation_check(float_sequence_mt)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'The lag 1 correlation coefficient is </span><span class="sc">{</span>lag_1_correlation_mt<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The lag 1 correlation coefficient is -0.000962673758206564</code></pre>
+</div>
+</div>
+<p>which is an order of magnitude better than the LCG.</p>
+</section>
+</section>
+<section id="sampling-methods" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sampling-methods"><span class="header-section-number">2.3</span> Sampling Methods</h2>
+<p>We have now a method for generating <em>uniformly distributed</em> random numbers. But what about other widely used distributions, like normal, exponential, Poisson, etc? In this section, we will review three popular methods for this purpose: the <strong>inversion method</strong>, the <strong>rejection sampling</strong> method, the <strong>Box-Muller transform</strong> and the <strong>mixture method</strong>. For all three methods, the general problem is as follows: we start with a random variable <span class="math inline">\(U \sim \text{ Uniform}(0,1)\)</span>. We want to convert <span class="math inline">\(U\)</span> into <span class="math inline">\(X \sim f(x)\)</span>, where <span class="math inline">\(f\)</span> is the target PDF of <span class="math inline">\(X\)</span>.</p>
+<p><strong>Inversion method</strong></p>
+<p>Suppose that we know the CDF of the target distribution <span class="math inline">\(F(x)=P(X\le x)\)</span>, and assume that we can invert it to <span class="math inline">\(F^{-1}(u)\)</span>. With this function, we can simply obtain <span class="math inline">\(X\)</span> by</p>
+<p><span id="eq-inv"><span class="math display">\[
+X=F^{-1}(U)
+\tag{2.2}\]</span></span></p>
+<p>For instance, imagine our target distribution is the exponential, with density function <span class="math inline">\(f(x)=\lambda e^{-\lambda x}\)</span>. Elementary calculus tells us that <span class="math inline">\(F(x)=1-e^{\lambda x}\)</span>. It can be shown that the inverse is</p>
+<p><span id="eq-example-inv"><span class="math display">\[
+F^{-1}(u)=-\frac{1}{\lambda}\ln(1-u)
+\tag{2.3}\]</span></span></p>
+<p>Since <span class="math inline">\(U'=1-U\)</span> is also uniform in <span class="math inline">\([0,1]\)</span>, we can simply write <span class="math inline">\(X=-\frac{1}{\lambda}\ln(U')\)</span>.</p>
+<p><strong>Rejection-sampling method</strong></p>
+<p>But what if our CDF is not easily invertible, or worse, we don’t have any analytical expression for it? Suppose that, although we don’t have <span class="math inline">\(f\)</span>, we have a proposal distribution <span class="math inline">\(g(x)\)</span> so that it “envelopes” the target distribution in the sense that there is a constant <span class="math inline">\(c\)</span> so that <span class="math inline">\(f(x)\le c g(x)\)</span> (i.e., we <strong>do</strong> know the PDF). In this case, we can do the following:</p>
+<ol type="1">
+<li>Sample <span class="math inline">\(x\)</span> from the proposal distribution <span class="math inline">\(g(x)\)</span>.</li>
+<li>Sample a uniform <span class="math inline">\(U(0,1)\)</span> random variable <span class="math inline">\(u\)</span>.</li>
+<li>If <span class="math inline">\(u &lt; \frac{f(x)}{c g(x)}\)</span>, the candidate number <span class="math inline">\(x\)</span> is accepted since it follows <span class="math inline">\(f(x)\)</span>.</li>
+<li>Otherwise, we repeat the procedure until we get a candidate accepted.</li>
+</ol>
+<p>The trick now is to take a <em>bounded</em> uniform distribution as <span class="math inline">\(g\)</span> that contains our target distribution <span class="math inline">\(f\)</span>. Once we have this, we can generate samples from virtually any probability distribution without requiring its CDF or inverse.</p>
+<p><strong>Box-Muller transform</strong></p>
+<p>The next method is specialized towards generating values for the <strong>normal distribution</strong>, and is widely used in practice. We start by generating two uniform random numbers <span class="math inline">\(u_1, u_2 \sim U(-1,1)\)</span>.</p>
+<ul>
+<li>First, we calculte the sum of their squares <span class="math inline">\(S=u_1^2+u_2^2\)</span>.</li>
+<li>If <span class="math inline">\(S\ge 1\)</span> or <span class="math inline">\(S=0\)</span>, we reject both and return to the first step.</li>
+<li>Otherwise, we calculate <span class="math inline">\(C=\sqrt{\frac{-2\ln(S)}{S}}\)</span>.</li>
+<li>We output two normally distributed random numbers as <span class="math inline">\(z_1=u_1 C\)</span> and <span class="math inline">\(z_2 = u_2 C\)</span>.</li>
+</ul>
+<p>The random numbers generated follow a standard normal distribution <span class="math inline">\(N(0,1)\)</span>. For an arbitrary normal distribution <span class="math inline">\(N(\mu,\sigma^2)\)</span> we just scale using the standard transformation <span class="math inline">\(X=\mu+\sigma Z\)</span>.</p>
+<p><strong>Mixture method</strong></p>
+<p>In the case that the target distribution can be expressed as a mixture of <span class="math inline">\(k\)</span> different PDFs</p>
+<p><span id="eq-mixtures"><span class="math display">\[
+f(x)=\sum_{i=1}^k p_i f_i(x)\text{, with }p_i\ge 0\text{, and }\sum_{i=1}^k p_i = 1
+\tag{2.4}\]</span></span></p>
+<p>Then we can use the following methods to sample from <span class="math inline">\(f(x)\)</span>:</p>
+<ul>
+<li>Choose randomly an index <span class="math inline">\(i\in I\)</span> from the set of indices <span class="math inline">\(I=\{1,2,\dots,k\}\)</span>. This is done by generating a random number <span class="math inline">\(u \sim U(0,1)\)</span> and choosing the least index <span class="math inline">\(j\)</span> so that <span class="math inline">\(\sum_{i=1}^j p_i &lt; u\)</span>.</li>
+<li>Generate a random variable <span class="math inline">\(x\)</span> from <span class="math inline">\(f_i(x)\)</span> by using any of the aforementioned methods.</li>
+</ul>
+<p>This is a suitable method, for instance, to generate random numbers that follow a <strong>Gaussian Mixture Model (GMM)</strong>. In this case, we just sample an index and generate a random number according to the Box-Muller method, scaling accordingly if necessary.</p>
+</section>
+<section id="stochastic-processes" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="stochastic-processes"><span class="header-section-number">2.4</span> Stochastic Processes</h2>
+<p>Now that we know how to generate random numbers and sample from different distributions, we need to understand how they interact over time in a simulation study. This is the realm of <em>stochastic processes</em>.</p>
+<p>A stochastic process <span class="math inline">\(\{X(t), t \in T\}\)</span> is a collection of random variables indexed by time. The set <span class="math inline">\(T\)</span> can be:</p>
+<ul>
+<li><strong>Discrete</strong>: <span class="math inline">\(T = \{0, 1, 2, ...\}\)</span> or <span class="math inline">\(T = \{t_0, t_1, t_2, ...\}\)</span></li>
+<li><strong>Continuous</strong>: <span class="math inline">\(T = [0, \infty)\)</span> or <span class="math inline">\(T = [a, b]\)</span></li>
+</ul>
+<p>For each fixed time <span class="math inline">\(t\)</span>, <span class="math inline">\(X(t)\)</span> is a random variable. For each sample path (realization) of the process, <span class="math inline">\(X(t)\)</span> is a function of time. The nature of the state space (the set of possible values of <span class="math inline">\(X(t)\)</span>) leads to different classifications:</p>
+<ul>
+<li><strong>Discrete state space</strong>: The process can only take certain values (e.g., number of customers in a queue)</li>
+<li><strong>Continuous state space</strong>: The process can take any value in an interval (e.g., temperature in a reactor)</li>
+</ul>
+<p>Understanding stochastic processes is crucial for simulation because they model how random events unfold over time, which is exactly what we need to simulate complex systems with uncertainty.</p>
+<p><strong>Stationary and non-stationary processes</strong></p>
+<p>A stochastic process <span class="math inline">\(\{X(t)\}\)</span> is said to be <strong>stationary</strong> if its statistical properties do not change over time. More formally:</p>
+<ul>
+<li>The mean function is constant: <span class="math inline">\(E[X(t)] = \mu\)</span> for all <span class="math inline">\(t\in T\)</span>.</li>
+<li>The variance function is constant: <span class="math inline">\(Var[X(t)] = \sigma^2\)</span> for all <span class="math inline">\(t\in T\)</span>.</li>
+<li>The autocovariance function depends only on the time difference: <span class="math inline">\(Cov[X(t), X(s)] = C(|t-s|)\)</span>.</li>
+</ul>
+<p>In contrast, a <strong>non-stationary</strong> process has statistical properties that vary with time. For example:</p>
+<ul>
+<li>A random walk is non-stationary because its variance increases with time.</li>
+<li>A seasonal time series with repeating patterns is non-stationary.</li>
+<li>A process with a trend component is non-stationary.</li>
+</ul>
+<p>Stationarity is an important property in simulation because it allows us to:</p>
+<ul>
+<li>Make meaningful predictions about future behavior.</li>
+<li>Estimate parameters from historical data.</li>
+<li>Apply many statistical techniques that assume stationarity.</li>
+</ul>
+<p>In the following we will see examples of different stochastic processes and how to simulate them efficiently.</p>
+<section id="bernoulli-and-binomial-processes" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="bernoulli-and-binomial-processes"><span class="header-section-number">2.4.1</span> Bernoulli and Binomial Processes</h3>
+<p>We call a Bernoulli process a sequence of independent trials with two possible outcomes (“success/failure”). The classical example is flipping a coin independently for <span class="math inline">\(n\)</span> times.</p>
+<div id="fig-bernoulli" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bernoulli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/chapter_2/fig_bernoulli.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bernoulli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: A typical Bernoulli process.
+</figcaption>
+</figure>
+</div>
+<p>We formally define a <strong>Bernoulli process</strong> as follows:</p>
+<ul>
+<li>Each variable takes values from the set <span class="math inline">\(\{0,1\}\)</span>. In our example, the value 0 could stand for heads, and 1 for tails.</li>
+<li>The probability of sucess (per convention, <span class="math inline">\(P(success)=P(X(t)=1)\)</span>) is the same for every trial.</li>
+<li>The outcome for a given trial is independent of any other trial. So in our case, each coin flip is independent of all the others.</li>
+</ul>
+<p><span class="math display">\[
+P(X(t)=1)=p\text{ and }P(X(t)=0)=1-p
+\]</span></p>
+<p>The <strong>Bernoulli counting process</strong> <span class="math inline">\(\{N(t)\}\)</span> is just the sum of the outcomes of the first <span class="math inline">\(t\)</span> trials.</p>
+<p><span class="math display">\[
+N(t)=\sum_{i=1}^t X(i)
+\]</span></p>
+<p>where <span class="math inline">\(X(i)\)</span> is a Bernoulli random variable with parameter <span class="math inline">\(p\)</span>. So <span class="math inline">\(N(t)\)</span> counts the number of successes occurred in trials 1 to <span class="math inline">\(t\)</span>. Some properties of the counting process are:</p>
+<ul>
+<li>Each variable <span class="math inline">\(N(t)\)</span> takes values in the set <span class="math inline">\(\{0,1,2,\dots,t\}\)</span>.</li>
+<li>The <strong>increment</strong> of this process <span class="math inline">\(N(t)-N(t-1)\)</span> is equals to the result of the <span class="math inline">\(t\)</span>-th trial, <span class="math inline">\(X(t)\)</span>.</li>
+<li><span class="math inline">\(N(t)\)</span> follows a <strong>binomial distribution</strong>:</li>
+</ul>
+<p><span id="eq-binomial"><span class="math display">\[
+P(N(t)=k)=\binom{t}{k}p^k(1-p)^{z-k}
+\tag{2.5}\]</span></span></p>
+<p>Let’s see how to simulate a Bernoulli process:</p>
+<div id="7cdbdd62" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_bernoulli_process(num_trials, success_probability):</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Simulates a Bernoulli process for a given number of trials and success probability.</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="dv">0</span> <span class="op">&lt;=</span> success_probability <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Success probability must be between 0 and 1."</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    bernoulli_outcomes <span class="op">=</span> [</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="cf">if</span> random.random() <span class="op">&lt;</span> success_probability <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(num_trials)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> bernoulli_outcomes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here we are just using Python’s default random number generator (the Mersenne Twister) to check if the generated number is below or above the sucess probability, in the former case we count a success, otherwise a failure. We can now run the simulation for both Bernoulli and Bernoulli counting processes and visualize the results.</p>
+<div id="7fe1a663" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>P_SUCCESS <span class="op">=</span> <span class="fl">0.3</span>  <span class="co"># Probability of success (p)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>NUM_TRIALS <span class="op">=</span> <span class="dv">50</span>  <span class="co"># Total number of trials</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">42</span>)  <span class="co"># Set seed for reproducibility</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>outcomes <span class="op">=</span> simulate_bernoulli_process(NUM_TRIALS, P_SUCCESS)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>counting_process <span class="op">=</span> np.cumsum(outcomes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>In this case, the Bernoulli counting process is just the cumulative sum of the generated Bernoulli process.</p>
+<div id="6f8fe83d" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>trials <span class="op">=</span> np.arange(<span class="dv">1</span>, NUM_TRIALS <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Subplot 1: The Bernoulli Process (Outcomes)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>plt.step(trials, outcomes, where<span class="op">=</span><span class="st">'post'</span>, color<span class="op">=</span><span class="st">'blue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>plt.yticks([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="st">'Failure (0)'</span>, <span class="st">'Success (1)'</span>])</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Bernoulli Process (Sequence of Trials)'</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Trial Number (i)'</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Outcome ($X_i$)'</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'y'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="op">-</span><span class="fl">0.1</span>, <span class="fl">1.1</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Subplot 2: The Bernoulli Counting Process (Cumulative Sum)</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>plt.step(trials, counting_process, where<span class="op">=</span><span class="st">'post'</span>, color<span class="op">=</span><span class="st">'red'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Bernoulli Counting Process (Cumulative Successes)'</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Trial Number (t)'</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count ($N(t)$)'</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>plt.axhline(NUM_TRIALS <span class="op">*</span> P_SUCCESS, color<span class="op">=</span><span class="st">'green'</span>, linestyle<span class="op">=</span><span class="st">':'</span>, label<span class="op">=</span><span class="st">'Expected Count'</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="simulation_basics_files/figure-html/cell-10-output-1.png" width="660" height="470" class="figure-img"></p>
+<figcaption>Plots of Bernoulli and counting processes</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>For this plot, we have generated <span class="math inline">\(T=50\)</span> trials with a success probability of <span class="math inline">\(p=0.3\)</span>. The Bernoulli process outcomes are depicted in the upper part of the figure. In the lower part, the evolution of the counting process <span class="math inline">\(\{N(t)\}\)</span> is shown. The expected count is just calculated by multiplying the number of trials with the success probability, which results in 15 as the expected number of successes.</p>
+</section>
+<section id="poisson-processes" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="poisson-processes"><span class="header-section-number">2.4.2</span> Poisson Processes</h3>
+<p>We now switch from <em>continuous</em> to <em>discrete</em> time. The <strong>Poisson process</strong> is a canonical continous time counting process. It tracks the number of occurrences of a given event up to a certain time <span class="math inline">\(t\)</span>. Formally, let <span class="math inline">\(\lambda &gt; 0\)</span> be the rate of occurrences of the event in question. We define the Poisson process <span class="math inline">\(\{N(t),t\ge 0\}\)</span> as follows:</p>
+<ul>
+<li>As initial condition, we set <span class="math inline">\(N(0)=0\)</span>.</li>
+<li>If we consider two non-overlapping intervals <span class="math inline">\([s,t]\cap [u,v]=\emptyset\)</span>, then the increments on those intervals are <strong>independent</strong> of each other:</li>
+</ul>
+<p><span id="eq-poisson-intervals"><span class="math display">\[
+N(t)-N(s)\text{ is independent of }N(v)-N(u), [s,t]\cap [u,v]=\emptyset
+\tag{2.6}\]</span></span></p>
+<ul>
+<li>At any interval of length <span class="math inline">\(\tau=t-s\)</span>, the increments follow a Poisson distribution with parameter <span class="math inline">\(\lambda\tau\)</span>.</li>
+</ul>
+<p><span id="eq-poisson-increment"><span class="math display">\[
+N(t)-N(s) \sim \operatorname{Poisson}(\lambda\tau)
+\tag{2.7}\]</span></span></p>
+<p><span id="eq-poisson-probability"><span class="math display">\[
+P(N(t)-N(s)=k)=e^{-\lambda\tau}\frac{(\lambda\tau)^k}{k!}
+\tag{2.8}\]</span></span></p>
+<p>The Poisson process is one of the most widely used stochastic models in science, engineering, and finance due to its ability to accurately model random, independent, and rare events occurring over time or space. Its practical relevance stems directly from the three conditions of its definition (independent, stationary increments, and the resulting Poisson distribution). For instance, the arrival of customer calls in a call center can be accurately modeled using Poisson processes. In engineernig, the number of defects found per area or volume (e.g.&nbsp;on a silicon wafer) can be also modeled this way (in this case, the rate is <em>spatial</em> rather than <em>temporal</em>, but the concept remains the same). In general, customer arrivals (at a hospital, a bank, a supermarket) can be also modeled using a Poisson process.</p>
+<p>One of the main properties that makes the Poisson process useful in practice is the fact that is <em>memoryless</em>: the time until the next event is independent of how long it has been since the previous event, which aligns well with phenomena found in practice. Another advantage is that since the process is based in the Poisson (for the number of events per time interval) and the exponential distributions (for the time between events), the process is mathematically well tractable and closed-form solutions exists for many situations of interest.</p>
+<p>The next code snippet demonstrates how to simulate a Poisson process.</p>
+<div id="aa592f1a" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_poisson_process(rate_lambda, max_time):</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> rate_lambda <span class="op">&lt;=</span> <span class="dv">0</span> <span class="kw">or</span> max_time <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Rate and max_time must be positive."</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set up the event simulation</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    current_time <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    event_times <span class="op">=</span> [<span class="fl">0.0</span>]  <span class="co"># Start at time 0 with the first "event"</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> current_time <span class="op">&lt;</span> max_time:</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1. Generate the next inter-arrival time</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>        time_until_next_event <span class="op">=</span> random.expovariate(rate_lambda)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. Update the cumulative time</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>        current_time <span class="op">+=</span> time_until_next_event</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. Record the event time if it's within the simulation duration</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current_time <span class="op">&lt;</span> max_time:</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>            event_times.append(current_time)</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate the event count at each recorded time</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    num_events <span class="op">=</span> <span class="bu">len</span>(event_times) <span class="op">-</span> <span class="dv">1</span> <span class="co"># N(0)=0 is the first entry</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    num_events_at_t <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(num_events <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> event_times, num_events_at_t</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>In this code we exploit the fact that the interarrival times are exponentially distributed, so we sample a time and count it as a new event. We can now use the code to simulate the process:</p>
+<div id="d5d6ed62" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>RATE_LAMBDA <span class="op">=</span> <span class="fl">2.0</span>  <span class="co"># Average rate of 2 events per unit of time</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>MAX_TIME <span class="op">=</span> <span class="fl">10.0</span>    <span class="co"># Simulate over 10 time units</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">42</span>) <span class="co"># Set seed for reproducibility</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>event_times, cumulative_counts <span class="op">=</span> simulate_poisson_process(RATE_LAMBDA, MAX_TIME)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>event_times[:<span class="dv">5</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>[0.0,
+ 0.5100301436374005,
+ 0.5226945631587699,
+ 0.6835065951962527,
+ 0.8097996880313094]</code></pre>
+</div>
+</div>
+<p>Like in the previous case, we can perform some visualizations to help understand the evolution of the process.</p>
+<div id="2710ae46" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the step function of the counting process N(t)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We use drawstyle='steps-post' to create the classic step-function look</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>plt.plot(event_times, cumulative_counts, drawstyle<span class="op">=</span><span class="st">'steps-post'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, marker<span class="op">=</span><span class="st">'o'</span>, markersize<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the expected count line</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>plt.axhline(RATE_LAMBDA <span class="op">*</span> MAX_TIME, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">'Expected Final Count'</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Poisson Counting Process $N(t)$ with $lambda = </span><span class="sc">{</span>RATE_LAMBDA<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (t)'</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Events ($N(t)$)'</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">0</span>, MAX_TIME)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>plt.ylim(bottom<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="simulation_basics_files/figure-html/cell-13-output-1.png" width="594" height="450" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="markov-processes" class="level3" data-number="2.4.3">
+<h3 data-number="2.4.3" class="anchored" data-anchor-id="markov-processes"><span class="header-section-number">2.4.3</span> Markov Processes</h3>
+<p>The next type of process is fundamental for many practical applications and for simulation approaches that we will see in the rest of the book: <strong>Markov processes</strong>. A Markov process is a stochastic process that satisfies the Markov property, which states that the future state of the process depends only on the current state and not on the sequence of states that preceded it. Formally, a discrete-time Markov chain <span class="math inline">\(\{X_t, t \geq 0\}\)</span> satisfies:</p>
+<p><span class="math display">\[
+P(X_{t+1} = j \mid X_t = i, X_{t-1} = i_{t-1}, \dots, X_0 = i_0) = P(X_{t+1} = j \mid X_t = i)
+\]</span></p>
+<p>This property is known as the <strong>memoryless</strong> or <strong>Markov property</strong>. The process is fully characterized by its <strong>state space</strong> (the set of possible states) and the <strong>transition probabilities</strong> between states. Both the state space and the time parameter can be either <em>discrete</em> or <em>continuous</em>. In the discrete-time case, we normally call these processes <strong>Markov chains</strong>.</p>
+<p><strong>Transition Matrix</strong></p>
+<p>For a Markov chain with a finite state space <span class="math inline">\(S = \{1, 2, \dots, N\}\)</span>, the transition probabilities can be represented as a matrix <span class="math inline">\(\mathbf{P}\)</span>, where the entry <span class="math inline">\(\mathbf{P}_{ij}\)</span> represents the probability of transitioning from state <span class="math inline">\(i\)</span> to state <span class="math inline">\(j\)</span>:</p>
+<p><span class="math display">\[
+\mathbf{P}_{ij} = P(X_{t+1} = j \mid X_t = i)
+\]</span></p>
+<p>The rows of the matrix <span class="math inline">\(P\)</span> must sum to 1, as they represent probability distributions:</p>
+<p><span class="math display">\[
+\mathbf{P}=
+\begin{pmatrix}
+P_{11} &amp; P_{12} &amp; \dots \\
+P_{21} &amp; P_{22} &amp; \dots \\
+\vdots &amp; \vdots &amp; \ddots
+\end{pmatrix}
+\]</span> <span class="math display">\[
+\sum_{j \in S} P_{ij} = 1, \quad \forall i \in S
+\]</span></p>
+<p>Phenomena that can be naturally modeled using Markov chains include those where the state of the system in a given moment only depends on the moment immediately before, not on those before. For instance, in genetics, the frequency of a given allele in a generation only depends on the frequencies recorded in the previous generation. Or in inventory management, where decisions about the inventory levels are solely based on the current stock level.</p>
+<p><strong>Simulation example</strong></p>
+<p>Let’s see how to simulate a simple Markov chain with a discrete state space. Assume we want to model a heavily simplified weather system with three states: sunny (1), cloudy (2) and rainy (3). For the state transition matrix, we have:</p>
+<p><span class="math display">\[
+\mathbf{P}=
+\begin{pmatrix}
+0.8 &amp; 0.15 &amp; 0.05 \\
+0.2 &amp; 0.6 &amp; 0.2 \\
+0.1 &amp; 0.4 &amp; 0.5
+\end{pmatrix}
+\]</span></p>
+<p>So for instance, the probability of a rainy day given that yesterday was cloudy is <span class="math inline">\(P_{23}=0.2\)</span>.</p>
+<div id="65d5d65a" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_dtmc(start_state, transition_matrix, num_steps):</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Initialize the chain</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    num_states <span class="op">=</span> transition_matrix.shape[<span class="dv">0</span>]</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    current_state <span class="op">=</span> start_state</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    state_history <span class="op">=</span> [current_state]</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. Iterate for the specified number of steps</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(num_steps):</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Get the probability distribution for the next state, based on the current state (row of the matrix)</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        probabilities <span class="op">=</span> transition_matrix[current_state, :]</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Select the next state using the probabilities</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># np.random.choice selects a state from the possible states (0 to num_states-1) </span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># based on the corresponding probabilities.</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>        next_state <span class="op">=</span> np.random.choice(</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>            a<span class="op">=</span>np.arange(num_states), </span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>            p<span class="op">=</span>probabilities</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Update and record</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>        current_state <span class="op">=</span> next_state</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>        state_history.append(current_state)</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> state_history</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>We now setup the simulation for our example:</p>
+<div id="5fe3b80a" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the Transition Probability Matrix (P)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> np.array([</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.80</span>, <span class="fl">0.15</span>, <span class="fl">0.05</span>],  <span class="co"># From Sunny (0)</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.20</span>, <span class="fl">0.60</span>, <span class="fl">0.20</span>],  <span class="co"># From Cloudy (1)</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.10</span>, <span class="fl">0.40</span>, <span class="fl">0.50</span>]   <span class="co"># From Rainy (2)</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the State Space for interpretation</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>STATE_MAP <span class="op">=</span> {<span class="dv">0</span>: <span class="st">'Sunny'</span>, <span class="dv">1</span>: <span class="st">'Cloudy'</span>, <span class="dv">2</span>: <span class="st">'Rainy'</span>}</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>START_STATE_INDEX <span class="op">=</span> <span class="dv">0</span>  <span class="co"># Start on a Sunny day</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>NUM_SIMULATION_STEPS <span class="op">=</span> <span class="dv">50</span> <span class="co"># Simulate 50 days</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Run the Simulation</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Seed for reproducibility</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>simulated_states <span class="op">=</span> simulate_dtmc(START_STATE_INDEX, P, NUM_SIMULATION_STEPS)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>simulated_weather <span class="op">=</span> [STATE_MAP[s] <span class="cf">for</span> s <span class="kw">in</span> simulated_states]</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>simulated_weather[:<span class="dv">10</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>['Sunny',
+ 'Sunny',
+ 'Rainy',
+ 'Rainy',
+ 'Rainy',
+ 'Cloudy',
+ 'Sunny',
+ 'Sunny',
+ 'Cloudy',
+ 'Cloudy']</code></pre>
+</div>
+</div>
+<p>Now let’s plot the sequence of states against time:</p>
+<div id="bbc7de5a" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>time_steps <span class="op">=</span> np.arange(NUM_SIMULATION_STEPS <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>plt.plot(time_steps, simulated_states, marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, drawstyle<span class="op">=</span><span class="st">'steps-post'</span>, markersize<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>plt.yticks([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>], [STATE_MAP[<span class="dv">0</span>], STATE_MAP[<span class="dv">1</span>], STATE_MAP[<span class="dv">2</span>]])</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Discrete-Time Markov Chain State Trajectory (Weather)'</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time Step (Day)'</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'State'</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, axis<span class="op">=</span><span class="st">'y'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="simulation_basics_files/figure-html/cell-16-output-1.png" width="614" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Continuous-Time Markov Processes</strong></p>
+<p>In our previous example, we have assumed that the time index takes values in a discrete set. Let’s now consider the situation where time is continuous: <span class="math inline">\(\{X(t),t\ge 0\}\)</span>. In this case, the system might change its state at any time, instead of being governed by a fixed transition probability <span class="math inline">\(P_{ij}\)</span>. We now assume that the time spent in the current state <span class="math inline">\(i\)</span> is <strong>itself a random variable</strong> which is continuous and exponentially distributed. Let’s denote this <strong>holding time</strong> by <span class="math inline">\(\tau_i\)</span>. We have:</p>
+<p><span id="eq-ctmc"><span class="math display">\[
+\tau_i \sim \operatorname{Exponential}(q_i)
+\tag{2.9}\]</span></span></p>
+<p>where the parameter <span class="math inline">\(q_i\)</span> is called the <strong>total exit rate</strong> or intensity from state <span class="math inline">\(i\)</span>. The Markov property is now given by the fact that the exponential distribution is memoryless: the time remaining in state <span class="math inline">\(i\)</span> is independent on how long the system has been there already.</p>
+<p>So how do we decide where which state to jump next? For that, let <span class="math inline">\(q_{ij}\)</span> denote the <em>instantaneous rate of moving</em> from state <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span>. Our parameter <span class="math inline">\(q_i\)</span> becomes then <span class="math inline">\(q_i=\sum_{i\neq j} q_{ij}\)</span>. We can convert this into a transition probability <span class="math inline">\(P_{ij}\)</span> using <span class="math inline">\(P_{ij}=\frac{q_{ij}}{q_i}\)</span>. Instead of talking about a transition matrix <span class="math inline">\(\mathbf{P}\)</span>, we define a <strong>rate</strong> or <strong>Q-Matrix</strong> <span class="math inline">\(\mathbf{Q}\)</span> where <span class="math inline">\(Q_{ij}=q_{ij}\)</span> for <span class="math inline">\(i\neq j\)</span> and <span class="math inline">\(Q_{ii}=-q_i\)</span> (the diagonal elements are defined with a minus sign because we want the sum of each row -the sum of leaving and entering state <span class="math inline">\(i\)</span>- to be 0).</p>
+<p>We can simulate a continuous-time Markov chain in the following way:</p>
+<div id="daaeafe4" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_ctmc(Q_matrix, start_state, max_time):</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    current_time <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    current_state <span class="op">=</span> start_state</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    times <span class="op">=</span> [<span class="fl">0.0</span>]</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    states <span class="op">=</span> [current_state]</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    num_states <span class="op">=</span> Q_matrix.shape[<span class="dv">0</span>]</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> current_time <span class="op">&lt;</span> max_time:</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>        exit_rate <span class="op">=</span> <span class="op">-</span>Q_matrix[current_state, current_state]</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> exit_rate <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>        time_step <span class="op">=</span> np.random.exponential(scale<span class="op">=</span><span class="dv">1</span><span class="op">/</span>exit_rate)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current_time <span class="op">+</span> time_step <span class="op">&gt;</span> max_time:</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>        rates_row <span class="op">=</span> Q_matrix[current_state, :].copy()</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>        rates_row[current_state] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>        jump_probabilities <span class="op">=</span> rates_row <span class="op">/</span> exit_rate</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>        next_state <span class="op">=</span> np.random.choice(np.arange(num_states), p<span class="op">=</span>jump_probabilities)</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>        current_time <span class="op">+=</span> time_step</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>        current_state <span class="op">=</span> next_state</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>        times.append(current_time)</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>        states.append(current_state)</span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>    times.append(max_time)</span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>    states.append(states[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> times, states</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This function first enters a classical simulation loop where time advances until a stopping time has been reached. On each iteration, we first sample a time using the inverse of the exit rate (the minus diagonal element of the Q-matrix) as the parameter of an exponential distribution. Then we determine the state we are goint to jump to by calculating the jump probabilities. The next state is then chosen according to the jump probabilities.</p>
+<p>Let’s now simulate a scenario where we want to study machine reliability. We define the state space as Operational (1), Degraded (2) or Failed (3). In the operational state, the machine works as expected, however it transitions to degraded often, but rarely to failed. In the degraded state, the machine transitions to failed quickly, since it is already not working properly (and never transitions to operational). Finally, in the failed state, the machine is broken and it will only transition to operational if the machine is repaired.</p>
+<div id="f4a4df13" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the Generator Matrix (Q)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Rows must sum to 0.</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Units: events per hour (rates)</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> np.array([</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># To:   Op(0)   Deg(1)  Fail(2)</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    [<span class="op">-</span><span class="fl">0.6</span>,   <span class="fl">0.5</span>,    <span class="fl">0.1</span>],  <span class="co"># From Operational (Exit rate = 0.6)</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    [ <span class="fl">0.0</span>,  <span class="op">-</span><span class="fl">2.0</span>,    <span class="fl">2.0</span>],  <span class="co"># From Degraded    (Exit rate = 2.0 -&gt; Very fast exit)</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    [ <span class="fl">1.0</span>,   <span class="fl">0.0</span>,   <span class="op">-</span><span class="fl">1.0</span>]   <span class="co"># From Failed      (Exit rate = 1.0 -&gt; Repair time)</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>STATE_NAMES <span class="op">=</span> {<span class="dv">0</span>: <span class="st">'Operational'</span>, <span class="dv">1</span>: <span class="st">'Degraded'</span>, <span class="dv">2</span>: <span class="st">'Failed'</span>}</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>START_STATE <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>DURATION <span class="op">=</span> <span class="fl">24.0</span>  <span class="co"># Simulate 24 hours</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Run Simulation ---</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">101</span>)</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>sim_times, sim_states <span class="op">=</span> simulate_ctmc(Q, START_STATE, DURATION)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Note that the units of <span class="math inline">\(\mathbf{Q}\)</span> are <em>rates</em> or events per unit of time. Here the unit of time can be freely chosen, what is important is the fact that each number represents the number of events that happen, on average, in the unit of time, and that each row has to sum up to 0.</p>
+<div id="75124398" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>plt.step(sim_times, sim_states, where<span class="op">=</span><span class="st">'post'</span>, color<span class="op">=</span><span class="st">'purple'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>plt.yticks([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>], [STATE_NAMES[<span class="dv">0</span>], STATE_NAMES[<span class="dv">1</span>], STATE_NAMES[<span class="dv">2</span>]])</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (Hours)'</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Machine State'</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'CTMC Trajectory: Variable Holding Times'</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, axis<span class="op">=</span><span class="st">'y'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">0</span>, DURATION)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">2.5</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(sim_times)<span class="op">-</span><span class="dv">1</span>):</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> sim_states[i] <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> (sim_times[i<span class="op">+</span><span class="dv">1</span>] <span class="op">-</span> sim_times[i] <span class="op">&gt;</span> <span class="fl">2.0</span>):</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>        mid_point <span class="op">=</span> (sim_times[i] <span class="op">+</span> sim_times[i<span class="op">+</span><span class="dv">1</span>]) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>        plt.text(mid_point, <span class="fl">0.1</span>, <span class="st">"Long Holding Time</span><span class="ch">\n</span><span class="st">(Random)"</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">9</span>, color<span class="op">=</span><span class="st">'green'</span>)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="simulation_basics_files/figure-html/cell-19-output-1.png" width="646" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In this visualization, an exemplary long holding time (the first longer than 2 hours in the operational state) is highlighted. As can be seen, the holding times are highly variable (compare to the discrete-time Markov chain previously). Note also that the system spends very little time in the degraded state. This is because the exit rate (the diagonal element) is very high, so the machine passes this state quickly on its way to the failed state. Since the exit rate is quite low in the operational state, the machine stays there for longer periods.</p>
+<p><strong>Continuous-State Markov Processes</strong></p>
+<p>The last important case we need to take a closer look at is when the state space <span class="math inline">\(S\)</span> is <strong>continuous</strong>. a continuous range of values, such as the position of a particle in space, the temperature of a system, or the level of a reservoir. In this case, the process is often described by a <strong>stochastic differential equation (SDE)</strong>, which governs the evolution of the state over time. The time parameter can be in this case either discrete or continuous, so the corresponding considerations apply. The main challenge is how to deal with state transition probabilities. For this purpose, the most general solution is to switch from transition matrices to <strong>transition probability density functions</strong> that we denote by <span class="math inline">\(f(x_t | x_{t-1})\)</span>.</p>
+<p>One particularly relevant example of Markov process is the <strong>random walk</strong>. The main idea is to let the process evolve from an initial state by applying random, independent perturbations:</p>
+<p><span id="eq-random-walk"><span class="math display">\[
+X_t=X_{t-1}+\epsilon_t\text{,   }\epsilon_t \sim N(0, \sigma^2)
+\tag{2.10}\]</span></span></p>
+<p>It is important to stress the fact that the noise terms <span class="math inline">\(\epsilon_t\)</span> and the process steps <span class="math inline">\(X_{t-1}\)</span> are independent. We can see that for random walks, the Markov property is fulfilled because <span class="math inline">\(X_t\)</span> only depends on <span class="math inline">\(X_{t-1}\)</span> and not on any values before. Random walks are used when modeling non-stationary time series, like stock prices without a drift.</p>
+<p>Another important example is the <strong>Brownian motion</strong> or <strong>Wiener process</strong>. The Brownian motion is a stochastic process commonly used for modeling random movements of particles. Let’s denote this process by <span class="math inline">\(W(t)\)</span>. The defining characteristic of a Brownian motion is that its increments are <strong>normally distributed</strong> and <strong>independent of the past</strong>.</p>
+<p><span id="eq-brownian-motion"><span class="math display">\[
+W(t+s) - W(s) \sim N(0, t-s)
+\tag{2.11}\]</span></span></p>
+<p>There are many practical applications of this type of process. In finance, the Brownian motion is used to model option pricing (the <strong>Black-Scholes</strong> equation). In polymer physics, the random, wriggling moving of a long-chain polymer molecule in a solvent can be well modeled using the Brownian motion. In audio engineering and signal processing, it can be used for random noise generation (white and pink noise).</p>
+<p><strong>Simulation example</strong></p>
+<p>We will now see how to simulate a Brownian motion. In order to simulate this process (and like it, any continuous-time Markov process), we resort to the <strong>discrete approximation method</strong>. The main idea is to model a continuous path by adding small, independent, normally distributed random increments at small time steps (<span class="math inline">\(\Delta t\)</span>). We use the following equation:</p>
+<p><span id="eq-discrete-approx"><span class="math display">\[
+W(t_{i+1})=W(t_i)+\sqrt{\Delta t}\cdot Z_i
+\tag{2.12}\]</span></span></p>
+<p>The square root of the increment follows from the increments property of the Brownian motion: the variance of the increments has to be proportional to the difference between the time steps.</p>
+<div id="94611f3f" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_brownian_motion(total_time, num_steps):</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> num_steps <span class="op">&lt;=</span> <span class="dv">0</span> <span class="kw">or</span> total_time <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"num_steps and total_time must be positive."</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    dt <span class="op">=</span> total_time <span class="op">/</span> num_steps</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    time_points <span class="op">=</span> np.linspace(<span class="dv">0</span>, total_time, num_steps <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    standard_deviation <span class="op">=</span> np.sqrt(dt)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    Z_increments <span class="op">=</span> np.random.normal(loc<span class="op">=</span><span class="fl">0.0</span>, scale<span class="op">=</span><span class="fl">1.0</span>, size<span class="op">=</span>num_steps)</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    dW_increments <span class="op">=</span> standard_deviation <span class="op">*</span> Z_increments</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    brownian_path <span class="op">=</span> np.concatenate(([<span class="fl">0.0</span>], np.cumsum(dW_increments)))</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> time_points, brownian_path</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>In the code, we first discretize the time by dividing the total time by the number of simulation steps. Then we calculate the standard deviation as the square root of the increment and proceed to simulate the increments <span class="math inline">\(Z_i\)</span>. The final Brownian path is taken to be the cumulative sum of the increments.</p>
+<p>Let’s now perform a simulation a visualize the results:</p>
+<div id="a4698984" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>TOTAL_TIME <span class="op">=</span> <span class="fl">1.0</span>     <span class="co"># Simulate up to time T=1</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>NUM_STEPS <span class="op">=</span> <span class="dv">1000</span>     <span class="co"># Use 1000 steps for a smooth path</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Seed for reproducibility</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>time, path <span class="op">=</span> simulate_brownian_motion(TOTAL_TIME, NUM_STEPS)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>plt.plot(time, path, label<span class="op">=</span><span class="st">'Wiener Process Path'</span>, color<span class="op">=</span><span class="st">'navy'</span>)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co"># The theoretical standard deviation at time t is sqrt(t)</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>std_dev <span class="op">=</span> np.sqrt(time)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>plt.plot(time, <span class="dv">2</span> <span class="op">*</span> std_dev, <span class="st">'r--'</span>, label<span class="op">=</span><span class="vs">r'Theoretical Bounds </span><span class="kw">(</span><span class="dv">$</span><span class="er">\</span><span class="vs">pm 2</span><span class="dv">\s</span><span class="vs">qrt{t}</span><span class="dv">$</span><span class="kw">)</span><span class="vs">'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>plt.plot(time, <span class="op">-</span><span class="dv">2</span> <span class="op">*</span> std_dev, <span class="st">'r--'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Simulated 1D Brownian Motion (Wiener Process)'</span>)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (t)'</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'State ($W(t)$)'</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">0</span>, TOTAL_TIME)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="simulation_basics_files/figure-html/cell-21-output-1.png" width="612" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In this visualization, we plot one realization of a Brownian motion bounded by its theoretical bounds (using a standard deviation of <span class="math inline">\(\sqrt{t}\)</span> up and down). The next visualization shows several realizations of the same Brownian motion:</p>
+<div id="f95c4958" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>NUM_PATHS <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(NUM_PATHS):</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    np.random.seed(i) <span class="co"># Use a different seed for each path</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    _, multi_path <span class="op">=</span> simulate_brownian_motion(TOTAL_TIME, NUM_STEPS)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    plt.plot(time, multi_path, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>plt.plot(time, <span class="dv">2</span> <span class="op">*</span> np.sqrt(time), <span class="st">'k--'</span>, label<span class="op">=</span><span class="st">'Theoretical Bounds'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>plt.plot(time, <span class="op">-</span><span class="dv">2</span> <span class="op">*</span> np.sqrt(time), <span class="st">'k--'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Multiple Simulated Brownian Motion Paths'</span>)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (t)'</span>)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'State ($W(t)$)'</span>)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">0</span>, TOTAL_TIME)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="simulation_basics_files/figure-html/cell-22-output-1.png" width="599" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="chapter-summary" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">2.5</span> Chapter Summary</h2>
+<p>In this chapter, we introduced the fundamental concepts of simulation, focusing on random number generation, sampling methods, and stochastic processes. We explored pseudorandom number generators, including the Linear Congruential Generator and the Mersenne Twister, and discussed their properties and limitations. Sampling methods such as the inversion method, rejection sampling, and the Box-Muller transform were presented for generating random variables from various distributions. We then delved into stochastic processes, covering discrete and continuous-time processes like Bernoulli, Poisson, Markov chains, and Brownian motion, along with their simulation techniques. These concepts form the foundation for modeling and analyzing systems with inherent randomness.</p>
+</section>
+<section id="exercises" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="exercises"><span class="header-section-number">2.6</span> Exercises</h2>
+<ol type="1">
+<li><p>Implement a simulation for a geometric random walk, where the state evolves as: <span class="math display">\[ X_{t+1} = X_t \cdot e^{\mu + \sigma Z_t} \]</span> Here, <span class="math inline">\(Z_t \sim N(0, 1)\)</span>, <span class="math inline">\(\mu\)</span> is the drift, and <span class="math inline">\(\sigma\)</span> is the volatility. Simulate the process for 1000 steps with <span class="math inline">\(\mu = 0.01\)</span> and <span class="math inline">\(\sigma = 0.2\)</span>, starting at <span class="math inline">\(X_0 = 1\)</span>. Plot the resulting trajectory.</p></li>
+<li><p>Modify the Poisson process simulation to handle a time-dependent rate <span class="math inline">\(\lambda(t)\)</span>. For example, use <span class="math inline">\(\lambda(t) = 2 + \sin(t)\)</span> over the interval <span class="math inline">\([0, 10]\)</span>. Plot the resulting event times and the cumulative count process.</p></li>
+<li><p>Show that the exponential distribution is memoryless, i.e., for <span class="math inline">\(T \sim \text{Exponential}(\lambda)\)</span>: <span class="math display">\[ P(T &gt; s + t \mid T &gt; t) = P(T &gt; s). \]</span> Provide a detailed derivation.</p></li>
+<li><p>Prove that the Poisson process has stationary increments, i.e., the number of events in any interval of length <span class="math inline">\(\tau\)</span> follows the same distribution, regardless of the starting time. Use the definition of the Poisson process and its properties in your proof.</p></li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-van_breugel_synthetic_2023" class="csl-entry" role="listitem">
+Breugel, Boris van, Zhaozhi Qian, and Mihaela van der Schaar. 2023. <span>“Synthetic Data, Real Errors: How (Not) to Publish and Use Synthetic Data.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2305.09235">https://doi.org/10.48550/arXiv.2305.09235</a>.
+</div>
+<div id="ref-jordon_synthetic_2022" class="csl-entry" role="listitem">
+Jordon, James, Lukasz Szpruch, Florimond Houssiau, Mirko Bottarelli, Giovanni Cherubin, Carsten Maple, Samuel N. Cohen, and Adrian Weller. 2022. <span>“Synthetic <span>Data</span> – What, Why and How?”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2205.03257">https://doi.org/10.48550/arXiv.2205.03257</a>.
+</div>
+<div id="ref-osais_computer_2017" class="csl-entry" role="listitem">
+Osais, Yahya Esmail. 2017. <em>Computer <span>Simulation</span>: <span>A</span> <span>Foundational</span> <span>Approach</span> <span>Using</span> <span>Python</span></em>. New York: Chapman; Hall/CRC. <a href="https://doi.org/10.1201/9781315120294">https://doi.org/10.1201/9781315120294</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./intro.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./monte_carlo.html" class="pagination-link" aria-label="Monte Carlo">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

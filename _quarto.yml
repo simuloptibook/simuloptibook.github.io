@@ -1,0 +1,40 @@
+project:
+  type: book
+
+book:
+  title: "Simulation and Optimization: A Model-Driven Approach"
+  author: "Rubén Ruiz-Torrubiano"
+  date: today
+  date-format: medium
+  chapters:
+    - index.qmd
+    - preface.qmd
+    - intro.qmd
+    - part: "PART I: SIMULATION"
+      chapters:
+        - simulation_basics.qmd
+        - monte_carlo.qmd
+        - discrete_event.qmd
+    - part: "PART II: OPTIMIZATION"
+      chapters:
+        - optimization_basics.qmd
+        - exact_methods.qmd
+        - metaheuristics.qmd
+    - optimization_in_ml.qmd
+    - summary.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    default-image-extension: png
+    theme:
+      - cosmo
+      - brand
+  pdf:
+    documentclass: scrreprt
+    default-image-extension: png
+
+
+

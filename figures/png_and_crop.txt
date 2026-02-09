@@ -1,0 +1,2 @@
+pdfcrop fig_intro_1_wrapper.pdf fig_intro_1_cropped.pdf
+pdftoppm -png -r 300 fig_intro_1_wrapper.pdf > fig_intro_1.png

@@ -1,0 +1,34 @@
+\begin{figure}[!ht]
+\centering
+%\resizebox{1.6\textwidth}{!}{%
+\begin{circuitikz}
+\begin{scope}
+    \clip (5,5) rectangle (30,25);
+    \tikzstyle{every node}=[font=\LARGE]
+    \draw  (9,19) circle (0cm);
+    \draw  (6.25,21) rectangle  node {\LARGE $Cashier_1$} (10.25,19);
+    \draw  (6.25,17.75) rectangle  node {\LARGE $Cashier_2$} (10.25,15.75);
+    \draw  (6.25,13.5) rectangle  node {\LARGE $Cashier_c$} (10.25,11.5);
+    \node [font=\Huge] at (8.25,14.75) {...};
+    \draw  (12.75,20) circle (0.75cm) node {\LARGE $r_{1}$} ;
+    \draw  (16,16.75) circle (0.75cm) node {\LARGE $r_{c+1}$} ;
+    \draw  (19,16.75) circle (0.75cm) node {\LARGE $r_{c+2}$} ;
+    \draw [->, >=Stealth] (12,20) -- (10.25,20);
+    \draw [->, >=Stealth] (18.25,16.75) -- (16.75,16.75);
+    \draw [->, >=Stealth] (21.25,16.75) -- (19.75,16.75);
+    \node [font=\Huge] at (22,17) {...};
+    \draw [->, >=Stealth] (24.25,16.75) -- (22.75,16.75);
+    \draw  (25.25,16.75) circle (0.75cm) node {\LARGE $r_{N(t)}$} ;
+    \draw  (12.75,16.75) circle (0.75cm) node {\LARGE $r_{2}$} ;
+    \draw [->, >=Stealth] (12,16.75) -- (10.25,16.75);
+    \draw  (12.75,12.5) circle (0.75cm) node {\LARGE $r_{c}$} ;
+    \draw [->, >=Stealth] (12,12.5) -- (10.25,12.5);
+    \draw [->, >=Stealth] (15.5,17.25) -- (13.25,19.5);
+    \draw [->, >=Stealth] (15.25,16.75) -- (13.5,16.75);
+    \draw [->, >=Stealth] (15.75,16) -- (13.5,12.75);
+\end{scope}
+\end{circuitikz}
+%}%
+
+\label{fig:my_label}
+\end{figure}

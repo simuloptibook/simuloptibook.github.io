@@ -1,0 +1,26 @@
+\begin{figure}[!ht]
+\centering
+%\resizebox{1\textwidth}{!}{%
+\begin{circuitikz}
+\begin{scope}
+    \tikzstyle{every node}=[font=\huge]
+    \draw  (14.5,19.5) circle (1.5cm) node {\huge $s_n$} ;
+    \draw  (9.75,18.25) circle (0cm);
+    \draw  (8.5,19.5) circle (1.5cm) node {\huge $s_{n-1}$} ;
+    \draw  (20.75,19.5) circle (1.5cm) node {\huge $s_{n+1}$} ;
+    \draw [->, >=Stealth] (10,19.5) -- (13,19.5);
+    \draw [->, >=Stealth] (16,19.5) -- (19.25,19.5);
+    \draw [->, >=Stealth] (13.25,18.75) .. controls (11.5,18) and (11.25,18) .. (9.75,18.75) ;
+    \draw [->, >=Stealth] (19.5,18.75) .. controls (17.5,18) and (17.5,18) .. (15.75,18.75) ;
+    \node [font=\huge] at (11,20.5) {};
+    \node [font=\huge] at (11.5,20.25) {$\lambda p_{n-1}$};
+    \node [font=\huge] at (11.5,20) {};
+    \node [font=\huge] at (17.75,20.25) {$\lambda p_{n}$};
+    \node [font=\huge] at (17.75,17.75) {$\mu_{n+1}p_{n+1}$};
+    \node [font=\huge] at (11.75,17.75) {$\mu_{n}p_{n}$};
+\end{scope}
+\end{circuitikz}
+%}%
+
+\label{fig:intro_2}
+\end{figure}

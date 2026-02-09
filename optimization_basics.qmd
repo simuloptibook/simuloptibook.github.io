@@ -1,0 +1,398 @@
+# Optimization basics {#sec-optimization-basics}
+
+## Introduction
+
+We now switch our focus to the theory and practice of optimization as one 
+of the building blocks of modern AI. *Optimization* is the mathematical discipline 
+concerned with finding the "best" solution from a set of available alternatives. It 
+is the invisible utility that powers the modern world. When you type a query into a 
+search engine, an optimization algorithm determines the most relevant ranking of
+ results. When a packet travels across the internet, routing protocols solve 
+ shortest-path optimization problems to minimize latency. When a logistics company 
+ schedules thousands of deliveries, they are solving complex integer programming 
+ problems to minimize fuel consumption and time.
+
+ Optimization is not only a new toolbox of solvers: it's a fundamental language for
+ modeling the world. Beyond the digital realm, optimization bridges software with the physical world. This is the domain of **Operations Research**, where mathematical models dictate the efficiency of e.g.
+
+ - Energy grids, where the goal is to balance electricity generation with demand in real-time to 
+ prevent blackouts while minimizing costs.
+ - Suppy chains, where the goal is to determine how many units of a product to ship from a specific 
+ set of warehouses to a set of retailers.
+ - Finance, where the goal is to construct investment portfolios that maximize returns for a specific level
+ of risk.
+
+However, one of the most compelling reasons for a modern computer scientist to master optimization lies in the current revolution in Artificial Intelligence and Machine Learning (ML). It is no exaggeration to say that **Machine Learning is optimization**. While the architecture of a model (e.g., a Convolutional Neural Network or a Transformer) dictates how information flows, optimization dictates *what* the model actually learns. When we "train" a model, we are mathematically traversing a high-dimensional landscape, searching for a specific set of parameters (weights and biases) that minimizes a loss function. Whether it is a simple Linear Regression minimizing mean squared error or a Large Language Model (LLM) minimizing next-token prediction error, the mechanism is an optimization algorithm—typically a variant of Stochastic Gradient Descent (SGD). In Reinforcement Learning (RL), agents are explicitly designed to maximize a cumulative reward function over time, often requiring complex policy optimization techniques.
+
+As we proceed through this part of the book, you will learn that finding the true best solution is not always computationally feasible. In Linear Programming, we can often find the exact global optimum efficiently. In Integer Programming, the problem becomes NP-hard, forcing us to rely on clever search techniques like Branch and Bound. In the rugged, non-convex landscapes of Deep Learning, we often settle for local optima, relying on Heuristics to guide us.
+
+Understanding the mathematical foundations of optimization—convexity, gradients, duality, and complexity—allows you to distinguish between a problem that can be solved perfectly in milliseconds and one that requires an approximation to solve before the heat death of the universe. This chapter provides the roadmap for making those distinctions.
+
+## General Problem Formulation
+
+We will now start developing the mathematical machinery needed to understand this part of the book. To treat optimization as a computational discipline, we must abstract away the specific details of the application (whether it is protein folding or portfolio management) and map the problem into a standardized mathematical structure.
+
+Almost all optimization problems can be expressed in the following canonical form:
+
+$$
+\begin{aligned}
+\min_x & f(x) \\
+\text{subject to: } & g_i(x) \le 0\text{, for }i=1,\dots, m \\
+& h_j(x) = 0\text{, for }j=1,\dots, p
+\end{aligned}
+$$
+
+This canonical structure contains several distinct components that dictate the difficulty and the strategy of the solution.
+
+The **decision variables** $x\in\mathbb{R}^n$ represent the unknowns we wish to determine. In computer science contexts, these are often referred to as *parameters* or *weights*. In linear programming, $x$ might represent 
+the flow of traffic across $n$ network edges. In deep learning, $x$ might represent the billions of parameters
+of a deep neural network. In integer programming, $x$ is restricted to integer values $\mathbb{Z}^n$ which
+might represent discrete choices (e.g. to select a specific server, whether to invest in an asset or not).
+
+The **objective function** $f:\mathbb{R}^n\rightarrow\mathbb{R}$ represents the *cost* or *quality* of the solution.
+Usually, the convention is that we solve minimization problems, so if the problem requires to maximize a 
+measure of utility $u(x)$ instead, we minimize the negative $\min_x -u(x)$. The specific form of the objective
+function is an important part of the difficulty of the problem. If $f$ is just is a linear "plane", the direction of improvement is constant. However, if $f$ is a rugged "mountain landscape" (common in non-convex neural network loss surfaces), the direction changes constantly depending on where you are in the space.
+
+The **constraints** $g_i$ and $h_j$ represents limits or restrictions we are bound to in real systems, like 
+physical, financial and logical limits. Inequality constraints ($g_i(x)\le 0$) usually represent resource limits
+or thresholds. For instance, if we want to express that the latency has to be under 100 ms, we might write
+$\operatorname{latency}(x)\le 100$, or in the canonical form $\operatorname{latency}(x)-100\le 0$. On the other
+side, equality constraints ($h_j(x)=0$) usually represent strict structural requirements. For instance, the
+conservation of flow equations we saw in @sec-sec-monte-carlo. If both $m=0$ and $p=0$, we call the problem
+*unconstrained* and handle it usually by means of techniques like gradient descent.
+
+The intersection of all constraints is usually referred to as the **feasible region**, denoted by $\Omega$:
+
+$$
+\Omega=\{ x\in\mathbb{R}^n \text{ }| \text{ } g_i(x)\le 0\text{, } \forall i\text{, }h_j(x)=0\text{, }\forall j  \}
+$$ {#eq-feasible-region}
+
+Our task is then to find a point $x^*\in\Omega$, such that $f(x^*)\le f(x)$ for all $x\in\Omega$. We then call 
+$x^*$ a **global optimum** of $f$ to distinguish it from **local optima** where the point is merely better than
+its immediate neighbours. 
+
+If $f$ and its constraints turn out to be **convex**, there are usually guarantees that any local minimum will 
+be a global minimum as well, making the problem solvable efficiently. A function $f$ is said to be convex if it satisfies the following property: For any $t\in[0,1]$ and any two points $x_1,x_2$ in the
+domain of the function, we have:
+
+$$
+f(tx_1+(1-t)x_2)\le tf(x_1)+(1-t)f(x_2)
+$$ {#eq-convexity}
+
+Prominent examples of convex functions include linear, quadratic and exponential functions. Intuitively, this means that if we draw a line segment between any points in the function's curve
+$f(x_1)$ and $f(x_2)$, this line will always be either above or on the curve itself.
+When the function to optimize or any of the constraints are non-convex 
+(e.g. deep learning), finding the global optimum becomes NP-hard (although usually reasonable 
+approximations are good enough in practice).
+
+## Classification of Problems
+
+Depending on the form of the function to be optimized, the constraints and the domains of the decision
+variables, we obtain different types of optimization problems. We will now explore the different classifications used for characterizing optimization problems.
+
+### Continuous vs. Discrete
+One of the most significant criteria
+is whether the decision variables are continuous or discrete.
+
+In **continuous optimization** problems, the decision variables live in a continuous space (usually $\mathbb{R}^n$). If the objective function is smooth (i.e. differentiable), we can then calculate gradients and use
+a method like gradient descent to find an optimum of the function. For example, training a neural network under the usual circumstances is a continuous optimization problem.
+
+In **discrete optimization** problems, the decision variables belong to a discrete set like $\mathbb{Z}$ or 
+$\{0,1\}$ and therefore combinatorial in nature. In this case, we can't rely on gradients to optimize the function, and other (more computationally complex) are needed. For instance, the traveling salesman problem already presented in @sec-introduction is a typical example of a discrete optimization problem. These problems often face *combinatorial explosion*. As the number of variables increases, the number of possible configurations grows exponentially. Consequently, many discrete problems are NP-Hard.
+
+In **mixed-integer optimization**, the decision variables contain both discrete and continuous variables. For instance, a power plant might optimize the continuous amount of power to generate (Megawatts) while making discrete decisions about which generators to turn on or off. Mixed-integer problems are therefore
+combinatorial in nature as well and face the same kind of problems than purely discrete optimization problems.
+
+### Unconstrained vs. Constrained
+
+When the feasible region is equals to the domain of the objective function, we say that the problem 
+is **unconstrained**. In this case, we just want to find the minimum of $f$ anywhere in the domain 
+of the function. This is usually the case in neural network training, where our goal is to find
+network weights which are normally not constrained in any specific way.
+
+By contrast, **constrained optimization** problems place a special focus on finding optimal solutions
+that satisfy a specific set of conditions. For example, a self-driving car controller might minimize travel time (objective) subject to the strict constraint that the car must stay within the lane boundaries (constraints). Solving these requires specialized techniques like Lagrange Multipliers or projection methods.
+
+### Deterministic vs. Stochastic
+
+In **deterministic optimization** problems, we assume that the objective function and constraints are known perfectly and do not change. There is no uncertainty when evaluating the objective function: any given input
+will deterministically produce the same output.
+
+In **stochastic optimization**, the objective function involves some random quantity, so we usually 
+resort to minimizing expectations instead. This is the native language of ML. Since we cannot calculate the loss over the true data distribution (which is unknown), we estimate it using finite, noisy batches of data. Stochastic Gradient Descent (SGD) is named precisely because it treats the true gradient as a random variable to be estimated.
+
+### Linearity and Convexity
+
+Finally, it is the *geometry* of the function and the constraints which largely determines the computational
+complexity of the problem. There are three cases that we might face:
+
+- Both the objective and the constraints are **linear**: We call this **linear programming (LP)** and there are efficient methods for solving this type of problems.
+- All functions are convex, but some are **non-linear**: The objective is curved, but has only one minimum. These are solvable in polynomial time.
+- There is some **non-convex** function: The landscape has hills, valleys, and saddle points. Finding the global minimum is generally intractable. Most modern DL falls into this category, forcing us to rely on heuristics and accept "good enough" approximations or local optima.
+
+## Mathematical Prerequisites
+
+In this section, we will review some mathematical background knowledge that will be needed across this part of the book. We will frame some
+fundamental concepts in linear algebra and calculus though the lens of optimization theory to provide a strong foundation for the chapters 
+to come.
+
+In optimization, we treat data and parameters as vectors in space. We use norms to measure errors, gradients to find directions of improvement, 
+and Hessians to understand the landscape's terrain. 
+
+### Vector spaces and norms
+
+Optimization algorithms operate in vector spaces like $\mathbb{R}^n$. To determine if one solution is "better" or "closer" to the target than another, we need a rigorous way to measure size and distance. 
+This is the role of the **norm**, which is a function $\lVert \cdot \rVert:\mathbb{R}^n\rightarrow\mathbb{R}$ that takes a vector and returns a non-negative value that indicates its "size". Some typical examples
+of norms widely used in ML and optimization are the $L_2$, $L_1$ and $L_\infty$ norms.
+
+The $L_2$ norm is also known as **Euclidean norm** and is defined by:
+
+$$
+\lVert x \rVert _2 = \sqrt{\sum_{i=1}^n x_i^2} = \sqrt{x^Tx}
+$$
+
+This norm can be interpreted as the usual, "straight-line" distance. Geometrically, constraining the $L_2$ norm
+of a vector using an upper value e.g. $\lVert x \rVert _2 \le 1$ results in a sphere.
+
+The $L_1$ norm is also known as the **Manhattan norm** and is defined by:
+
+$$
+\lVert x \rVert _1 = \sum_{i=1}^n |x_i|
+$$
+
+Instead of using the sums of squares like the $L_2$ norm, the $L_1$ norm just uses the absolute values. Geometrically,
+a region like $\lVert x \rVert _1 \le 1$ can be interpreted as a polytope (i.e. a "diamond" form).
+
+Lastly, the **infinity norm** is defined by:
+
+$$
+\lVert x \rVert _\infty = \max_i |x_i|
+$$
+
+which represents the magnitue of the largest single component of $x$. It is frequently used in robust optimization and analyzing worst-case scenarios (e.g., adversarial attacks on neural networks).
+
+### Matrix Calculus
+
+In general, in order to miminize a function $f(x)$, we need to know how $f$ changes with slight perturbations
+of $x$. In high dimensions, single-variable derivatives are replaced by vectors and matrices of derivatives.
+
+The **gradient** is the vector of first-order partial derivatives:
+
+$$
+\nabla f(x)=\left[\begin{array}{c}
+\dfrac{\partial f(x)}{\partial x_1}\\
+\dfrac{\partial f(x)}{\partial x_2}\\
+\vdots \\
+\dfrac{\partial f(x)}{\partial x_n}
+\end{array}\right]
+$$
+
+The gradient has a distinct geometric interpretation: it points in the direction of steepest ascent. Consequently, the direction of steepest descent, which is the path used by nearly all training algorithms in DL is $-\nabla f(x)$.
+
+While the gradient tells us the slope, it tells us nothing about the curvature.  This information is captured by the **Hessian**, the symmetric $n\times n$ matrix of second-order partial derivatives:
+
+$$
+\nabla^2 f(x)=
+\begin{bmatrix} 
+    \dfrac{\partial^2 f}{\partial x_1^2} & \dfrac{\partial^2 f}{\partial x_1 \partial x_2} & \dots \\
+    \vdots & \ddots & \\
+    \dfrac{\partial^2 f}{\partial x_n\partial x_1} &        & \dfrac{\partial^2 f}{\partial x_n^2}
+\end{bmatrix}
+$$
+
+Intuitively, ff the Hessian is "large" (high curvature), the gradient changes rapidly, and algorithms must take small steps to avoid overshooting. If the Hessian is "small" (flat curvature), algorithms can take larger steps.
+
+### Eigenvalues and Definiteness
+
+In optimization, it is usually important to know whether the Hessian is *positive definite*. This is the matrix
+analogue of a number (scalar) being positive. In a nutshell, (semi-)positive definiteness of the Hessian will 
+indicate convexity (in general) and also if a local optimum is a maximum or a minimum.
+
+We say that a symmetric matrix $A$ is **positive semidefinite (PSD)** if and only if $x^T A x \ge 0$ for all $x$ different from zero. Alternatively, $A$ is PSD if and only if all eigenvalues are non-negative $\lambda_i\ge 0$.
+
+For a square matrix $A$, an eigenvector $v$ and eigenvalue $\lambda$ satisfy $Av=\lambda v$. The eigenvalues represent the "scaling factors" of the matrix along its principal axes. In the context of a loss landscape, the eigenvalues of the Hessian describe the curvature in different directions: large $\lambda$ (in absolute value) indicates steep curvature, while small $\lambda$ (in absolute value) indicates flat curvature.
+
+Let $x$ be such that $\nabla f(x)=0$ (i.e. $x$ is a singular point). In order to check if $x$ is a maximum, 
+minimum or a saddle point, we check the Hessian:
+
+- If $\nabla^2f(x)$ is positive definite, then $x$ is a **local minimum**.
+- If $\nabla^2f(x)$ is positive negative, then $x$ is a **local maximum**.
+- If $\nabla^2f(x)$ has mixed signs, then $x$ is a **saddle point**.
+
+Importantly, a function is convex if and only if *its Hessian is positive semidefinite everywhere*. This guarantees that any local minimum is **global**.
+
+## Why Convexity Is Good?
+
+In mathematics in general, the distinction between easy and hard problems is done based on whether the problems are
+linear (easy) or non-linear (hard). However, in optimization, this distinction would be misleading. The defining property for optimization problems to be easily solvable or not is actually **convexity**. If a problem is convex, we can generally solve it efficiently and guarantee that our solution is the global optimum. If it is non-convex, we are entering a world of NP-hardness, local traps, and heuristics.
+
+Optimization problems are constrained to a feasible region $\Omega$ (see @eq-feasible-region). The geometry of this region dictates how we can move through the search space. In general, a set $C\subseteq\mathbb{R}^n$ is said to be **convex** if and only if for any two points $x,y\in C$, the line segment that joins those two points is entirely
+contained in $C$. More formally:
+
+$$
+\theta x + (1-\theta)y \in C\text{,    for all }x,y\in C\text{, and }\theta \in [0,1]
+$$ 
+
+Intuitively, a circle and a square are convex; a star shape or a crescent moon are not.
+
+While convex sets describe the constraints, convex functions describe the objective $f(x)$. For the sake of completeness, we re-state the definition of a convex function: for all $x,y$ in the domain of the function, we have:
+
+$$
+f(\theta x+(1-\theta)y) \le \theta f(x) + (1-\theta)f(y)\text{, }\forall \theta \in [0,1]
+$$
+
+To analyze algorithms, we rely on differential definitions of convexity. The **first-order condition** states that
+
+$$
+f(y) \ge f(x) + \nabla f(x)^T(y-x)
+$$
+
+which means that the tangent plane (the first-order Taylor approximation of the function around any point $x$) is always *below* the function everywhere (for all $y$). So if we have that $x$ is a singular point ($\nabla f(x)=0$),
+this automatically means that $x$ is a global minimum (since $f(y)\ge f(x)$).
+
+The **second-order condition** states that the Hessian is positive semidefinite everywhere $\nabla^2 f(x) \succeq 0$, which means that the curvature is always "upwards". This implies that the function is convex everywhere.
+
+Now if the objective function $f(x)$ is convex *and* the feasible region $\Omega$ is a convex set, we have:
+
+1. Any local minimum is a **global minimum**.
+2. The set of global minima is itself a **convex set** (so any convex combination of global minima is itself a global minimum).
+
+This means that, in a convex optimization problem (e.g., linear regression, Support Vector Machines, Linear Programming), we do not need to worry about initialization. We can start the algorithm anywhere in the feasible region, follow the negative gradient, and we are mathematically guaranteed to converge to the best possible solution. However, in a non-convex optimization problem (e.g., DL), this guarantee vanishes. The loss landscape of a neural network is riddled with local minima, saddle points, and flat plateaus. A gradient descent algorithm might get stuck in a suboptimal valley, which is why training deep networks requires "tricks" like random restarts, momentum, and stochastic noise to escape local traps.
+
+## Optimality Conditions
+
+We now turn our attention to the problem of certifying if a singular point $x$ found by an optimization algorithm is indeed a global minimum (i.e. a stopping condition). In a sorting algorithm, we stop when the list is ordered. In optimization, we stop when we satisfy a specific set of mathematical conditions. These conditions differ depending on whether we are free to move anywhere (unconstrained) or are bounded by limits (constrained). Therefore, we will distinguish between unconstrained and constrained optimization problems, since the optimality conditions here differ most significantly.
+
+### Unconstrained optimization
+
+In the case where we have no boundaries (constraints), we rely on calculus to identify "flat" spots in the landscape.
+The first condition is a necessary condition related to stationarity. If a candidate point $x*$ is a local minimizer and $f$ is continuously differentiable, then the gradient must vanish: $\nabla f(x^*)=0$. However, this condition is not enough, since $x^*$ could now be a maximum, a minimum or a saddle point.
+
+The sufficient condition is the previously mentioned second-order condition for positive semidefiniteness of the Hessian: if $\nabla f(x^*)=0$ *and* $\nabla^2 f(x^*)$ is positive definite (i.e. all eigenvalues are positive), then $x^*$ is a **strict local** minimizer.
+
+In high-dimensional non-convex optimization (like DL), the Hessian often has both positive and negative eigenvalues. These are saddle points. In high dimensions, local minima are actually rare, and the vast majority of critical points are saddle points. Standard Gradient Descent can get "stuck" near saddle points because the gradient is zero, but the Hessian reveals there is still a direction to escape (which is the eigenvector corresponding to the negative eigenvalue).
+
+### Constrained Optimization: The KKT Conditions
+
+When we add constraints, the gradient does not have to be zero. Imagine a ball rolling down a hill but hitting a fence. The ball stops at the fence, even though the hill continues downward on the other side. At this optimal point, the "force" of gravity (the objective gradient) is perfectly balanced by the "force" of the fence (the constraint gradient). To solve this problem, we use the method of **Lagrange Multipliers**.
+
+The basic idea is to convert the constrained problem into an unconstrained one by means of a new objective function, the Lagrangian:
+
+$$
+\mathcal{L}(x, \lambda, \nu)=f(x)+\sum_{i=1}^m \lambda_i g_i(x)+\sum_{j=1}^p \nu_j h_j(x)
+$$
+
+We call the $\lambda_i$ and $\nu_j$ the **dual variables**. They represent the cost or penalty of violating a constraint. Using these dual variables, we can state the general **Karush-Kuhn-Tucker (KKT)** conditions, which are fundamental conditions for a point $(x^*, \lambda^*, \nu^*)$ to be optimal in any general optimization problem:
+
+1. **Stationarity:** The gradient of the Lagrangian with respect to $x$ is 0 $\nabla_x \mathcal{L}=0$.
+
+$$
+\nabla_x \mathcal{L}(x^*,\lambda^*,\nu^*)=\nabla f(x^*)+\sum_{i=1}^m\lambda_i^*\nabla g_i(x^*)+\sum_{j=1}^p\nu_j^*\nabla h_j(x^*)=0
+$$
+
+2. **Primal Feasibility:** The solution $x^*$ must satisfy all constraints.
+
+$$
+g_i(x^*)\le 0\text{, for all }i\text{, }h_j(x^*)=0\text{, for all }j
+$$
+
+3. **Dual Feasibility:** The Lagrange multipliers for the inequality constraints must be non-negative.
+
+$$
+\lambda_i^* \ge 0\text{, for all }i
+$$
+
+4. **Complementary Slackness:** For each inequality constraint, we have:
+
+$$
+\lambda_i^* g_i(x^*)=0\text{, for all }i
+$$
+
+This last condition is the cornerstone of understanding how constraints interact with the objective function at an optimum. It's often the most counter-intuitive part of the KKT conditions, but it holds the key to why optimization algorithms work and how they identify the most critical elements of a problem. The core idea is that at an optimal solution $x^*$, an inequality constraint can behave in one of two possible ways:
+
+- The constraint is **active**: this is the case when $g_i(x^*)=0$, which means that $x^*$ lies *exactly on the boundary* defined by the constraint, like the ball hitting the fence. This makes automatically the product $\lambda_i^* g_i(x^*)=0$, so $\lambda_i^*$ can take any non-negative value. Any non-zero value for $\lambda_i^*$ indicates that the constraint is actively influencing the optimum. We can think of this multiplier as the *marginal cost* of the constraint. If we would relax the constraint by a small amount $\epsilon$ ($g_i(x^*)\le \epsilon$), the optimal value would improve by about $\lambda_i^*\epsilon$. The constraint is "pushing back" so that $x^*$ cannot move further.
+- The constraint is **inactive**: this is the case when $g_i(x^*)<0$, which means that $x^*$ lies *inside the feasible region* specified by the constraint, like the ball away from the fence (but inside). In this case, for the product $\lambda_i^* g_i(x^*)$ to be zero, then $\lambda_i^*$ must be zero as well. This means that the constraint is not actively influencing the optimal solution. The constraint is effectively irrelevant for finding the optimum.
+
+## Optimization in AI and ML
+
+For many decades, the field of AI was dominated by logic, search, and symbolic reasoning. However, most current AI systems are data-driven, and the engine that drives learning from data is mathematical optimization. In this paradigm, "learning" is simply a synonym for "minimizing a loss function". Every time a ML model is trained, whether it is a simple linear regressor or a trillion-parameter Large Language Model (LLM), we are solving an optimization problem. The translation from a learning task to an optimization problem follows a standard recipe:
+
+1. **The Hypothesis Space:** We define a model $f(x;\theta)$ parametrized by a vector $\theta$ which represents the decision variables of the corresponding optimization problem. For instance, in a neural network, $\theta$ represents all the weights and biases of the network.
+
+2. **The Loss Function:** We define a scalar function $L(\theta)$ that measures the discrepancy between the model's predictions and the ground truth. In regression problems, this function takes often the form of the mean squared error (MSE). In classification problems, we use other functions like the cross-entropy loss.
+
+The goal is then to find $\theta^* = \arg \min_\theta L(\theta)$.
+
+### Gradient descent 
+
+Since solving analytically (e.g. by setting $\nabla L(\theta)=0$ and solving for $\theta$) is most commonly not feasible, we rely on iterative algorithms like **Gradient Descent**. The most basic (and computationally efficient) variant is to move in the direction of steepest descent by following the negative gradient:
+
+$$
+\theta_{t+1} = \theta_t + \eta \nabla L(\theta_t)
+$$
+
+where $\eta$ is called *step size*. The main idea is therefore to move in small steps towards the minimum so that we don't get lost on the way by taking too large steps.
+
+In modern ML, calculating the gradient exactly requires summing over the entire dataset, which might be composed of millions of data points (images, documents, etc). This is computationally prohibitive. Instead, we estimate the gradient using a small random subset (also called a *minibatch*) of data.
+
+$$
+\theta_{t+1} = \theta_t + \eta \hat{g}_t
+$$
+
+where $E[\hat{g}_t]=\nabla L(\theta)$. This is called **Stochastic Gradient Descent (SGD)** and is a cornerstone of modern ML training procedures. Because the gradient is noisy, SGD does not settle at a single point but "bounces around" the minimum. This noise can actually be beneficial, helping the algorithm escape shallow local minima and saddle points.
+
+### Regularization
+
+One of the biggest challenges in ML is overfitting: memorizing the training data rather than learning general patterns. We combat this using **regularization**, which is mathematically equivalent to constrained optimization. Consider for instance Ridge Regression, which involves adding a penalty term to the loss function:
+
+$$
+\min_\theta L(\theta) + \lambda \lVert \theta \rVert_2^2
+$$
+
+Does this ring a bell? This is, in fact, equivalent to using Lagrange multipliers to solve the equivalent constrained optimization problem:
+
+$$
+\min_\theta L(\theta)\text{ subject to } \lVert \theta \rVert_2^2 \le C
+$$
+
+By constraining the Euclidean norm of the weights, we force the model to be smooth and more simple. Similarly, Lasso regression uses the $L_1$ norm instead. As discussed in Section 2.1, the geometry of the $L_1$ ball (a diamond) tends to touch the loss contours at the axes, forcing many weights to become exactly zero. This performs automatic feature selection, identifying the most important variables in the dataset.
+
+## Summary
+
+Optimization is the mathematical tool that transforms the question of "is this possible?" into "what is the best way to do this?". This chapter established the mathematical framework necessary to understand and design the algorithms that power everything from network routing to Large Language Models.
+
+We began by reviewing the essential tools of multivariate calculus and linear algebra, focusing on how gradients define the direction of improvement and how Hessians and eigenvalues characterize the curvature of the search landscape. We identified convexity as the fundamental concept in optimization theory. Unlike the distinction between linear and non-linear, the distinction between convex and non-convex determines tractability: convex problems guarantee that any local minimum is a global minimum, allowing for efficient polynomial-time solutions.
+
+We stated the Karush-Kuhn-Tucker (KKT) conditions, the universal set of requirements (stationarity, primal/dual feasibility, and complementary slackness) that certify whether a solution is optimal in constrained environments. We also explored the computational complexity of these problems, noting how discrete variables (Integer Programming) and high-dimensional non-convex landscapes (Deep Learning) introduce NP-hardness and the "curse of dimensionality", forcing us to rely on approximations and heuristics.
+
+Finally, we connected these abstract principles to AI and ML, demonstrating that training a machine learning model is fundamentally an optimization task. By framing learning as loss minimization, we saw how concepts like Stochastic Gradient Descent and regularization are direct applications of the calculus and geometric constraints discussed throughout the chapter. This foundation sets the stage for other specialized techniques covered in the remainder of this book.
+
+## Exercises
+
+1. A data center has $N$ servers. Each server $i$ has a maximum CPU capacity $C_i$ and a maximum RAM capacity $R_i$. It is needed to schedule $M$ different jobs. Each job $j$ requires $c_i$ units of CPU and $r_j$ units of RAM to run. Let $x_{ij}$ be a binary variable indicating if job $j$ is assigned to server $i$ ($x_{ij}=1$) or not ($x_{ij}=0$). Write down the full mathematical optimization model. Identify the objective function, the decision variables, and the constraints. Is this a convex optimization problem? Why?
+
+2. Consider the following function $f:\mathbb{R}^2\rightarrow \mathbb{R}$:
+$$
+f(x,y)=x^3+y^3-3xy
+$$
+Compute the gradient $\nabla f(x,y)$ and the Hessian $\nabla^2 f(x,y)$. Find all critical points ($\nabla f(x,y)=0$). Evaluate the Hessian at the critical points and calculate the eigenvalues of the Hessian there. Then, classify each critical point as maximum, minimum or saddle point. Is $f(x,y)$ globally convex?
+
+3. Solve the following constrained optimization problem using the KKT conditions:
+$$
+\begin{aligned}
+\min_{x,y} & f(x,y)=x^2+y^2 \\
+\text{subject to  } & 2x+y \ge 5 
+\end{aligned}
+$$
+Specifically, formulate the Lagrangian $\mathcal{L}(x,y,\lambda)$ and write down the four KKT conditions for this problem. Solve the system of equations and consider two cases based on complementary slackness: either $\lambda=0$ (constraint is inactive) or $\lambda > 0$ (constraint is active). Verify which case yields a valid solution and state the optimal $x^*,y^*$.
+
+4. In ML, Ridge Regression aims to fit a linear model $y=Xw$ while at the same time keeping the weights small to prevent overfitting. This can be formulated using the following objective function:
+$$
+L(w)=\lVert y - Xw \rVert_2^2 + \lambda \lVert w \rVert_2^2
+$$
+where $y\in\mathbb{R}^m$ is the vector of labels, $X\in\mathbb{R}^{m\times n}$ is the training data matrix, $w\in\mathbb{R}^n$ is the weight vector, and $\lambda>0$ is a regularization hyperparameter. Compute the gradient $\nabla_w L(w)$ with respect to $w$ (Hint: $\lVert v \rVert_2^2=v^T v$) and equate it to zero to solve for $w$. If you solved correctly, you should get:
+$$
+w^*=(X^TX+\lambda I)^{-1}X^Ty
+$$
+What does the $\lambda I$ term mean in terms of invertibility and convexity?

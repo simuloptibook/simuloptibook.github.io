@@ -1,0 +1,6 @@
+# Welcome {.unnumbered}
+
+This is the website for the **Simulation and Optimization** book that will teach you the basics of simulation approaches and 
+optimization techniques in the context of modern AI systems. The source code of the book and the examples
+are provided as open-source and free to use [Creative Commons Attribution-NonCommercial-NoDerivs 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) license.
+
