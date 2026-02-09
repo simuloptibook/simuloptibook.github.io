@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: docs
 
 book:
   title: "Simulation and Optimization: A Model-Driven Approach"
