@@ -84,6 +84,30 @@ def next_id():
     next_id.counter += 1
     return next_id.counter
 
+# Visualization function
+def visualize_state(time, message=""):
+    """Print current state of the simulation for visualization"""
+    status = f"\n--- Time: {time:.2f} --- {message}\n"
+    
+    # Cashier status
+    status += "Cashiers: "
+    for i, busy in enumerate(cashier_busy):
+        status += f"[{'Busy' if busy else 'Free'}] "
+    status += "\n"
+    
+    # Queue status
+    status += f"Queue ({len(queue)} customers): "
+    if queue:
+        queue_info = [f"C{cid}(wait:{time-at:.1f})" for at, cid in queue[:5]]  # Show first 5
+        if len(queue) > 5:
+            queue_info.append(f"... +{len(queue)-5} more")
+        status += ", ".join(queue_info)
+    else:
+        status += "Empty"
+    status += "\n"
+    
+    print(status)
+
 # Initialize simulation
 time = 0
 
@@ -98,24 +122,31 @@ while event_list and time < sim_end:
     time, ev_type, cid = heapq.heappop(event_list)
     
     if ev_type == 'arrival':
+        visualize_state(time, f"Customer {cid} arrived")
+        
         if any_cashier_free():
             start_checkout(cid, time)
             heapq.heappush(event_list, (time + service_time(cid), 
                 'departure', cid))
+            visualize_state(time, f"Customer {cid} started checkout")
         else:
             enqueue(cid, time)
+            visualize_state(time, f"Customer {cid} joined queue")
         
         # Schedule next arrival
         heapq.heappush(event_list, (time + next_interarrival(), 
             'arrival', next_id()))
             
     elif ev_type == 'departure':
+        visualize_state(time, f"Customer {cid} departed")
         finish_service(cid, time)
         if queue_not_empty():
             next_cid = dequeue()
             start_service(next_cid, time)
             heapq.heappush(event_list, (time + service_time(next_cid), 
                 'departure', next_cid))
+            visualize_state(time, f"Customer {next_cid} started checkout from queue")
+
             
 # Print final statistics
 print(f"Completed {completed_customers} customers in {sim_end} time units")
