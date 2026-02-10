@@ -4,6 +4,13 @@ This is the official repository for the book "Simulation and Optimization: A Mod
 for the master's course "Simulation and Optimization" in the study program [Engineering Responsible AI Systems](https://www.imc.ac.at/en/study/master/science-technology/engineering-responsible-ai-systems/) at 
 [IMC Krems University of Applied Sciences](https://www.imc.ac.at).
 
+<!-- badges: start -->
+
+[![Deploy](https://github.com/simuloptibook/simuloptibook.github.io/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/simuloptibook/simuloptibook.github.io/actions/workflows/pages/pages-build-deployment)
+
+<!-- badges: end -->
+
+
 ## Contents
 
 This repository contains the following materials:
