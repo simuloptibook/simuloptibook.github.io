@@ -68,7 +68,7 @@ for (u, v), distance in edge_labels.items():
 #                           width=3, arrows=True) # arrowstyle='-|>', arrowsize=15)
 
 # Add title
-plt.title('Traveling Salesman Problem - Valid Tour Highlighted in Red', fontsize=14)
+plt.title('Traveling Salesperson Problem - Valid Tour Highlighted in Red', fontsize=14)
 
 # Save as PNG
 plt.savefig('tsp_graph.png', dpi=300, bbox_inches='tight')
