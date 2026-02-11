@@ -10,7 +10,7 @@ num_cashiers = 3  # number of cashiers available
 # Event tracking
 event_list = []
 # Initialize the first arrival
-first_arrival_time = random.expovariate(1/5)  # mean interarrival time = 5
+first_arrival_time = random.expovariate(5)  # mean interarrival time = 1/5
 
 # Cashier status: True if busy, False if free
 cashier_busy = [False] * num_cashiers
@@ -28,12 +28,12 @@ completed_customers = 0
 
 # Helper functions
 def next_interarrival():
-    return random.expovariate(1/5)  # mean interarrival time = 5
+    return random.expovariate(5)  # mean interarrival time = 1/5
 
 def service_time(cid):
     # Service time depends on customer (deterministic in this example)
     if cid not in service_times:
-        service_times[cid] = random.expovariate(1/8)  # mean service time = 8
+        service_times[cid] = random.expovariate(8)  # mean service time = 1/8
     return service_times[cid]
 
 def any_cashier_free():
