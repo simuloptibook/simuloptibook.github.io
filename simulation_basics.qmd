@@ -226,8 +226,8 @@ To calculate this, we form two sequences: the generated numbers and the same seq
 
 $$
 \begin{aligned}
-S_n & = \{X_1,X_2,X_3,\dots,X_{n-1}\} \\
-S_{n+1} & = \{X_2,X_3,X_4,\dots,X_n\}
+S_1 & = \{X_1,X_2,X_3,\dots,X_{n-1}\} \\
+S_2 & = \{X_2,X_3,X_4,\dots,X_n\}
 \end{aligned}
 $$
 
@@ -437,7 +437,7 @@ successes occurred in trials 1 to $t$. Some properties of the counting process a
 - $N(t)$ follows a **binomial distribution**:
 
 $$
-P(N(t)=k)=\binom{t}{k}p^k(1-p)^{z-k}
+P(N(t)=k)=\binom{t}{k}p^k(1-p)^{t-k}
 $$ {#eq-binomial}
 
 Let's see how to simulate a Bernoulli process:
@@ -513,7 +513,7 @@ of trials with the success probability, which results in 15 as the expected numb
 
 ### Poisson Processes
 
-We now switch from *continuous* to *discrete* time. The **Poisson process** is a canonical 
+We now switch from *discrete* to *continuous* time. The **Poisson process** is a canonical 
 continous time counting process. It tracks 
 the number of occurrences of a given event up to a certain time $t$. Formally, let $\lambda > 0$ be the 
 rate of occurrences of the event in question. We define the Poisson process $\{N(t),t\ge 0\}$ as follows:

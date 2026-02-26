@@ -70,8 +70,8 @@ def calculate_period(lcg_generator):
             
     return period
 
-period = calculate_period(prng)
-print(period)
+# period = calculate_period(prng)
+# print(period)
 
 def chi_squared_uniformity_test(data_float, num_bins=10):
     """
@@ -94,8 +94,8 @@ def chi_squared_uniformity_test(data_float, num_bins=10):
     
     return chi2_stat, p_value, num_bins
 
-chi2_stat, p_value_uniformity, num_bins = chi_squared_uniformity_test(float_sequence)
-print(f'Chi2 statistic: {chi2_stat}, p-value: {p_value_uniformity}, number of bins: {num_bins}')
+# chi2_stat, p_value_uniformity, num_bins = chi_squared_uniformity_test(float_sequence)
+# print(f'Chi2 statistic: {chi2_stat}, p-value: {p_value_uniformity}, number of bins: {num_bins}')
 
 
 def serial_correlation_check(data_float):
@@ -114,19 +114,19 @@ def serial_correlation_check(data_float):
     
     return lag_1_correlation
 
-lag_1_correlation = serial_correlation_check(float_sequence)
-print(f'The lag 1 correlation coefficient is {lag_1_correlation}')
+# lag_1_correlation = serial_correlation_check(float_sequence)
+# print(f'The lag 1 correlation coefficient is {lag_1_correlation}')
 
 import random
 
 random.seed(SEED)
 
 # Generate a sequence of random floats in the range [0.0, 1.0)
-float_sequence_mt = np.array([random.uniform(0, 1) for _ in range(SEQUENCE_SIZE)])
+# float_sequence_mt = np.array([random.uniform(0, 1) for _ in range(SEQUENCE_SIZE)])
 
 # Serial Correlation Check
-lag_1_correlation_mt = serial_correlation_check(float_sequence_mt)
-print(f'The lag 1 correlation coefficient is {lag_1_correlation_mt}')
+# lag_1_correlation_mt = serial_correlation_check(float_sequence_mt)
+# print(f'The lag 1 correlation coefficient is {lag_1_correlation_mt}')
 
 def simulate_bernoulli_process(num_trials, success_probability):
     """

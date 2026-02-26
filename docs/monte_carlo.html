@@ -362,7 +362,7 @@ Figure&nbsp;3.1: Example of Monte-Carlo simulation to calculate <span class="mat
 </figure>
 </div>
 <p>Let’s use some code to make this more concrete:</p>
-<div id="2bb1d061" class="cell" data-execution_count="1">
+<div id="59325384" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -393,7 +393,7 @@ Figure&nbsp;3.1: Example of Monte-Carlo simulation to calculate <span class="mat
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>estimated_pi <span class="op">=</span> estimate_pi_monte_carlo(N)</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>estimated_pi</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>3.1544</code></pre>
+<pre><code>3.13668</code></pre>
 </div>
 </div>
 <p>In this code, we make use of the modeling fact that points <span class="math inline">\((x,y)\)</span> inside of the circle satisfy <span class="math inline">\(x^2+y^2\le 1\)</span>.</p>
@@ -498,7 +498,7 @@ s=\sqrt{\frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X}_n)}
 CI=\bar{X}_n \pm \left(z_{\alpha/2}\times\frac{s}{\sqrt{n}}\right)
 \]</span></p>
 <p>where <span class="math inline">\(z_{\alpha/2}\)</span> represents the <span class="math inline">\(\alpha/2\)</span>-level quantile of the standard normal distribution. As an example, consider the following implementation for the estimate of <span class="math inline">\(\pi\)</span> using Python code:</p>
-<div id="e0b8ba67" class="cell" data-execution_count="2">
+<div id="d2cde4e7" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -529,8 +529,8 @@ CI=\bar{X}_n \pm \left(z_{\alpha/2}\times\frac{s}{\sqrt{n}}\right)
 <span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Estimate: </span><span class="sc">{</span>mu<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"95% CI:   [</span><span class="sc">{</span>lower<span class="sc">:.4f}</span><span class="ss">, </span><span class="sc">{</span>upper<span class="sc">:.4f}</span><span class="ss">]"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Estimate: 3.1548
-95% CI:   [3.1228, 3.1868]</code></pre>
+<pre><code>Estimate: 3.1284
+95% CI:   [3.0960, 3.1608]</code></pre>
 </div>
 </div>
 </section>
@@ -577,7 +577,7 @@ I=\int_0^1 e^{x^2} dx
 \int_0^1 (1+x^2)dx = \left[x+\frac{x^3}{3}\right]_0^1=1+\frac{1}{3}=1.3333\dots
 \]</span></p>
 <p>We will now estimate both quantities in the same loop to calculate the controlled estimate.</p>
-<div id="ca81af51" class="cell" data-execution_count="3">
+<div id="90ad7712" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -614,7 +614,7 @@ I=\int_0^1 e^{x^2} dx
 <span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s now run the code for 10000 iterations and compare the results:</p>
-<div id="370a5de4" class="cell" data-execution_count="4">
+<div id="7f6a2f9f" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">10000</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> simulation_control_variates(N)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -637,14 +637,14 @@ I=\int_0^1 e^{x^2} dx
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Results with N=10,000 ---
 True Value:               1.462652
-Naive MC Estimate:        1.464750 (Error: 0.002099)
-Control Variate Estimate: 1.462592 (Error: 0.000060)
+Naive MC Estimate:        1.461061 (Error: 0.001590)
+Control Variate Estimate: 1.462688 (Error: 0.000036)
 
 --- Variance Analysis ---
-Correlation (X, Y):       0.9917
-Naive Variance:           0.225158
-CV Variance:              0.003700
-Variance Reduction:       60.8x lower variance</code></pre>
+Correlation (X, Y):       0.9915
+Naive Variance:           0.224541
+CV Variance:              0.003792
+Variance Reduction:       59.2x lower variance</code></pre>
 </div>
 </div>
 <p>As can be seen, the variance reduction achieved by the control variates method is in this case around 60x, which means that running 10,000 iterations using the control variates method is <em>as good as running classical MC with 600,000 iterations</em>.</p>
@@ -670,7 +670,7 @@ E_p[f(x)]=\int f(x)p(x)dx
 \hat{I}=\frac{1}{n}\sum_{i=1}^n f(x_i)\cdot\frac{p(x_i)}{q(x_i)}=\frac{1}{n}\sum_{i=1}^n w_i f(x_i)
 \tag{3.8}\]</span></span></p>
 <p>Note that our samples now come from <span class="math inline">\(q(x)\)</span> instead of <span class="math inline">\(p(x)\)</span> (because we sample from the biased distribution). Let’s now consider as an example a five-sigma event under a standard normal distribution governed by the probability <span class="math inline">\(P(X&gt;5)\)</span>, where the true probability is about <span class="math inline">\(2.87\times 10^{-7}\)</span>. In the real world, the true probability distribution is <span class="math inline">\(N(0,1)\)</span>. Now we can sample from a biased distribution by moving the mean: <span class="math inline">\(N(5,1)\)</span>. In this distribution, events <span class="math inline">\(X&gt;5\)</span> happen roughly 50% of the time.</p>
-<div id="bbf9ba79" class="cell" data-execution_count="5">
+<div id="32be03f3" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -702,7 +702,7 @@ E_p[f(x)]=\int f(x)p(x)dx
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> prob_naive, var_naive, prob_is, var_is</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In this code, we compare the probability estimates and the variances obtained by standard MC and importance sampling.</p>
-<div id="dfe6fa97" class="cell" data-execution_count="6">
+<div id="31951edd" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">10000</span> <span class="co"># Only 10,000 samples (Small for a rare event!)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>target <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -726,8 +726,8 @@ E_p[f(x)]=\int f(x)p(x)dx
 True Probability: 0.0000002867
 Naive MC Estimate: 0.0000000000
 Naive Variance:    0.0000000000 (Likely zero if no hits occurred)
-Imp. Samp Estimate:0.0000002921
-Imp. Samp Variance:0.00000000000000004786
+Imp. Samp Estimate:0.0000002923
+Imp. Samp Variance:0.00000000000000004761
 Naive method failed completely (0 hits). Importance Sampling is infinitely better here.</code></pre>
 </div>
 </div>
@@ -781,7 +781,7 @@ Naive method failed completely (0 hits). Importance Sampling is infinitely bette
 <p>In summary, stratified sampling using proportional strata is always equal to or better than standard sampling because it eliminates the variance caused by the variability in sampling proportions across strata with different means.</p>
 <p><strong>Example</strong></p>
 <p>As an example, let’s integrate <span class="math inline">\(f(x)=e^x\)</span> in the interval <span class="math inline">\([0,1]\)</span>. For this, we will define <span class="math inline">\(H\)</span> equally-spaced strata in this interval.</p>
-<div id="6e9ed4e5" class="cell" data-execution_count="7">
+<div id="3ee2e521" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -802,7 +802,7 @@ Naive method failed completely (0 hits). Importance Sampling is infinitely bette
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> est_naive, est_stratified</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We now run the experiment multiple times to determine the variance of the method. Because stratified samples are not iid, we need to repeat the experiment to get an estimate of its variance:</p>
-<div id="c44fe564" class="cell" data-execution_count="8">
+<div id="a9d92f26" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>experiments <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">100</span> <span class="co"># Samples per experiment</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -856,10 +856,10 @@ Naive method failed completely (0 hits). Importance Sampling is infinitely bette
 <div class="cell-output cell-output-stdout">
 <pre><code>True Value: 1.718282
 ------------------------------
-Naive MC Variance (across 1000 runs):      0.00242266
-Stratified MC Variance (across 1000 runs): 0.00000026
+Naive MC Variance (across 1000 runs):      0.00220699
+Stratified MC Variance (across 1000 runs): 0.00000027
 ------------------------------
-Variance Reduction Factor: 9312.2x</code></pre>
+Variance Reduction Factor: 8313.2x</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -884,7 +884,7 @@ Variance Reduction Factor: 9312.2x</code></pre>
 <li>Based on these permutations, we assign the intervals to the samples.</li>
 <li>To avoid each sample to be exactly at the center, we add a random jitter to each point.</li>
 </ol>
-<div id="6f2456db" class="cell" data-execution_count="9">
+<div id="9001c509" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -901,7 +901,7 @@ Variance Reduction Factor: 9312.2x</code></pre>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> samples</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In two dimensions, this would look like the following:</p>
-<div id="1decc2ae" class="cell" data-execution_count="10">
+<div id="28850936" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">10</span> <span class="co"># 10 samples</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> <span class="dv">2</span>  <span class="co"># 2 dimensions</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -949,7 +949,7 @@ Variance Reduction Factor: 9312.2x</code></pre>
 f(\mathbf{x})=\sum_{i=1}^5 x_i^2
 \]</span></p>
 <p>in the interval <span class="math inline">\([-1,1]\)</span> for each dimension <span class="math inline">\(x_i\)</span>. For this, we will use the standard latin hypersquare sampling implementation of the SciPy library <code>scipy.stats.qmc</code>.</p>
-<div id="b3e59827" class="cell" data-execution_count="11">
+<div id="04ed1e77" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> qmc</span>
@@ -980,7 +980,7 @@ f(\mathbf{x})=\sum_{i=1}^5 x_i^2
 <span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    errors_lhs.append(<span class="bu">abs</span>(lhs_estimate <span class="op">-</span> true_mean))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that the <code>LatinHypercube</code> sampler outputs samples in the interval <span class="math inline">\([0,1]\)</span> which need so be scaled to <span class="math inline">\([-1,1]\)</span> using the scaler <code>qmc.scale</code>. Let’s now visualize the results:</p>
-<div id="0c0fbf13" class="cell" data-execution_count="12">
+<div id="c3110df0" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>plt.semilogy(sample_sizes, errors_mc, color<span class="op">=</span><span class="st">'red'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">'Standard Monte Carlo Noise'</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.semilogy(sample_sizes, errors_lhs, color<span class="op">=</span><span class="st">'green'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">'LHS Noise'</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1014,9 +1014,9 @@ f(\mathbf{x})=\sum_{i=1}^5 x_i^2
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Final Error (N=990):
-Standard MC Error: 0.013951
-LHS Error:         0.000022
-Improvement Factor: 633.2x more accurate</code></pre>
+Standard MC Error: 0.000820
+LHS Error:         0.000027
+Improvement Factor: 30.4x more accurate</code></pre>
 </div>
 </div>
 <p>In this plot, we have used a logarithmic scale on the <span class="math inline">\(y\)</span>-axis to better see small errors. Additionally, a trend line is provided which is the moving average of the errors. As can be seen, the LHS errors are clearly lower than the standard MC errors and the method is about 100x more accurate than standard MC using the same number of samples.</p>
@@ -1180,7 +1180,7 @@ T(x'|x)=\alpha(x'|x)\cdot q(x'|x)
 <p><strong>Example</strong></p>
 <p>Let’s sample from a bimodal distribution which is a mixture of two Gaussians. Without MCMC, classical algorithms would frequently get stuck in one peak or the other. For instance, <span class="math inline">\(\pi(x)=0.3 N(-2,1) +
 0.7 N(2,1)\)</span>.</p>
-<div id="d109ae5d" class="cell" data-execution_count="13">
+<div id="e62de94a" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
@@ -1228,7 +1228,7 @@ T(x'|x)=\alpha(x'|x)\cdot q(x'|x)
 <span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(samples), accepted_count <span class="op">/</span> n_samples</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now let’s run a simulation for 10,000 steps.</p>
-<div id="814c145a" class="cell" data-execution_count="14">
+<div id="fe41d06f" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">10000</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>start_x <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>step_size <span class="op">=</span> <span class="fl">2.0</span> </span>
