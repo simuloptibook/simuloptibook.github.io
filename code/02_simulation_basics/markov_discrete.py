@@ -54,4 +54,9 @@ plt.title('Discrete-Time Markov Chain State Trajectory (Weather)')
 plt.xlabel('Time Step (Day)')
 plt.ylabel('State')
 plt.grid(True, axis='y', linestyle='--')
+
+# Save as PNG file with high resolution
+output_file = 'markov_discrete.png'
+plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white', edgecolor='none')
+
 plt.show()

@@ -74,4 +74,8 @@ for i in range(len(sim_times)-1):
         plt.text(mid_point, 0.1, "Long Holding Time\n(Random)", ha='center', fontsize=9, color='green')
         break
 
+# Save as PNG file with high resolution
+output_file = 'markov_continuous.png'
+plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white', edgecolor='none')
+
 plt.show()

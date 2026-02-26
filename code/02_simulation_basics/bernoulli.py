@@ -46,4 +46,9 @@ plt.legend()
 plt.grid(True, linestyle='--')
 
 plt.tight_layout()
+
+# Save as PNG file with high resolution
+output_file = 'bernoulli.png'
+plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white', edgecolor='none')
+
 plt.show()

@@ -48,4 +48,9 @@ plt.xlim(0, MAX_TIME)
 plt.ylim(bottom=0)
 plt.grid(True, linestyle='--')
 plt.legend()
+
+# Save as PNG file with high resolution
+output_file = 'poisson.png'
+plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white', edgecolor='none')
+
 plt.show()
