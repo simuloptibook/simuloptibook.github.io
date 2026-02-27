@@ -539,7 +539,7 @@ s_2 &amp; = 6
 <section id="solving-lps-using-the-simplex-method-in-python" class="level3" data-number="6.2.2">
 <h3 data-number="6.2.2" class="anchored" data-anchor-id="solving-lps-using-the-simplex-method-in-python"><span class="header-section-number">6.2.2</span> Solving LPs using the Simplex Method in Python</h3>
 <p>The Simplex method is efficient in practice and can solve large-scale linear programs quickly, although its worst-case time complexity is indeed exponential. However, it remains one of the most widely used algorithms for solving LPs due to its practical performance and simplicity. Let’s see how to solve the example using the Simplex method in Python implemented in the <code>scipy.optimize.linprog</code> function.</p>
-<div id="9c07f03c" class="cell" data-execution_count="1">
+<div id="04666590" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> linprog</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -613,7 +613,7 @@ Optimal solution (Product A, Product B): [2. 2.]</code></pre>
 <section id="coding-example" class="level3" data-number="6.3.3">
 <h3 data-number="6.3.3" class="anchored" data-anchor-id="coding-example"><span class="header-section-number">6.3.3</span> Coding Example</h3>
 <p>We will now illustrate the Branch and Bound algorithm using Python’s <code>PuLP</code> library, which provides a convenient interface for defining and solving ILPs. Let’s consider a simple ILP example (Knapsack Problem): We have a knapsack which can hold 10 kg. There are four items available: A (value 15€, weight 4 kg), B (value 10€, weight 3 kg), C (value 9€, weight 2 kg) and D (value 5€, weight 1 kg). We want to maximize the total value of items in the knapsack without exceeding its weight capacity.</p>
-<div id="8ae81439" class="cell" data-execution_count="2">
+<div id="dc56661a" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pulp</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pulp <span class="im">import</span> PULP_CBC_CMD</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>

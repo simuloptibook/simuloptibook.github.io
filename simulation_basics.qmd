@@ -333,13 +333,15 @@ probability distribution without requiring its CDF or inverse.
 **Box-Muller transform**
 
 The next method is specialized towards generating values for the **normal distribution**, and 
-is widely used in practice. We start by generating two uniform random numbers $u_1, u_2 \sim U(-1,1)$.
+is widely used in practice. We start by generating two uniform random numbers $u_1, u_2 \sim U(0,1)$.
 
-* First, we calculte the sum of their squares $S=u_1^2+u_2^2$.
-* If $S\ge 1$ or $S=0$, we reject both and return to the first step.
-* Otherwise, we calculate $C=\sqrt{\frac{-2\ln(S)}{S}}$.
-* We output two normally distributed random numbers as $z_1=u_1 C$ and $z_2 = u_2 C$.
+* Calculate $R=\sqrt{-2\ln(u_1)}$.
+* Calculate $\theta=2\pi u_2$.
+* Calculate $z_1=R\cos(\theta)$ and $z_2=R\sin(\theta)$.
+* Then $z_1$ and $z_2$ are independent standard normal random variables, i.e., $z_1, z_2 \sim N(0,1)$.
 
+Core idea: we are transforming the uniform random variables into polar coordinates, where $R$ is the radius and $\theta$ is the angle. The transformation ensures that the resulting $z_1$ and $z_2$ 
+are normally distributed with mean 0 and variance 1. 
 The random numbers generated follow a standard normal distribution $N(0,1)$. For an arbitrary
 normal distribution $N(\mu,\sigma^2)$ we just scale using the standard transformation $X=\mu+\sigma Z$.
 
