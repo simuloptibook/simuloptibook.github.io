@@ -575,7 +575,7 @@ decrease faster than $p(x)$.
 Let's assume we want to integrate a monotonic function (that is, a function that either *always* 
 increases or *always* decreases). Think e.g. about $f(x)=e^x$ in $[0,1]$. If we start sampling
 random numbers, we might get trapped either in the low or the high region of the function. This might
-well happen because PRNM might accidentally "cluster" samples in a specific region. Alas, that would 
+well happen because PRNG might accidentally "cluster" samples in a specific region. Alas, that would 
 be bad, because it would significantly bias our estimate. In this case, we need to make sure that 
 we sample equally well from all regions. This is the main idea of **stratified sampling**. 
 
@@ -929,12 +929,12 @@ Each technique has its strengths and is suited for specific scenarios. By select
 
 ## Markov Chain Monte Carlo
 
-Until now, all methods for standard Monte Carlo that we have seen so far rely explicitly on the
+Until now, all methods for standard Monte Carlo that we have seen so far rely explicitly on the assumption that we can generate independent samples directly from the target distribution. 
 However, in many practical scenarios, generating independent samples directly from the target distribution is either computationally expensive or infeasible. This is where **Markov Chain Monte Carlo (MCMC)** methods come into play. MCMC methods allow us to sample from complex distributions by constructing a Markov chain whose stationary distribution matches the target distribution.
 
 The key idea is to design a Markov chain that "explores" the target distribution efficiently, even if the samples are not independent. Over time, the chain converges to the target distribution, and we can use the samples generated to approximate expectations.
 
-In the next sections, we will explore the foundations of MCMC, including the **Metropolis-Hastings** algorithm and **Gibbs sampling**, two of the most widely used MCMC techniques.
+In the next sections, we will explore the foundations of MCMC, including the **Metropolis-Hastings** algorithm as one of the most widely used MCMC techniques.
 
 ### Motivation for MCMC
 
@@ -952,8 +952,7 @@ used by standard MC.
 
 The last approach encompasses the main idea of MCMC: If the hiker only moved up, they would get stuck on the very top of the first tiny hill they found (local maximum). By occasionally accepting downward steps, the hiker can traverse valleys to find the massive mountains on the other side. After 10,000 (simulation) steps, if we look at a map of where the hiker has been, the density of their footprints will perfectly match the elevation map of the mountain range.
 
-Note that it's not just that the mountain pikes are concentrated in a rather small volume: the main issue in this case is rather that it is  
-challenging to sample from the target distribution directly. MCMC methods provide a way to approximate the target distribution by constructing a **Markov chain** that explores the space iteratively. Over time, the chain converges to the desired distribution, allowing us to estimate expectations and probabilities effectively.
+Note that it's not just that the mountain pikes are concentrated in a rather small volume: the main issue in this case is rather that it is challenging to sample from the target distribution directly. MCMC methods provide a way to approximate the target distribution by constructing a **Markov chain** that explores the space iteratively. Over time, the chain converges to the desired distribution, allowing us to estimate expectations and probabilities effectively.
 
 ### When do we apply MCMC?
 
