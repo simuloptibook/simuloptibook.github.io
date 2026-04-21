@@ -329,7 +329,7 @@ The goal is then to find $\theta^* = \arg \min_\theta L(\theta)$.
 Since solving analytically (e.g. by setting $\nabla L(\theta)=0$ and solving for $\theta$) is most commonly not feasible, we rely on iterative algorithms like **Gradient Descent**. The most basic (and computationally efficient) variant is to move in the direction of steepest descent by following the negative gradient:
 
 $$
-\theta_{t+1} = \theta_t + \eta \nabla L(\theta_t)
+\theta_{t+1} = \theta_t - \eta \nabla L(\theta_t)
 $$
 
 where $\eta$ is called *step size*. The main idea is therefore to move in small steps towards the minimum so that we don't get lost on the way by taking too large steps.
@@ -337,7 +337,7 @@ where $\eta$ is called *step size*. The main idea is therefore to move in small 
 In modern ML, calculating the gradient exactly requires summing over the entire dataset, which might be composed of millions of data points (images, documents, etc). This is computationally prohibitive. Instead, we estimate the gradient using a small random subset (also called a *minibatch*) of data.
 
 $$
-\theta_{t+1} = \theta_t + \eta \hat{g}_t
+\theta_{t+1} = \theta_t - \eta \hat{g}_t
 $$
 
 where $E[\hat{g}_t]=\nabla L(\theta)$. This is called **Stochastic Gradient Descent (SGD)** and is a cornerstone of modern ML training procedures. Because the gradient is noisy, SGD does not settle at a single point but "bounces around" the minimum. This noise can actually be beneficial, helping the algorithm escape shallow local minima and saddle points.

@@ -511,12 +511,12 @@ g_i(x^*)\le 0\text{, for all }i\text{, }h_j(x^*)=0\text{, for all }j
 <h3 data-number="5.7.1" class="anchored" data-anchor-id="gradient-descent"><span class="header-section-number">5.7.1</span> Gradient descent</h3>
 <p>Since solving analytically (e.g.&nbsp;by setting <span class="math inline">\(\nabla L(\theta)=0\)</span> and solving for <span class="math inline">\(\theta\)</span>) is most commonly not feasible, we rely on iterative algorithms like <strong>Gradient Descent</strong>. The most basic (and computationally efficient) variant is to move in the direction of steepest descent by following the negative gradient:</p>
 <p><span class="math display">\[
-\theta_{t+1} = \theta_t + \eta \nabla L(\theta_t)
+\theta_{t+1} = \theta_t - \eta \nabla L(\theta_t)
 \]</span></p>
 <p>where <span class="math inline">\(\eta\)</span> is called <em>step size</em>. The main idea is therefore to move in small steps towards the minimum so that we don’t get lost on the way by taking too large steps.</p>
 <p>In modern ML, calculating the gradient exactly requires summing over the entire dataset, which might be composed of millions of data points (images, documents, etc). This is computationally prohibitive. Instead, we estimate the gradient using a small random subset (also called a <em>minibatch</em>) of data.</p>
 <p><span class="math display">\[
-\theta_{t+1} = \theta_t + \eta \hat{g}_t
+\theta_{t+1} = \theta_t - \eta \hat{g}_t
 \]</span></p>
 <p>where <span class="math inline">\(E[\hat{g}_t]=\nabla L(\theta)\)</span>. This is called <strong>Stochastic Gradient Descent (SGD)</strong> and is a cornerstone of modern ML training procedures. Because the gradient is noisy, SGD does not settle at a single point but “bounces around” the minimum. This noise can actually be beneficial, helping the algorithm escape shallow local minima and saddle points.</p>
 </section>
