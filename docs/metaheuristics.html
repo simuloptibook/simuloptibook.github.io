@@ -355,7 +355,7 @@ window.Quarto = {
 <p>The criterion <span class="math inline">\(e^{-\Delta E / T}\)</span> is called the <strong>Metropolis criterion</strong>. It ensures that as the temperature decreases, the probability of accepting worse solutions diminishes, allowing the algorithm to focus on refining the best solutions found. Usually, the cooling schedule is geometric, e.g., <span class="math inline">\(T \leftarrow \alpha T\)</span> with <span class="math inline">\(\alpha \in (0,1)\)</span>. A high value of <span class="math inline">\(\alpha\)</span> (e.g., 0.99) results in slow cooling, promoting exploration, while a low value (e.g., 0.8) leads to rapid cooling and quicker convergence.</p>
 <p><strong>Coding Example</strong></p>
 <p>We now implement a solution to the Traveling Salesman Problem (TSP) using Simulated Annealing.</p>
-<div id="fac8efda" class="cell" data-execution_count="1">
+<div id="33a74000" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -416,7 +416,7 @@ window.Quarto = {
 <span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>best_route, min_dist <span class="op">=</span> simulated_annealing(dist_matrix)</span>
 <span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Final Best Distance: </span><span class="sc">{</span>min_dist<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Best Distance: 274</code></pre>
+<pre><code>Final Best Distance: 283</code></pre>
 </div>
 </div>
 <p>The code accepts a distance matrix representing the distances between cities and applies the Simulated Annealing algorithm to find a near-optimal tour. The algorithm starts with a random tour and iteratively improves it by exploring neighboring solutions, accepting worse solutions based on the Metropolis criterion, and gradually cooling down the temperature.</p>
@@ -438,7 +438,7 @@ window.Quarto = {
 </ol>
 <p><strong>Coding Example</strong></p>
 <p>We will solve a generic problem: finding a binary string of length <span class="math inline">\(n\)</span> that maximizes a value function, using Tabu Search. A “neighbor” is created by flipping exactly one bit.</p>
-<div id="d7ac3013" class="cell" data-execution_count="2">
+<div id="14934fef" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> deque</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> objective_function(x):</span>
@@ -549,7 +549,7 @@ Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</co
 <li><strong>Rank Selection:</strong> Individuals are ranked based on fitness, and selection probabilities are assigned based on rank rather than absolute fitness. This helps to prevent premature convergence.</li>
 </ul>
 <p>The following example shows an implementation of tournament selection.</p>
-<div id="162b7508" class="cell" data-execution_count="3">
+<div id="0c0f3ed6" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> select_parents(population, fitnesses):</span>
@@ -571,7 +571,7 @@ Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</co
 <li><strong>Uniform Crossover:</strong> Each gene is independently swapped with a certain probability.</li>
 </ul>
 <p>The following example demonstrates one-point crossover.</p>
-<div id="f3c56b94" class="cell" data-execution_count="4">
+<div id="6176e1f5" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> crossover(parent1, parent2):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Single-Point Crossover."""</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.random.rand() <span class="op">&lt;</span> <span class="fl">0.8</span>: <span class="co"># 80% chance to mate</span></span>
@@ -584,7 +584,7 @@ Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</co
 <p><strong>Mutation Methods</strong></p>
 <p>Mutation introduces random changes to the offspring’s chromosomes to maintain diversity. Common mutation methods include: - <strong>Bit Flip Mutation:</strong> For binary strings, randomly flip bits with a certain probability. - <strong>Gaussian Mutation:</strong> For real-valued representations, add a small random value drawn from a Gaussian distribution to the genes.</p>
 <p>The following example shows bit flip mutation.</p>
-<div id="c2fbb145" class="cell" data-execution_count="5">
+<div id="37304e74" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mutate(individual):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Gaussian Mutation: Add small noise."""</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(individual)):</span>
@@ -595,7 +595,7 @@ Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</co
 </div>
 <p><strong>Putting It All Together</strong></p>
 <p>Now we can implement a simple Genetic Algorithm that combines these components to optimize a function. For demonstration purposes, we will implement a GA to minimize the Sphere Function defined as <span class="math inline">\(f(x) = \sum_{i=1}^{n} x_i^2\)</span>, which has a global minimum at <span class="math inline">\(x = 0\)</span>. While GAs were originally designed for binary strings, they are heavily used today for continuous optimization (e.g., tuning hyperparameters).</p>
-<div id="9a5b7584" class="cell" data-execution_count="6">
+<div id="64536264" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Configuration ---</span></span>
@@ -654,18 +654,18 @@ Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</co
 <span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>best_sol <span class="op">=</span> population[np.argmax(final_fitnesses)]</span>
 <span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Final Solution: </span><span class="sc">{</span>best_sol<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Gen 0: Best Fitness = -41.42538
-Gen 10: Best Fitness = -4.14803
-Gen 20: Best Fitness = -0.49706
-Gen 30: Best Fitness = -0.09587
-Gen 40: Best Fitness = -0.01946
-Gen 50: Best Fitness = -0.01202
-Gen 60: Best Fitness = -0.01142
-Gen 70: Best Fitness = -0.00621
-Gen 80: Best Fitness = -0.00430
-Gen 90: Best Fitness = -0.00240
-Final Solution: [ 0.01640658 -0.02260385  0.00793989 -0.00967316 -0.00541178 -0.01059683
- -0.00080368 -0.01056904 -0.0024936  -0.00612315]</code></pre>
+<pre><code>Gen 0: Best Fitness = -49.71160
+Gen 10: Best Fitness = -7.60624
+Gen 20: Best Fitness = -1.05902
+Gen 30: Best Fitness = -0.09540
+Gen 40: Best Fitness = -0.02580
+Gen 50: Best Fitness = -0.01039
+Gen 60: Best Fitness = -0.00670
+Gen 70: Best Fitness = -0.00404
+Gen 80: Best Fitness = -0.00317
+Gen 90: Best Fitness = -0.00252
+Final Solution: [ 0.00121301 -0.0082742   0.00857778  0.03206538 -0.01664409 -0.02172268
+ -0.01497178  0.01678227  0.00133702 -0.00921344]</code></pre>
 </div>
 </div>
 <p>In this implementation, we initialize a population of random solutions and iteratively apply selection, crossover, and mutation to evolve the population towards better solutions. We also use elitism to ensure that the best solutions are preserved across generations. The algorithm optimizes the Sphere function, and we track the best fitness at regular intervals.</p>
