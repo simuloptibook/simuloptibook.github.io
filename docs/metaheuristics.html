@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; Metaheuristics – Simulation and Optimization: A Model-Driven Approach</title>
+<title>8&nbsp; Metaheuristics – Simulation and Optimization: A Model-Driven Approach</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,6 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <link href="./optimization_in_ml.html" rel="next">
 <link href="./exact_methods.html" rel="prev">
+<link href="./images/book-cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -74,10 +75,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e48e5d47e6899f26dc5bcf87b02f963a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-f817ea25561871ecc2245d044e856aad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-131a6ee8bf93429f712472bc98a08819.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-f817ea25561871ecc2245d044e856aad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -136,9 +141,172 @@ window.Quarto = {
 };
 </script>
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -147,7 +315,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./optimization_basics.html">PART II: OPTIMIZATION</a></li><li class="breadcrumb-item"><a href="./metaheuristics.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Metaheuristics</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./optimization_basics.html">PART II: OPTIMIZATION</a></li><li class="breadcrumb-item"><a href="./metaheuristics.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Metaheuristics</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -165,6 +333,11 @@ window.Quarto = {
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Simulation and Optimization: A Model-Driven Approach</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/simuloptibook/simuloptibook.github.io" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./Simulation-and-Optimization--A-Model-Driven-Approach.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -177,7 +350,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Welcome</span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Welcome</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -189,7 +362,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -204,19 +377,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./simulation_basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Simulation basics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Simulation basics</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./monte_carlo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Monte Carlo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Monte Carlo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./discrete_event.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Discrete events and Queuing Theory</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Discrete events and Queuing Theory</span></span></a>
   </div>
 </li>
       </ul>
@@ -233,19 +406,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./optimization_basics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Optimization basics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Optimization basics</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./exact_methods.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exact methods</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Exact methods</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metaheuristics.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Metaheuristics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Metaheuristics</span></span></a>
   </div>
 </li>
       </ul>
@@ -253,13 +426,13 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./optimization_in_ml.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization and Simulation in Machine Learning</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Optimization and Simulation in Machine Learning</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -278,32 +451,33 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">7.1</span> Introduction</a></li>
-  <li><a href="#trajectory-based-metaheuristics" id="toc-trajectory-based-metaheuristics" class="nav-link" data-scroll-target="#trajectory-based-metaheuristics"><span class="header-section-number">7.2</span> Trajectory-Based Metaheuristics</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">8.1</span> Introduction</a></li>
+  <li><a href="#trajectory-based-metaheuristics" id="toc-trajectory-based-metaheuristics" class="nav-link" data-scroll-target="#trajectory-based-metaheuristics"><span class="header-section-number">8.2</span> Trajectory-Based Metaheuristics</a>
   <ul class="collapse">
-  <li><a href="#simulated-annealing" id="toc-simulated-annealing" class="nav-link" data-scroll-target="#simulated-annealing"><span class="header-section-number">7.2.1</span> Simulated Annealing</a></li>
-  <li><a href="#tabu-search" id="toc-tabu-search" class="nav-link" data-scroll-target="#tabu-search"><span class="header-section-number">7.2.2</span> Tabu Search</a></li>
+  <li><a href="#simulated-annealing" id="toc-simulated-annealing" class="nav-link" data-scroll-target="#simulated-annealing"><span class="header-section-number">8.2.1</span> Simulated Annealing</a></li>
+  <li><a href="#tabu-search" id="toc-tabu-search" class="nav-link" data-scroll-target="#tabu-search"><span class="header-section-number">8.2.2</span> Tabu Search</a></li>
   </ul></li>
-  <li><a href="#population-based-metaheuristics" id="toc-population-based-metaheuristics" class="nav-link" data-scroll-target="#population-based-metaheuristics"><span class="header-section-number">7.3</span> Population-Based Metaheuristics</a>
+  <li><a href="#population-based-metaheuristics" id="toc-population-based-metaheuristics" class="nav-link" data-scroll-target="#population-based-metaheuristics"><span class="header-section-number">8.3</span> Population-Based Metaheuristics</a>
   <ul class="collapse">
-  <li><a href="#genetic-algorithms" id="toc-genetic-algorithms" class="nav-link" data-scroll-target="#genetic-algorithms"><span class="header-section-number">7.3.1</span> Genetic Algorithms</a></li>
+  <li><a href="#genetic-algorithms" id="toc-genetic-algorithms" class="nav-link" data-scroll-target="#genetic-algorithms"><span class="header-section-number">8.3.1</span> Genetic Algorithms</a></li>
   </ul></li>
-  <li><a href="#theoretical-considerations" id="toc-theoretical-considerations" class="nav-link" data-scroll-target="#theoretical-considerations"><span class="header-section-number">7.4</span> Theoretical Considerations</a>
+  <li><a href="#theoretical-considerations" id="toc-theoretical-considerations" class="nav-link" data-scroll-target="#theoretical-considerations"><span class="header-section-number">8.4</span> Theoretical Considerations</a>
   <ul class="collapse">
-  <li><a href="#the-no-free-lunch-theorems" id="toc-the-no-free-lunch-theorems" class="nav-link" data-scroll-target="#the-no-free-lunch-theorems"><span class="header-section-number">7.4.1</span> The No Free Lunch Theorems</a></li>
-  <li><a href="#hyperparameters-and-tuning" id="toc-hyperparameters-and-tuning" class="nav-link" data-scroll-target="#hyperparameters-and-tuning"><span class="header-section-number">7.4.2</span> Hyperparameters and Tuning</a></li>
+  <li><a href="#the-no-free-lunch-theorems" id="toc-the-no-free-lunch-theorems" class="nav-link" data-scroll-target="#the-no-free-lunch-theorems"><span class="header-section-number">8.4.1</span> The No Free Lunch Theorems</a></li>
+  <li><a href="#hyperparameters-and-tuning" id="toc-hyperparameters-and-tuning" class="nav-link" data-scroll-target="#hyperparameters-and-tuning"><span class="header-section-number">8.4.2</span> Hyperparameters and Tuning</a></li>
   </ul></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">7.5</span> Summary</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.6</span> Exercises</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">8.5</span> Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">8.6</span> Exercises</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/simuloptibook/simuloptibook.github.io/edit/main/metaheuristics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/simuloptibook/simuloptibook.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./optimization_basics.html">PART II: OPTIMIZATION</a></li><li class="breadcrumb-item"><a href="./metaheuristics.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Metaheuristics</span></a></li></ol></nav>
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./optimization_basics.html">PART II: OPTIMIZATION</a></li><li class="breadcrumb-item"><a href="./metaheuristics.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Metaheuristics</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-metaheuristics" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Metaheuristics</span></span></h1>
+<h1 class="title"><span id="sec-metaheuristics" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Metaheuristics</span></span></h1>
 </div>
 
 
@@ -320,8 +494,8 @@ window.Quarto = {
 </header>
 
 
-<section id="introduction" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">7.1</span> Introduction</h2>
+<section id="introduction" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">8.1</span> Introduction</h2>
 <p>In the previous chapters, we operated in the realm of mathematical certainty. When the Simplex method terminates, it provides a certificate of optimality. When Branch and Bound finishes a search, we know with absolute confidence that no better integer solution exists. However, not all optimization problems can be solved exactly within a reasonable timeframe. Some problems are NP-hard, meaning that the time required to solve them grows exponentially with the size of the input. In such cases, exact methods become impractical for large instances.</p>
 <p>To make progress, we must fundamentally change our goal. We shift from asking <em>What is the global minimum?</em> to asking <em>Can we find a solution that is good enough, quickly enough?</em>. Nobel laureate Herbert Simon coined the term <em>satisficing</em> (a portmanteau of satisfy and suffice) to describe this approach. In CS, this means trading optimality for efficiency. We accept a solution that might be 1% or 5% worse than the theoretical optimum if it allows us to find it in milliseconds rather than millennia.</p>
 <p>In this context, we define a <strong>heuristic</strong> as an algorithm that produces a feasible solution to an optimization problem without guaranteeing optimality. Derived from the Greek <em>heuriskein</em> (“to find”), a heuristic is a problem-specific strategy designed to find a good solution quickly. Therefore, heuristics rely on domain knowledge and intuition. For instance, in the Traveling Salesman Problem (TSP), a simple heuristic is the nearest neighbor algorithm, which constructs a tour by repeatedly visiting the nearest unvisited city. While this method is fast and often yields a reasonable solution, it does not guarantee the shortest possible tour. It often gets trapped in poor local optima because it never makes a move that looks bad in the short term, even if it is necessary for long-term success.</p>
@@ -331,13 +505,13 @@ window.Quarto = {
 <p>A “pure” hill-climber is 100% exploitation. A random search is 100% exploration. The algorithms in this chapter (Simulated Annealing, Tabu Search, and Genetic Algorithms) are successful specifically because they dynamically manage the balance between these two extremes, starting with exploration and gradually shifting toward exploitation.</p>
 <p>In the following, we will explore several popular metaheuristic algorithms, discussing their principles, implementations, and applications. We will divide our discussion into <strong>trajectory-based</strong> methods, which iteratively improve a single solution, and <strong>population-based</strong> methods, which evolve a set of solutions over time. In the first case, we will explore Simulated Annealing and Tabu Search as the most prominent examples. In the second case, we will study Genetic Algorithms.</p>
 </section>
-<section id="trajectory-based-metaheuristics" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="trajectory-based-metaheuristics"><span class="header-section-number">7.2</span> Trajectory-Based Metaheuristics</h2>
+<section id="trajectory-based-metaheuristics" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="trajectory-based-metaheuristics"><span class="header-section-number">8.2</span> Trajectory-Based Metaheuristics</h2>
 <p>The simplest way to explore a landscape is to send out a single hiker. In trajectory-based metaheuristics, we maintain a single candidate solution <span class="math inline">\(x\)</span> and iteratively improve it by exploring its neighbors <span class="math inline">\(x'\)</span>. The hiker evaluates nearby points and decides where to move next based on specific criteria. This approach is straightforward and often effective for many optimization problems. The sequence of solutions <span class="math inline">\(x_0, x_1, x_2, \ldots\)</span> generated by the algorithm forms a <em>trajectory</em> through the solution space.</p>
 <p>The fundamental challenge in this type of methods is to avoid getting stuck in local optima. A standard “Hill Climber” (or Greedy Descent) algorithm accepts a neighbor only if it is better than the current solution. Consequently, once the hiker reaches a small peak, they get stuck, even if a massive mountain looms just across the valley. To cross that valley, the algorithm must be willing to temporarily accept a worse solution. To address this problem, trajectory-based metaheuristics incorporate strategies to escape local minima and continue exploring the solution space.</p>
 <p>We will examine two dominant strategies for doing this: <strong>Simulated Annealing</strong> (which uses randomness) and <strong>Tabu Search</strong> (which uses memory).</p>
-<section id="simulated-annealing" class="level3" data-number="7.2.1">
-<h3 data-number="7.2.1" class="anchored" data-anchor-id="simulated-annealing"><span class="header-section-number">7.2.1</span> Simulated Annealing</h3>
+<section id="simulated-annealing" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="simulated-annealing"><span class="header-section-number">8.2.1</span> Simulated Annealing</h3>
 <p>Simulated Annealing (SA) is inspired by the annealing process in metallurgy, where controlled cooling of a material allows atoms to settle into a low-energy configuration. In optimization, SA mimics this process by allowing occasional uphill moves (i.e., accepting worse solutions) to escape local minima. The main idea is to perform the cooling process gradually, starting with a high “temperature” that permits more exploration and slowly lowering it to focus on exploitation.</p>
 <p>In SA, our objective function is called “Energy”, and the “Temperature” parameter controls the likelihood of accepting worse solutions. At high temperatures, the algorithm is more likely to accept uphill moves, promoting exploration. As the temperature decreases, the algorithm becomes more conservative, favoring downhill moves and refining the current solution.</p>
 <p>The algorithm proceeds as follows:</p>
@@ -355,7 +529,7 @@ window.Quarto = {
 <p>The criterion <span class="math inline">\(e^{-\Delta E / T}\)</span> is called the <strong>Metropolis criterion</strong>. It ensures that as the temperature decreases, the probability of accepting worse solutions diminishes, allowing the algorithm to focus on refining the best solutions found. Usually, the cooling schedule is geometric, e.g., <span class="math inline">\(T \leftarrow \alpha T\)</span> with <span class="math inline">\(\alpha \in (0,1)\)</span>. A high value of <span class="math inline">\(\alpha\)</span> (e.g., 0.99) results in slow cooling, promoting exploration, while a low value (e.g., 0.8) leads to rapid cooling and quicker convergence.</p>
 <p><strong>Coding Example</strong></p>
 <p>We now implement a solution to the Traveling Salesman Problem (TSP) using Simulated Annealing.</p>
-<div id="33a74000" class="cell" data-execution_count="1">
+<div id="a34d1f4d" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -416,13 +590,13 @@ window.Quarto = {
 <span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>best_route, min_dist <span class="op">=</span> simulated_annealing(dist_matrix)</span>
 <span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Final Best Distance: </span><span class="sc">{</span>min_dist<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Final Best Distance: 283</code></pre>
+<pre><code>Final Best Distance: 258</code></pre>
 </div>
 </div>
 <p>The code accepts a distance matrix representing the distances between cities and applies the Simulated Annealing algorithm to find a near-optimal tour. The algorithm starts with a random tour and iteratively improves it by exploring neighboring solutions, accepting worse solutions based on the Metropolis criterion, and gradually cooling down the temperature.</p>
 </section>
-<section id="tabu-search" class="level3" data-number="7.2.2">
-<h3 data-number="7.2.2" class="anchored" data-anchor-id="tabu-search"><span class="header-section-number">7.2.2</span> Tabu Search</h3>
+<section id="tabu-search" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="tabu-search"><span class="header-section-number">8.2.2</span> Tabu Search</h3>
 <p>While Simulated Annealing relies on rolling dice, Tabu Search (TS) relies on <strong>memory</strong>. It assumes that if we just visited a solution, we shouldn’t go back to it immediately. To accomplish this, Tabu Search uses memory structures to guide the search.</p>
 <p>The core idea of Tabu Search is to maintain a <strong>tabu list</strong>, which records recently visited solutions or moves. This list prevents the algorithm from revisiting these solutions for a certain number of iterations, thus encouraging exploration of new areas in the solution space. The tabu list can be implemented as a fixed-size queue that stores the last <span class="math inline">\(k\)</span> moves or solutions.</p>
 <p>The TS algorithm proceeds as follows:</p>
@@ -438,7 +612,7 @@ window.Quarto = {
 </ol>
 <p><strong>Coding Example</strong></p>
 <p>We will solve a generic problem: finding a binary string of length <span class="math inline">\(n\)</span> that maximizes a value function, using Tabu Search. A “neighbor” is created by flipping exactly one bit.</p>
-<div id="14934fef" class="cell" data-execution_count="2">
+<div id="5e08b1cd" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> deque</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> objective_function(x):</span>
@@ -501,17 +675,13 @@ window.Quarto = {
 <span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>final_sol, final_score <span class="op">=</span> tabu_search(n_bits<span class="op">=</span><span class="dv">20</span>, max_iter<span class="op">=</span><span class="dv">50</span>, tabu_tenure<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Final Solution: </span><span class="sc">{</span>final_sol<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Iter 0: New Best Score = 10
-Iter 1: New Best Score = 11
-Iter 2: New Best Score = 12
-Iter 3: New Best Score = 13
-Iter 4: New Best Score = 14
-Iter 5: New Best Score = 15
-Iter 6: New Best Score = 16
-Iter 7: New Best Score = 17
-Iter 8: New Best Score = 18
-Iter 9: New Best Score = 19
-Iter 10: New Best Score = 20
+<pre><code>Iter 0: New Best Score = 14
+Iter 1: New Best Score = 15
+Iter 2: New Best Score = 16
+Iter 3: New Best Score = 17
+Iter 4: New Best Score = 18
+Iter 5: New Best Score = 19
+Iter 6: New Best Score = 20
 Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</code></pre>
 </div>
 </div>
@@ -519,11 +689,11 @@ Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</co
 <p>In summary, SA is probabilistic and relies on randomness to escape local optima, while TS is deterministic and uses memory to guide the search. Both methods effectively balance exploration and exploitation, making them powerful tools for solving complex optimization problems. In the next section, we will explore population-based metaheuristics, which maintain a diverse set of solutions to explore the solution space more broadly.</p>
 </section>
 </section>
-<section id="population-based-metaheuristics" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="population-based-metaheuristics"><span class="header-section-number">7.3</span> Population-Based Metaheuristics</h2>
+<section id="population-based-metaheuristics" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="population-based-metaheuristics"><span class="header-section-number">8.3</span> Population-Based Metaheuristics</h2>
 <p>In trajectory-based methods (SA, TS), we send a single agent moving through the solution space. While effective, this approach has a limitation: the agent is lonely. It cannot learn from the successes or failures of other agents. Population-based metaheuristics address this limitation by maintaining a <strong>population</strong> of candidate solutions. Multiple agents explore the solution space simultaneously, sharing information and learning from each other. For instance, if Solution A has a good parameter for the first half of the problem, and Solution B has a good parameter for the second half, population methods attempt to combine them to create a superior Solution C. This collective behavior often leads to more robust exploration and better overall solutions. The most famous family of these algorithms is <strong>Evolutionary Computation</strong>, of which <strong>Genetic Algorithms</strong> (GAs) are the most well-known example.</p>
-<section id="genetic-algorithms" class="level3" data-number="7.3.1">
-<h3 data-number="7.3.1" class="anchored" data-anchor-id="genetic-algorithms"><span class="header-section-number">7.3.1</span> Genetic Algorithms</h3>
+<section id="genetic-algorithms" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="genetic-algorithms"><span class="header-section-number">8.3.1</span> Genetic Algorithms</h3>
 <p>Genetic Algorithms (GAs) are inspired by the principles of natural selection and genetics. They simulate the process of evolution by maintaining a population of candidate solutions (individuals) that evolve over generations. Each individual is typically represented as a chromosome, often encoded as a binary string, but other representations are also possible.</p>
 <p>In any GA, we find the following key components:</p>
 <ul>
@@ -549,7 +719,7 @@ Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</co
 <li><strong>Rank Selection:</strong> Individuals are ranked based on fitness, and selection probabilities are assigned based on rank rather than absolute fitness. This helps to prevent premature convergence.</li>
 </ul>
 <p>The following example shows an implementation of tournament selection.</p>
-<div id="0c0f3ed6" class="cell" data-execution_count="3">
+<div id="2174496d" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> select_parents(population, fitnesses):</span>
@@ -571,7 +741,7 @@ Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</co
 <li><strong>Uniform Crossover:</strong> Each gene is independently swapped with a certain probability.</li>
 </ul>
 <p>The following example demonstrates one-point crossover.</p>
-<div id="6176e1f5" class="cell" data-execution_count="4">
+<div id="bbe8d9de" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> crossover(parent1, parent2):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Single-Point Crossover."""</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.random.rand() <span class="op">&lt;</span> <span class="fl">0.8</span>: <span class="co"># 80% chance to mate</span></span>
@@ -584,7 +754,7 @@ Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</co
 <p><strong>Mutation Methods</strong></p>
 <p>Mutation introduces random changes to the offspring’s chromosomes to maintain diversity. Common mutation methods include: - <strong>Bit Flip Mutation:</strong> For binary strings, randomly flip bits with a certain probability. - <strong>Gaussian Mutation:</strong> For real-valued representations, add a small random value drawn from a Gaussian distribution to the genes.</p>
 <p>The following example shows bit flip mutation.</p>
-<div id="37304e74" class="cell" data-execution_count="5">
+<div id="44caebce" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mutate(individual):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Gaussian Mutation: Add small noise."""</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(individual)):</span>
@@ -595,7 +765,7 @@ Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</co
 </div>
 <p><strong>Putting It All Together</strong></p>
 <p>Now we can implement a simple Genetic Algorithm that combines these components to optimize a function. For demonstration purposes, we will implement a GA to minimize the Sphere Function defined as <span class="math inline">\(f(x) = \sum_{i=1}^{n} x_i^2\)</span>, which has a global minimum at <span class="math inline">\(x = 0\)</span>. While GAs were originally designed for binary strings, they are heavily used today for continuous optimization (e.g., tuning hyperparameters).</p>
-<div id="64536264" class="cell" data-execution_count="6">
+<div id="8b813a25" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Configuration ---</span></span>
@@ -654,29 +824,29 @@ Final Solution: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</co
 <span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>best_sol <span class="op">=</span> population[np.argmax(final_fitnesses)]</span>
 <span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Final Solution: </span><span class="sc">{</span>best_sol<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Gen 0: Best Fitness = -49.71160
-Gen 10: Best Fitness = -7.60624
-Gen 20: Best Fitness = -1.05902
-Gen 30: Best Fitness = -0.09540
-Gen 40: Best Fitness = -0.02580
-Gen 50: Best Fitness = -0.01039
-Gen 60: Best Fitness = -0.00670
-Gen 70: Best Fitness = -0.00404
-Gen 80: Best Fitness = -0.00317
-Gen 90: Best Fitness = -0.00252
-Final Solution: [ 0.00121301 -0.0082742   0.00857778  0.03206538 -0.01664409 -0.02172268
- -0.01497178  0.01678227  0.00133702 -0.00921344]</code></pre>
+<pre><code>Gen 0: Best Fitness = -42.92598
+Gen 10: Best Fitness = -7.58045
+Gen 20: Best Fitness = -1.67687
+Gen 30: Best Fitness = -0.16394
+Gen 40: Best Fitness = -0.08159
+Gen 50: Best Fitness = -0.03561
+Gen 60: Best Fitness = -0.02329
+Gen 70: Best Fitness = -0.01139
+Gen 80: Best Fitness = -0.00583
+Gen 90: Best Fitness = -0.00394
+Final Solution: [-0.00967695 -0.02115014  0.00715376 -0.02193899  0.0051177   0.01559017
+ -0.04267181 -0.01304747 -0.00936207  0.00105   ]</code></pre>
 </div>
 </div>
 <p>In this implementation, we initialize a population of random solutions and iteratively apply selection, crossover, and mutation to evolve the population towards better solutions. We also use elitism to ensure that the best solutions are preserved across generations. The algorithm optimizes the Sphere function, and we track the best fitness at regular intervals.</p>
 <p>The power of GA lies in its ability to explore a large and complex solution space effectively, making it suitable for a wide range of optimization problems, from engineering design to machine learning hyperparameter tuning. In general, GAs are easily parallelizable, as the evaluation of fitness for different individuals can be done independently, making them well-suited for modern computational architectures. Additionally, they do not require gradients, making them applicable to non-differentiable or noisy optimization problems. Finally, the combination of crossover and mutation allows GAs to maintain diversity in the population, helping to avoid premature convergence to local optima.</p>
 </section>
 </section>
-<section id="theoretical-considerations" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="theoretical-considerations"><span class="header-section-number">7.4</span> Theoretical Considerations</h2>
+<section id="theoretical-considerations" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="theoretical-considerations"><span class="header-section-number">8.4</span> Theoretical Considerations</h2>
 <p>We have now explored different metaheuristic algorithms, each with its own strengths and weaknesses. While these methods are powerful, it is important to understand their theoretical underpinnings and limitations. If we are building a routing system for a logistics company, should we default to a Genetic Algorithm because it sounds the most sophisticated? Or stick to Simulated Annealing because it is easier to code?</p>
-<section id="the-no-free-lunch-theorems" class="level3" data-number="7.4.1">
-<h3 data-number="7.4.1" class="anchored" data-anchor-id="the-no-free-lunch-theorems"><span class="header-section-number">7.4.1</span> The No Free Lunch Theorems</h3>
+<section id="the-no-free-lunch-theorems" class="level3" data-number="8.4.1">
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="the-no-free-lunch-theorems"><span class="header-section-number">8.4.1</span> The No Free Lunch Theorems</h3>
 <p>While answering this question is complex, part of the answer lies in the <strong>No Free Lunch Theorems</strong> for optimization. These theorems state that no optimization algorithm is universally superior to others when averaged over all possible problems. In other words, an algorithm that performs well on one class of problems may perform poorly on another. Therefore, the choice of metaheuristic should be informed by the specific characteristics of the problem at hand.</p>
 <p>We can derive the following implications from the No Free Lunch Theorems:</p>
 <ul>
@@ -686,21 +856,21 @@ Final Solution: [ 0.00121301 -0.0082742   0.00857778  0.03206538 -0.01664409 -0.
 </ul>
 <p>Specifically, the job of the computer scientist is not just to pick an algorithm from a library, but to understand the <em>geometry</em> of their specific problem. For instance, if the problem has a “smooth” landscape, we can use a trajectory method like SA. However, if it has a “modular” structure instead (where combining parts of solution A and B makes sense), probably using a Genetic Algorithm would be the best choice.</p>
 </section>
-<section id="hyperparameters-and-tuning" class="level3" data-number="7.4.2">
-<h3 data-number="7.4.2" class="anchored" data-anchor-id="hyperparameters-and-tuning"><span class="header-section-number">7.4.2</span> Hyperparameters and Tuning</h3>
+<section id="hyperparameters-and-tuning" class="level3" data-number="8.4.2">
+<h3 data-number="8.4.2" class="anchored" data-anchor-id="hyperparameters-and-tuning"><span class="header-section-number">8.4.2</span> Hyperparameters and Tuning</h3>
 <p>The second theoretical hurdle is the issue of configuration. Exact algorithms like Simplex have very few parameters. Metaheuristics, however, are full of “knobs” that must be tuned. For instance, in SA we have the initial temperature, cooling rate, and stopping criteria. In GAs, we have population size, mutation rate, crossover rate, selection method, and more. The performance of these algorithms can be highly sensitive to the choice of these hyperparameters.</p>
 <p>So how do we choose e.g.&nbsp;the correct mutation rate? Ideally, we want the mutation rate that minimizes our loss function. But finding that rate is itself an optimization problem. We are effectively trying to “optimize the optimizer”. This meta-optimization can be computationally expensive and may require specialized techniques.</p>
 <p>For instance, one of the most common methods for hyperparameter tuning is <strong>Grid Search</strong>, where we define a discrete set of values for each hyperparameter and evaluate the performance of the algorithm for every combination. While this method is straightforward, it can be computationally expensive, especially when the number of hyperparameters and their possible values increases.</p>
 <p>Additionally, there are more sophisticated methods like <strong>Random Search</strong>, which samples hyperparameter combinations randomly, and <strong>Bayesian Optimization</strong>, which builds a probabilistic model of the objective function and uses it to select promising hyperparameter values. These methods can be more efficient than Grid Search, especially in high-dimensional hyperparameter spaces.</p>
 </section>
 </section>
-<section id="summary" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="summary"><span class="header-section-number">7.5</span> Summary</h2>
+<section id="summary" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="summary"><span class="header-section-number">8.5</span> Summary</h2>
 <p>In this chapter, we explored the world of metaheuristics, which are powerful tools for solving complex optimization problems that are intractable for exact methods. We discussed the fundamental concepts of heuristics and metaheuristics, and how they differ from traditional optimization algorithms. We delved into trajectory-based methods like Simulated Annealing and Tabu Search, which use randomness and memory to escape local optima. We also examined population-based methods like Genetic Algorithms, which maintain a diverse set of solutions to explore the solution space more effectively.</p>
 <p>Finally, we discussed theoretical considerations such as the No Free Lunch Theorems, which highlight the importance of problem-specific algorithm design, and the challenges of hyperparameter tuning in metaheuristics. Understanding these concepts is crucial for effectively applying metaheuristic algorithms to real-world optimization problems.</p>
 </section>
-<section id="exercises" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="exercises"><span class="header-section-number">7.6</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="exercises"><span class="header-section-number">8.6</span> Exercises</h2>
 <ol type="1">
 <li><p>Implement a Simulated Annealing algorithm to solve the Knapsack Problem. Compare its performance with a simple greedy heuristic.</p></li>
 <li><p>Implement a Tabu Search algorithm for the Job Scheduling Problem. In the Job Scheduling Problem, we have a set of jobs, each with a processing time and a deadline. The goal is to schedule the jobs in a way that minimizes the total tardiness (the amount of time by which jobs miss their deadlines). Experiment with different tabu tenures and aspiration criteria to see how they affect the performance of the algorithm.</p></li>
@@ -717,6 +887,19 @@ f(x) = 10n + \sum_{i=1}^{n} [x_i^2 - 10\cos(2\pi x_i)]
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -788,7 +971,7 @@ f(x) = 10n + \sum_{i=1}^{n} [x_i^2 - 10\cos(2\pi x_i)]
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/simuloptibook\.github\.io\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1118,12 +1301,12 @@ f(x) = 10n + \sum_{i=1}^{n} [x_i^2 - 10\cos(2\pi x_i)]
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./exact_methods.html" class="pagination-link" aria-label="Exact methods">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exact methods</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Exact methods</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./optimization_in_ml.html" class="pagination-link" aria-label="Optimization and Simulation in Machine Learning">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Optimization and Simulation in Machine Learning</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Optimization and Simulation in Machine Learning</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1132,4 +1315,4 @@ f(x) = 10n + \sum_{i=1}^{n} [x_i^2 - 10\cos(2\pi x_i)]
 
 
 
-</body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/simuloptibook/simuloptibook.github.io/edit/main/metaheuristics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/simuloptibook/simuloptibook.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

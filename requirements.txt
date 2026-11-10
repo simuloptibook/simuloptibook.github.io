@@ -1,0 +1,15 @@
+# Python dependencies for rendering the book with Quarto and running code/
+# Setup: python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt
+
+# Jupyter kernel used by Quarto to execute {python} cells
+ipykernel>=7.4
+
+# Used in chapter code cells
+numpy>=2.5
+matplotlib>=3.11
+scipy>=1.18
+# PuLP 4.x no longer bundles the CBC solver (PULP_CBC_CMD, used in exact_methods.qmd)
+pulp>=3.3,<4
+
+# Used only by standalone scripts in code/
+tsplib95>=0.7

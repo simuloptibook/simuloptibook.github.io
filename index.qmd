@@ -1,6 +1,14 @@
+
+
 # Welcome {.unnumbered}
 
-This is the website for the **Simulation and Optimization** book that will teach you the basics of simulation approaches and 
-optimization techniques in the context of modern AI systems. The source code of the book and the examples
-are provided as open-source and free to use [Creative Commons Attribution-NonCommercial-NoDerivs 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) license.
+This book introduces the foundations of simulation and optimization
+through a model-driven approach, with particular emphasis on their
+application in modern AI systems.
+
+It accompanies the master's course **Simulation and Optimization**
+in the study programme **Engineering Responsible AI Systems** at
+IMC Krems University of Applied Sciences.
+
+
 

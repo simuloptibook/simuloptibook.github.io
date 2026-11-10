@@ -5,6 +5,13 @@ project:
 book:
   title: "Simulation and Optimization: A Model-Driven Approach"
   author: "Rubén Ruiz-Torrubiano"
+  cover-image: images/book-cover.png
+  favicon: images/book-cover.png
+  site-url: https://simuloptibook.github.io/
+  repo-url: https://github.com/simuloptibook/simuloptibook.github.io
+  repo-actions: [edit, issue]
+  search: true
+  downloads: [pdf]
   date: today
   date-format: medium
   chapters:
@@ -27,15 +34,30 @@ book:
 
 bibliography: references.bib
 
+
 format:
   html:
     default-image-extension: png
     theme:
-      - cosmo
-      - brand
+      light: cosmo
+      dark: darkly
+    css: styles.css
+    code-copy: true
+    code-overflow: wrap
+    toc: true
   pdf:
-    documentclass: scrreprt
+    documentclass: scrbook
     default-image-extension: png
+    classoption:
+      - open=any
+    toc: true
+    colorlinks: true
+    header-includes: |
+      \titlehead{
+        \begin{center}
+        \includegraphics[width=0.48\textwidth]{images/book-cover.png}
+        \end{center}
+      }
 
 
 
