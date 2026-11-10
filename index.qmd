@@ -8,7 +8,10 @@ application in modern AI systems.
 
 It accompanies the master's course **Simulation and Optimization**
 in the study programme **Engineering Responsible AI Systems** at
-IMC Krems University of Applied Sciences.
+IMC Krems University of Applied Sciences. The book is structured in two main parts. The first part focuses on simulation techniques, covering topics such as Monte Carlo methods, discrete-event simulation, and agent-based modeling. The second part delves into optimization methods, including linear programming, nonlinear optimization, and metaheuristic algorithms. Each chapter provides theoretical background, practical examples, and hands-on exercises to reinforce learning.
+Finally, the book concludes with a discussion on the integration of simulation and optimization in AI applications, highlighting their role in decision-making, risk assessment, and performance enhancement.
+
+We hope that this book serves as a valuable resource for students, researchers, and practitioners seeking to deepen their understanding of simulation and optimization in the context of AI. By exploring these techniques, readers will gain insights into the underlying principles that drive modern AI systems and develop the skills necessary to apply them effectively in real-world scenarios.
 
 
 
