@@ -458,10 +458,21 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#example-1-simulating-supermarket-dynamics" id="toc-example-1-simulating-supermarket-dynamics" class="nav-link active" data-scroll-target="#example-1-simulating-supermarket-dynamics"><span class="header-section-number">1.1</span> Example 1: Simulating supermarket dynamics</a></li>
-  <li><a href="#example-2-the-traveling-salesman" id="toc-example-2-the-traveling-salesman" class="nav-link" data-scroll-target="#example-2-the-traveling-salesman"><span class="header-section-number">1.2</span> Example 2: The traveling salesman</a></li>
-  <li><a href="#structure-of-the-book" id="toc-structure-of-the-book" class="nav-link" data-scroll-target="#structure-of-the-book"><span class="header-section-number">1.3</span> Structure of the book</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">1.4</span> Exercises</a></li>
+  <li><a href="#example-1-will-the-project-finish-on-time" id="toc-example-1-will-the-project-finish-on-time" class="nav-link active" data-scroll-target="#example-1-will-the-project-finish-on-time"><span class="header-section-number">1.1</span> Example 1: Will the project finish on time?</a>
+  <ul class="collapse">
+  <li><a href="#identifying-the-elements-of-the-model" id="toc-identifying-the-elements-of-the-model" class="nav-link" data-scroll-target="#identifying-the-elements-of-the-model"><span class="header-section-number">1.1.1</span> Identifying the elements of the model</a></li>
+  <li><a href="#modeling-uncertain-task-durations" id="toc-modeling-uncertain-task-durations" class="nav-link" data-scroll-target="#modeling-uncertain-task-durations"><span class="header-section-number">1.1.2</span> Modeling uncertain task durations</a></li>
+  <li><a href="#simulating-one-possible-project" id="toc-simulating-one-possible-project" class="nav-link" data-scroll-target="#simulating-one-possible-project"><span class="header-section-number">1.1.3</span> Simulating one possible project</a></li>
+  <li><a href="#repeating-the-experiment" id="toc-repeating-the-experiment" class="nav-link" data-scroll-target="#repeating-the-experiment"><span class="header-section-number">1.1.4</span> Repeating the experiment</a></li>
+  <li><a href="#examining-the-distribution-of-completion-times" id="toc-examining-the-distribution-of-completion-times" class="nav-link" data-scroll-target="#examining-the-distribution-of-completion-times"><span class="header-section-number">1.1.5</span> Examining the distribution of completion times</a></li>
+  <li><a href="#monte-carlo-estimates-are-themselves-uncertain" id="toc-monte-carlo-estimates-are-themselves-uncertain" class="nav-link" data-scroll-target="#monte-carlo-estimates-are-themselves-uncertain"><span class="header-section-number">1.1.6</span> Monte Carlo estimates are themselves uncertain</a></li>
+  <li><a href="#the-monte-carlo-simulation-algorithm" id="toc-the-monte-carlo-simulation-algorithm" class="nav-link" data-scroll-target="#the-monte-carlo-simulation-algorithm"><span class="header-section-number">1.1.7</span> The Monte Carlo simulation algorithm</a></li>
+  <li><a href="#possible-refinements-of-the-model" id="toc-possible-refinements-of-the-model" class="nav-link" data-scroll-target="#possible-refinements-of-the-model"><span class="header-section-number">1.1.8</span> Possible refinements of the model</a></li>
+  </ul></li>
+  <li><a href="#example-2-simulating-supermarket-dynamics" id="toc-example-2-simulating-supermarket-dynamics" class="nav-link" data-scroll-target="#example-2-simulating-supermarket-dynamics"><span class="header-section-number">1.2</span> Example 2: Simulating supermarket dynamics</a></li>
+  <li><a href="#example-3-the-traveling-salesman" id="toc-example-3-the-traveling-salesman" class="nav-link" data-scroll-target="#example-3-the-traveling-salesman"><span class="header-section-number">1.3</span> Example 3: The traveling salesman</a></li>
+  <li><a href="#structure-of-the-book" id="toc-structure-of-the-book" class="nav-link" data-scroll-target="#structure-of-the-book"><span class="header-section-number">1.4</span> Structure of the book</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">1.5</span> Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/simuloptibook/simuloptibook.github.io/edit/main/intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/simuloptibook/simuloptibook.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -491,8 +502,349 @@ window.Quarto = {
 <p>Simulation and optimization approaches are present in our everyday lives, albeit most of the time operating in a background plane. For example, when navigating with a GPS, the system simulates different routes and optimizes for the shortest or fastest path. Similarly, supply chains use optimization algorithms to minimize costs and maximize efficiency, while simulations help predict demand and manage inventory. These techniques are fundamental tools in decision-making processes across various industries, from transportation and logistics to finance and healthcare.</p>
 <p>But what do simulation and optimization approaches have in common, apart from being complementary tools? The answer lies in the concept of a <em>model</em>. In the context of machine learning, we normally refer to a model as a mathematical or computational representation that captures the relationships between input data and output predictions. In simulation and optimization, a model similarly serves as an abstraction of a real-world system or process, allowing us to analyze, predict, and improve its behavior through experimentation and algorithmic techniques.</p>
 <p>In the following, we will delve deeper into the concept of a model and how models are used in simulation and optimization contexts using some practical examples.</p>
-<section id="example-1-simulating-supermarket-dynamics" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="example-1-simulating-supermarket-dynamics"><span class="header-section-number">1.1</span> Example 1: Simulating supermarket dynamics</h2>
+<section id="example-1-will-the-project-finish-on-time" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="example-1-will-the-project-finish-on-time"><span class="header-section-number">1.1</span> Example 1: Will the project finish on time?</h2>
+<p>Imagine that a small software team is preparing a new application for release. Before the application can be delivered, the team must complete three tasks:</p>
+<ol type="1">
+<li>implement the remaining features,</li>
+<li>test the application, and</li>
+<li>prepare the production release.</li>
+</ol>
+<p>The tasks must be performed one after another. However, their durations are uncertain. Implementation may take longer if unexpected technical problems occur. Testing may reveal defects that require additional work. Even the final deployment may encounter delays.</p>
+<p>The project manager has promised that the application will be ready within 35 working days. The central question is therefore:</p>
+<blockquote class="blockquote">
+<p>What is the probability that the project will be completed within 35 working days?</p>
+</blockquote>
+<p>Because the exact task durations are unknown, adding three fixed numbers is not sufficient. Instead, we describe each duration using a probability distribution and simulate many possible realizations of the project.</p>
+<p>This is a typical application of <strong>Monte Carlo simulation</strong>.</p>
+<section id="identifying-the-elements-of-the-model" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="identifying-the-elements-of-the-model"><span class="header-section-number">1.1.1</span> Identifying the elements of the model</h3>
+<p>As in other simulation models, we first identify the most important elements of the system. For a Monte Carlo simulation, we distinguish between <em>components</em>, <em>random inputs</em>, <em>model logic</em>, <em>outputs</em>, and <em>metrics</em>.</p>
+<ul>
+<li><p><strong>Components:</strong> The entities represented in the model. In this example, the components are the three project tasks: implementation, testing, and deployment.</p></li>
+<li><p><strong>Random inputs:</strong> Quantities whose values are uncertain. Here, the durations of the three tasks are random variables.</p></li>
+<li><p><strong>Model logic:</strong> The mathematical or computational relationships that transform the inputs into outputs. Since the tasks are performed sequentially, the total project duration is the sum of the three task durations.</p></li>
+<li><p><strong>Outputs:</strong> Quantities calculated for one simulated scenario. The primary output is the total duration of the project.</p></li>
+<li><p><strong>Metrics:</strong> Summary measures calculated across many simulated scenarios. Examples include the expected project duration, the probability of meeting the deadline, and percentiles of the completion-time distribution.</p></li>
+</ul>
+<p>A single simulation run represents one possible way in which the project could unfold. Repeating the simulation many times allows us to estimate how likely different outcomes are.</p>
+</section>
+<section id="modeling-uncertain-task-durations" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="modeling-uncertain-task-durations"><span class="header-section-number">1.1.2</span> Modeling uncertain task durations</h3>
+<p>Suppose the project team provides the following estimates:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th style="text-align: right;">Optimistic duration</th>
+<th style="text-align: right;">Most likely duration</th>
+<th style="text-align: right;">Pessimistic duration</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Implementation</td>
+<td style="text-align: right;">10 days</td>
+<td style="text-align: right;">15 days</td>
+<td style="text-align: right;">24 days</td>
+</tr>
+<tr class="even">
+<td>Testing</td>
+<td style="text-align: right;">5 days</td>
+<td style="text-align: right;">8 days</td>
+<td style="text-align: right;">16 days</td>
+</tr>
+<tr class="odd">
+<td>Deployment</td>
+<td style="text-align: right;">2 days</td>
+<td style="text-align: right;">4 days</td>
+<td style="text-align: right;">8 days</td>
+</tr>
+</tbody>
+</table>
+<p>For each task, the team can provide a minimum plausible duration, a most likely duration, and a maximum plausible duration. A simple probability distribution that uses exactly these three estimates is the <strong>triangular distribution</strong>.</p>
+<p>Let</p>
+<p><span class="math display">\[
+D_I \sim \operatorname{Triangular}(10,15,24)
+\]</span></p>
+<p>denote the implementation duration,</p>
+<p><span class="math display">\[
+D_T \sim \operatorname{Triangular}(5,8,16)
+\]</span></p>
+<p>the testing duration, and</p>
+<p><span class="math display">\[
+D_D \sim \operatorname{Triangular}(2,4,8)
+\]</span></p>
+<p>the deployment duration.</p>
+<p>The total project duration is then</p>
+<p><span class="math display">\[
+D = D_I + D_T + D_D.
+\]</span></p>
+<p>For the moment, we assume that the three task durations are statistically independent. This means, for example, that an unusually long implementation phase does not change the probability distribution of the testing duration. This simplifying assumption can be relaxed in more advanced models.</p>
+</section>
+<section id="simulating-one-possible-project" class="level3" data-number="1.1.3">
+<h3 data-number="1.1.3" class="anchored" data-anchor-id="simulating-one-possible-project"><span class="header-section-number">1.1.3</span> Simulating one possible project</h3>
+<p>One Monte Carlo replication consists of the following steps:</p>
+<ol type="1">
+<li><p>Sample an implementation duration <span class="math inline">\(d_I\)</span>.</p></li>
+<li><p>Sample a testing duration <span class="math inline">\(d_T\)</span>.</p></li>
+<li><p>Sample a deployment duration <span class="math inline">\(d_D\)</span>.</p></li>
+<li><p>Calculate the total duration</p>
+<p><span class="math display">\[
+d = d_I+d_T+d_D.
+\]</span></p></li>
+<li><p>Record whether the total duration is at most 35 days.</p></li>
+</ol>
+<p>The following Python code implements one replication:</p>
+<div id="single-project-replication" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>implementation <span class="op">=</span> random.triangular(<span class="dv">10</span>, <span class="dv">24</span>, <span class="dv">15</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>testing <span class="op">=</span> random.triangular(<span class="dv">5</span>, <span class="dv">16</span>, <span class="dv">8</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>deployment <span class="op">=</span> random.triangular(<span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">4</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>total_duration <span class="op">=</span> implementation <span class="op">+</span> testing <span class="op">+</span> deployment</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>completed_on_time <span class="op">=</span> total_duration <span class="op">&lt;=</span> <span class="dv">35</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Implementation: </span><span class="sc">{</span>implementation<span class="sc">:.1f}</span><span class="ss"> days"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Testing:        </span><span class="sc">{</span>testing<span class="sc">:.1f}</span><span class="ss"> days"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Deployment:     </span><span class="sc">{</span>deployment<span class="sc">:.1f}</span><span class="ss"> days"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total duration: </span><span class="sc">{</span>total_duration<span class="sc">:.1f}</span><span class="ss"> days"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"On time:        </span><span class="sc">{</span>completed_on_time<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Implementation: 16.0 days
+Testing:        10.2 days
+Deployment:     4.9 days
+Total duration: 31.1 days
+On time:        True</code></pre>
+</div>
+</div>
+<p>The sampled values will generally be different each time the code is executed. This is not an error. Random variation is an essential part of the model.</p>
+<p>However, one simulated project tells us very little about the overall risk. To estimate the probability of meeting the deadline, we must repeat the experiment many times.</p>
+</section>
+<section id="repeating-the-experiment" class="level3" data-number="1.1.4">
+<h3 data-number="1.1.4" class="anchored" data-anchor-id="repeating-the-experiment"><span class="header-section-number">1.1.4</span> Repeating the experiment</h3>
+<p>Let <span class="math inline">\(R\)</span> denote the number of Monte Carlo replications. For replication <span class="math inline">\(r\)</span>, let <span class="math inline">\(D^{(r)}\)</span> be the simulated total project duration.</p>
+<p>We define an indicator variable</p>
+<p><span class="math display">\[
+I^{(r)} =
+\begin{cases}
+1, &amp; \text{if } D^{(r)} \leq 35,\\
+0, &amp; \text{otherwise.}
+\end{cases}
+\]</span></p>
+<p>The probability of meeting the deadline can then be estimated by</p>
+<p><span class="math display">\[
+\widehat{p}_R =
+\frac{1}{R}
+\sum_{r=1}^{R} I^{(r)}.
+\]</span></p>
+<p>In words, <span class="math inline">\(\widehat{p}_R\)</span> is simply the fraction of simulated projects that finish within 35 days.</p>
+<p>The following code performs <span class="math inline">\(R=100{,}000\)</span> replications:</p>
+<div id="project-monte-carlo" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statistics</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">2026</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>deadline <span class="op">=</span> <span class="dv">35</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>replications <span class="op">=</span> <span class="dv">100_000</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>durations <span class="op">=</span> []</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(replications):</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    implementation <span class="op">=</span> random.triangular(<span class="dv">10</span>, <span class="dv">24</span>, <span class="dv">15</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    testing <span class="op">=</span> random.triangular(<span class="dv">5</span>, <span class="dv">16</span>, <span class="dv">8</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    deployment <span class="op">=</span> random.triangular(<span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">4</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    total_duration <span class="op">=</span> implementation <span class="op">+</span> testing <span class="op">+</span> deployment</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    durations.append(total_duration)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>on_time <span class="op">=</span> <span class="bu">sum</span>(duration <span class="op">&lt;=</span> deadline <span class="cf">for</span> duration <span class="kw">in</span> durations)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>estimated_probability <span class="op">=</span> on_time <span class="op">/</span> replications</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>mean_duration <span class="op">=</span> statistics.mean(durations)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Replications:              </span><span class="sc">{</span>replications<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean project duration:     </span><span class="sc">{</span>mean_duration<span class="sc">:.2f}</span><span class="ss"> days"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Probability of finishing"</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"within </span><span class="sc">{</span>deadline<span class="sc">}</span><span class="ss"> days:       </span><span class="sc">{</span>estimated_probability<span class="sc">:.2%}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Replications:              100,000
+Mean project duration:     30.64 days
+Probability of finishing
+within 35 days:       86.14%</code></pre>
+</div>
+</div>
+<p>The list <code>durations</code> contains the output of every replication. The expression</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>duration <span class="op">&lt;=</span> deadline</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>returns either <code>True</code> or <code>False</code>. In Python, these values behave like 1 and 0 when they are added. Dividing the number of successful replications by the total number of replications therefore gives the estimated probability of meeting the deadline.</p>
+<p>The call to <code>random.seed(2026)</code> initializes the random-number generator. Using a fixed seed makes the results reproducible: running the same code again produces the same sequence of pseudo-random values.</p>
+</section>
+<section id="examining-the-distribution-of-completion-times" class="level3" data-number="1.1.5">
+<h3 data-number="1.1.5" class="anchored" data-anchor-id="examining-the-distribution-of-completion-times"><span class="header-section-number">1.1.5</span> Examining the distribution of completion times</h3>
+<p>The probability of meeting a particular deadline is useful, but it does not provide a complete picture. We may also want to understand the distribution of possible project durations.</p>
+<div id="cell-project-duration-histogram" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plt.hist(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    durations,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span><span class="dv">50</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"white"</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.axvline(</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    deadline,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"red"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="ss">f"Deadline: </span><span class="sc">{</span>deadline<span class="sc">}</span><span class="ss"> days"</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Total project duration in days"</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of replications"</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="project-duration-histogram" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="intro_files/figure-html/project-duration-histogram-output-1.png" alt="Histogram of simulated project durations with a vertical line at the 35-day deadline." width="602" height="431" class="figure-img"></p>
+<figcaption>Distribution of simulated project completion times.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The histogram approximates the probability distribution of the total project duration. Simulated durations to the left of the red line correspond to projects that finish on time. Durations to the right correspond to projects that miss the deadline.</p>
+<p>We can also calculate percentiles. For example, the 90th percentile is a duration that is exceeded in only approximately 10% of the simulated projects.</p>
+<div id="project-percentiles" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>percentiles <span class="op">=</span> np.percentile(durations, [<span class="dv">50</span>, <span class="dv">80</span>, <span class="dv">90</span>, <span class="dv">95</span>])</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> level, value <span class="kw">in</span> <span class="bu">zip</span>([<span class="dv">50</span>, <span class="dv">80</span>, <span class="dv">90</span>, <span class="dv">95</span>], percentiles):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>level<span class="sc">}</span><span class="ss">th percentile: </span><span class="sc">{</span>value<span class="sc">:.2f}</span><span class="ss"> days"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>50th percentile: 30.50 days
+80th percentile: 33.98 days
+90th percentile: 35.83 days
+95th percentile: 37.37 days</code></pre>
+</div>
+</div>
+<p>If the 90th percentile is 39 days, for example, a deadline of approximately 39 days would be met in about 90% of the scenarios represented by the model.</p>
+<p>This gives the project manager two related ways to formulate a question:</p>
+<ol type="1">
+<li><strong>Deadline evaluation:</strong> If the deadline is fixed at 35 days, what is the probability of meeting it?</li>
+<li><strong>Deadline selection:</strong> If the desired confidence level is 90%, what deadline should be promised?</li>
+</ol>
+</section>
+<section id="monte-carlo-estimates-are-themselves-uncertain" class="level3" data-number="1.1.6">
+<h3 data-number="1.1.6" class="anchored" data-anchor-id="monte-carlo-estimates-are-themselves-uncertain"><span class="header-section-number">1.1.6</span> Monte Carlo estimates are themselves uncertain</h3>
+<p>The result of a Monte Carlo simulation is an <strong>estimate</strong>. If we run only a small number of replications, the estimated probability can vary substantially.</p>
+<p>Assuming that the replications are independent, the estimated standard error of <span class="math inline">\(\widehat{p}_R\)</span> is</p>
+<p><span class="math display">\[
+\widehat{\operatorname{SE}}(\widehat{p}_R)
+=
+\sqrt{
+\frac{
+\widehat{p}_R(1-\widehat{p}_R)
+}{R}
+}.
+\]</span></p>
+<p>An approximate 95% confidence interval is</p>
+<p><span class="math display">\[
+\widehat{p}_R
+\pm
+1.96\,
+\widehat{\operatorname{SE}}(\widehat{p}_R).
+\]</span></p>
+<p>We can calculate this interval as follows:</p>
+<div id="project-confidence-interval" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>standard_error <span class="op">=</span> (</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    estimated_probability</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> estimated_probability)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> replications</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">**</span> <span class="fl">0.5</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>lower <span class="op">=</span> estimated_probability <span class="op">-</span> <span class="fl">1.96</span> <span class="op">*</span> standard_error</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>upper <span class="op">=</span> estimated_probability <span class="op">+</span> <span class="fl">1.96</span> <span class="op">*</span> standard_error</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Approximate 95</span><span class="sc">% c</span><span class="st">onfidence interval: "</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"[</span><span class="sc">{</span>lower<span class="sc">:.2%}</span><span class="ss">, </span><span class="sc">{</span>upper<span class="sc">:.2%}</span><span class="ss">]"</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Approximate 95% confidence interval: [85.93%, 86.36%]</code></pre>
+</div>
+</div>
+<p>Increasing the number of replications reduces the Monte Carlo standard error. More precisely, the standard error decreases proportionally to <span class="math inline">\(\frac{1}{\sqrt{R}}.\)</span></p>
+<p>Consequently, reducing the simulation error by a factor of two generally requires approximately four times as many replications.</p>
+<p>In general, there are three sources of uncertainty in a Monte Carlo simulation:</p>
+<ul>
+<li><strong>Input uncertainty</strong> describes uncertainty about the actual task durations.</li>
+<li><strong>Monte Carlo error</strong> arises because we estimate the result using a finite number of replications.</li>
+<li><strong>Model uncertainty</strong> concerns whether our assumptions, such as the choice of triangular distributions or independence between tasks, adequately represent the real project.</li>
+</ul>
+<p>Running more replications reduces Monte Carlo error, but it does not correct unrealistic assumptions or inaccurate input estimates.</p>
+</section>
+<section id="the-monte-carlo-simulation-algorithm" class="level3" data-number="1.1.7">
+<h3 data-number="1.1.7" class="anchored" data-anchor-id="the-monte-carlo-simulation-algorithm"><span class="header-section-number">1.1.7</span> The Monte Carlo simulation algorithm</h3>
+<p>The complete procedure can be summarized as follows:</p>
+<pre class="text"><code>Input:
+    Number of replications R
+    Project deadline d_max
+    Probability distributions for all task durations
+
+Set successful_projects = 0
+
+For r = 1, ..., R:
+    Sample the duration of each task
+    Calculate the total project duration
+
+    If total duration &lt;= d_max:
+        successful_projects = successful_projects + 1
+
+Estimate:
+    probability = successful_projects / R</code></pre>
+<p>This example illustrates the defining idea of Monte Carlo simulation:</p>
+<blockquote class="blockquote">
+<p>Repeatedly sample uncertain inputs, evaluate the model for each sampled scenario, and summarize the resulting outputs.</p>
+</blockquote>
+</section>
+<section id="possible-refinements-of-the-model" class="level3" data-number="1.1.8">
+<h3 data-number="1.1.8" class="anchored" data-anchor-id="possible-refinements-of-the-model"><span class="header-section-number">1.1.8</span> Possible refinements of the model</h3>
+<p>Our model is deliberately simple. A more realistic project simulation could include:</p>
+<ul>
+<li>tasks that are performed in parallel;</li>
+<li>precedence constraints between tasks;</li>
+<li>dependencies between task durations;</li>
+<li>the possibility that failed tests require rework;</li>
+<li>uncertain staff availability;</li>
+<li>interruptions caused by urgent maintenance tasks;</li>
+<li>different team sizes or resource-allocation decisions;</li>
+<li>financial penalties for missing the deadline.</li>
+</ul>
+<p>For example, suppose implementation and documentation can proceed in parallel, while testing starts only after both have been completed. If <span class="math inline">\(D_I\)</span> denotes implementation time and <span class="math inline">\(D_A\)</span> documentation time, the duration before testing can begin is</p>
+<p><span class="math display">\[
+\max(D_I,D_A)
+\]</span></p>
+<p>rather than</p>
+<p><span class="math display">\[
+D_I+D_A.
+\]</span></p>
+<p>The total duration would then be modeled as</p>
+<p><span class="math display">\[
+D=\max(D_I,D_A)+D_T+D_D.
+\]</span></p>
+<p>Although such extensions make the model more realistic, the basic Monte Carlo procedure remains unchanged: specify the uncertain inputs, generate scenarios, evaluate each scenario, and aggregate the results.</p>
+<p>Later chapters will examine how probability distributions are selected, how random values are generated, how simulation output is analyzed, and how Monte Carlo simulation can be combined with optimization methods.</p>
+</section>
+</section>
+<section id="example-2-simulating-supermarket-dynamics" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="example-2-simulating-supermarket-dynamics"><span class="header-section-number">1.2</span> Example 2: Simulating supermarket dynamics</h2>
 <p>Imagine you are in your favourite grocery store waiting at the checkout queue. For simplicity, let’s assume there is only one open counter. When you arrive at the queue, there might be other customers already waiting, while the first customer at the queue is currently being served. Shortly after you, a new customer arrives, taking the next free spot right behind you. And then another customer arrives, and another one, and another one…</p>
 <p>Let’s try to break down how this system behaves and what are the most important interactions between the parts of the system. In general, we will distinguish between <em>components</em>, <em>states</em>, <em>events</em>, <em>inputs</em> and <em>metrics</em>.</p>
 <ul>
@@ -503,30 +855,30 @@ window.Quarto = {
 <li><strong>Metrics:</strong> How we evaluate the system as a whole in a given time step. For instance, what is the average waiting time? How much time are the cashiers busy? How is the queue length distributed?</li>
 </ul>
 <p>The system could be represented by the following Python code as a minimal variant.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> heapq, random</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># event = (time, type, customer_id)</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>event_list <span class="op">=</span> []</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>heapq.heappush(event_list, (first_arrival_time, <span class="st">'arrival'</span>, <span class="dv">1</span>))</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> event_list <span class="kw">and</span> time <span class="op">&lt;</span> sim_end:</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    time, ev_type, cid <span class="op">=</span> heapq.heappop(event_list)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ev_type <span class="op">==</span> <span class="st">'arrival'</span>:</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> any_cashier_free():</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            start_checkout(cid, time)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            heapq.heappush(event_list, (time <span class="op">+</span> service_time(cid), </span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                <span class="st">'departure'</span>, cid))</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            enqueue(cid, time)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        heapq.heappush(event_list, (time <span class="op">+</span> next_interarrival(), </span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">'arrival'</span>, next_id()))</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> ev_type <span class="op">==</span> <span class="st">'departure'</span>:</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        finish_service(cid, time)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> queue_not_empty():</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            next_cid <span class="op">=</span> dequeue()</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            start_service(next_cid, time)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            heapq.heappush(event_list, (time <span class="op">+</span> service_time(next_cid), </span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                <span class="st">'departure'</span>, next_cid))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> heapq, random</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># event = (time, type, customer_id)</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>event_list <span class="op">=</span> []</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>heapq.heappush(event_list, (first_arrival_time, <span class="st">'arrival'</span>, <span class="dv">1</span>))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> event_list <span class="kw">and</span> time <span class="op">&lt;</span> sim_end:</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    time, ev_type, cid <span class="op">=</span> heapq.heappop(event_list)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ev_type <span class="op">==</span> <span class="st">'arrival'</span>:</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> any_cashier_free():</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            start_checkout(cid, time)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            heapq.heappush(event_list, (time <span class="op">+</span> service_time(cid), </span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                <span class="st">'departure'</span>, cid))</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>            enqueue(cid, time)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        heapq.heappush(event_list, (time <span class="op">+</span> next_interarrival(), </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">'arrival'</span>, next_id()))</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> ev_type <span class="op">==</span> <span class="st">'departure'</span>:</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        finish_service(cid, time)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> queue_not_empty():</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>            next_cid <span class="op">=</span> dequeue()</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>            start_service(next_cid, time)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>            heapq.heappush(event_list, (time <span class="op">+</span> service_time(next_cid), </span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>                <span class="st">'departure'</span>, next_cid))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This code assumes that customers arrive at regular subsequent intervals after each arrival event. The parameter <code>sim_end</code> defines how long (how many steps) we want to simulate in this case. The function <code>service_time</code> returns the time the cashier needs for checking out customer <code>cid</code>. The next customer will arrive after a time given by the function <code>next_interarrival</code>, which can implement different stochastic behaviours.</p>
 <p>We can represent this system graphically as shown in the following illustration:</p>
 <div id="fig-supermarket-dynamics" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -599,9 +951,9 @@ P_W=p_0\frac{(\lambda/\mu)^c}{c!}\frac{1}{1-\rho}
 </ul>
 <p>We will see examples of such simulators in the first part of the book.</p>
 </section>
-<section id="example-2-the-traveling-salesman" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="example-2-the-traveling-salesman"><span class="header-section-number">1.2</span> Example 2: The traveling salesman</h2>
-<p>Let’s not turn our attention to the other type of problems which are central to this book: <em>optimization problems</em>. Imagine you are a sales representative for a vaccum cleaner manufacturer. Your task is to visit potential customers in cities across your area and, at the end of the day, return to where you started your journey. As an environmental conscious employer and in order to save transport costs, your company introduces the restriction that each customer in the route has to be visited <em>exactly once</em>. So you need to think carefully before getting into your car and starting your route.</p>
+<section id="example-3-the-traveling-salesman" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="example-3-the-traveling-salesman"><span class="header-section-number">1.3</span> Example 3: The traveling salesman</h2>
+<p>Let’s now turn our attention to the other type of problems which are central to this book: <em>optimization problems</em>. Imagine you are a sales representative for a vaccum cleaner manufacturer. Your task is to visit potential customers in cities across your area and, at the end of the day, return to where you started your journey. As an environmental conscious employer and in order to save transport costs, your company introduces the restriction that each customer in the route has to be visited <em>exactly once</em>. So you need to think carefully before getting into your car and starting your route.</p>
 <div id="fig-tsp-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tsp-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -658,14 +1010,15 @@ T^* &amp; =\operatorname{argmin} \sum_{i\in N}\sum_{j\in N} c_{ij}x_{ij} \\
 <p>We call this set of expressions our <em>optimization model</em>. This will be the mathematical underpinning for all the methods and algorithms that we will use to find a solution to this problem. In the first line, we state our goal: to obtain a tour <span class="math inline">\(T^*\)</span> that is optimal in the sense of minimizing the total cost (the expression <span class="math inline">\(\operatorname{argmin}\)</span> means “the argument that minimizes”, so find the <span class="math inline">\(x_{ij}\)</span> that minimize the total cost function). The subsequent lines state the <em>constraints</em> that we listed before. In the last line we specify the <em>domain</em> of the decision variables, i.e.&nbsp;what are the possible values these variables can take.</p>
 <p>We will see that, depending on the form of the optimization model we will be able to choose from a toolbox of algorithms capable to solve the problem at hand, either exactly (<em>exact methods</em>) or approximately (<em>heuristic methods</em>).</p>
 </section>
-<section id="structure-of-the-book" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="structure-of-the-book"><span class="header-section-number">1.3</span> Structure of the book</h2>
-<p>In this first chapter, we have introduced the concept of a <em>model</em> and have applied it successfully to a simulation and an optimization problem. The rest of the book is structured in two parts: Part I will be dedicated to simulation approaches, including the <span class="math inline">\(M/M/c\)</span> model we have seen in this chapter in <a href="simulation_basics.html" class="quarto-xref"><span>Chapter 2</span></a>. Monte Carlo methods are the main topic of <a href="monte_carlo.html" class="quarto-xref"><span>Chapter 3</span></a>. After that, <a href="discrete_event.html" class="quarto-xref"><span>Chapter 4</span></a> focuses on the handling of discrete events, while <span class="quarto-unresolved-ref">?sec-agent-based</span> concludes with considerations about agent-based modeling and simulation.</p>
+<section id="structure-of-the-book" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="structure-of-the-book"><span class="header-section-number">1.4</span> Structure of the book</h2>
+<p>In this first chapter, we have introduced the concept of a <em>model</em> and have applied it successfully to a simulation and an optimization problem. The rest of the book is structured in two parts: Part I will be dedicated to simulation approaches, including the <span class="math inline">\(M/M/c\)</span> model we have seen in this chapter in <a href="simulation_basics.html" class="quarto-xref"><span>Chapter 2</span></a>. Monte Carlo methods are the main topic of <a href="monte_carlo.html" class="quarto-xref"><span>Chapter 3</span></a>. After that, <a href="discrete_event.html" class="quarto-xref"><span>Chapter 4</span></a> focuses on the handling of discrete events and queuing theory.</p>
 <p>Part II is dedicated to optimization problems. In <a href="optimization_basics.html" class="quarto-xref"><span>Chapter 5</span></a> we introduce the mathematical basics of optimization. <a href="exact_methods.html" class="quarto-xref"><span>Chapter 6</span></a> is dedicated to exact optimization methods like the simplex method for linear programming. Approximate methods for complex optimization problems like metaheuristics and evolutionary algorithms are presented in <a href="metaheuristics.html" class="quarto-xref"><span>Chapter 7</span></a>. Finally, we review the importance of optimization methods for machine learning in <a href="optimization_in_ml.html" class="quarto-xref"><span>Chapter 8</span></a>.</p>
 </section>
-<section id="exercises" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="exercises"><span class="header-section-number">1.4</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">1.5</span> Exercises</h2>
 <ol type="1">
+<li>In the Monte Carlo example, how can the smallest deadline <span class="math inline">\(d\)</span> that is met with a probability of at least 90% be estimated from the simulated project durations? Implement the procedure and report the resulting deadline.</li>
 <li>Prove that in the supermarket example the local balance condition follows from the global balance condition (Hint: use induction).</li>
 <li>What happens to the optimization model in presented in <a href="#eq-opt-model" class="quarto-xref">Equations&nbsp;<span>1.12</span></a> if we remove <a href="#eq-1-10" class="quarto-xref">Equation&nbsp;<span>1.10</span></a>? Find an example of a tour that is valid according to the model but invalid for the traveling salesman.</li>
 </ol>

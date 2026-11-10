@@ -19,7 +19,365 @@ through experimentation and algorithmic techniques.
 
 In the following, we will delve deeper into the concept of a model and how models are used in simulation and optimization contexts using some practical examples.
 
-## Example 1: Simulating supermarket dynamics
+## Example 1: Will the project finish on time?
+
+Imagine that a small software team is preparing a new application for release. Before the application can be delivered, the team must complete three tasks:
+
+1. implement the remaining features,
+2. test the application, and
+3. prepare the production release.
+
+The tasks must be performed one after another. However, their durations are uncertain. Implementation may take longer if unexpected technical problems occur. Testing may reveal defects that require additional work. Even the final deployment may encounter delays.
+
+The project manager has promised that the application will be ready within 35 working days. The central question is therefore:
+
+> What is the probability that the project will be completed within 35 working days?
+
+Because the exact task durations are unknown, adding three fixed numbers is not sufficient. Instead, we describe each duration using a probability distribution and simulate many possible realizations of the project.
+
+This is a typical application of **Monte Carlo simulation**.
+
+### Identifying the elements of the model
+
+As in other simulation models, we first identify the most important elements of the system. For a Monte Carlo simulation, we distinguish between *components*, *random inputs*, *model logic*, *outputs*, and *metrics*.
+
+* **Components:** The entities represented in the model. In this example, the components are the three project tasks: implementation, testing, and deployment.
+
+* **Random inputs:** Quantities whose values are uncertain. Here, the durations of the three tasks are random variables.
+
+* **Model logic:** The mathematical or computational relationships that transform the inputs into outputs. Since the tasks are performed sequentially, the total project duration is the sum of the three task durations.
+
+* **Outputs:** Quantities calculated for one simulated scenario. The primary output is the total duration of the project.
+
+* **Metrics:** Summary measures calculated across many simulated scenarios. Examples include the expected project duration, the probability of meeting the deadline, and percentiles of the completion-time distribution.
+
+A single simulation run represents one possible way in which the project could unfold. Repeating the simulation many times allows us to estimate how likely different outcomes are.
+
+### Modeling uncertain task durations
+
+Suppose the project team provides the following estimates:
+
+| Task | Optimistic duration | Most likely duration | Pessimistic duration |
+|---|---:|---:|---:|
+| Implementation | 10 days | 15 days | 24 days |
+| Testing | 5 days | 8 days | 16 days |
+| Deployment | 2 days | 4 days | 8 days |
+
+For each task, the team can provide a minimum plausible duration, a most likely duration, and a maximum plausible duration. A simple probability distribution that uses exactly these three estimates is the **triangular distribution**.
+
+Let
+
+$$
+D_I \sim \operatorname{Triangular}(10,15,24)
+$$
+
+denote the implementation duration,
+
+$$
+D_T \sim \operatorname{Triangular}(5,8,16)
+$$
+
+the testing duration, and
+
+$$
+D_D \sim \operatorname{Triangular}(2,4,8)
+$$
+
+the deployment duration.
+
+The total project duration is then
+
+$$
+D = D_I + D_T + D_D.
+$$
+
+For the moment, we assume that the three task durations are statistically independent. This means, for example, that an unusually long implementation phase does not change the probability distribution of the testing duration. This simplifying assumption can be relaxed in more advanced models.
+
+### Simulating one possible project
+
+One Monte Carlo replication consists of the following steps:
+
+1. Sample an implementation duration $d_I$.
+2. Sample a testing duration $d_T$.
+3. Sample a deployment duration $d_D$.
+4. Calculate the total duration
+
+   $$
+   d = d_I+d_T+d_D.
+   $$
+
+5. Record whether the total duration is at most 35 days.
+
+The following Python code implements one replication:
+
+```{python}
+#| label: single-project-replication
+#| echo: true
+
+import random
+
+implementation = random.triangular(10, 24, 15)
+testing = random.triangular(5, 16, 8)
+deployment = random.triangular(2, 8, 4)
+
+total_duration = implementation + testing + deployment
+completed_on_time = total_duration <= 35
+
+print(f"Implementation: {implementation:.1f} days")
+print(f"Testing:        {testing:.1f} days")
+print(f"Deployment:     {deployment:.1f} days")
+print(f"Total duration: {total_duration:.1f} days")
+print(f"On time:        {completed_on_time}")
+```
+
+The sampled values will generally be different each time the code is executed. This is not an error. Random variation is an essential part of the model.
+
+However, one simulated project tells us very little about the overall risk. To estimate the probability of meeting the deadline, we must repeat the experiment many times.
+
+### Repeating the experiment
+
+Let $R$ denote the number of Monte Carlo replications. For replication $r$, let $D^{(r)}$ be the simulated total project duration.
+
+We define an indicator variable
+
+$$
+I^{(r)} =
+\begin{cases}
+1, & \text{if } D^{(r)} \leq 35,\\
+0, & \text{otherwise.}
+\end{cases}
+$$
+
+The probability of meeting the deadline can then be estimated by
+
+$$
+\widehat{p}_R =
+\frac{1}{R}
+\sum_{r=1}^{R} I^{(r)}.
+$$
+
+In words, $\widehat{p}_R$ is simply the fraction of simulated projects that finish within 35 days.
+
+The following code performs $R=100{,}000$ replications:
+
+```{python}
+#| label: project-monte-carlo
+#| echo: true
+
+import random
+import statistics
+
+random.seed(2026)
+
+deadline = 35
+replications = 100_000
+durations = []
+
+for _ in range(replications):
+    implementation = random.triangular(10, 24, 15)
+    testing = random.triangular(5, 16, 8)
+    deployment = random.triangular(2, 8, 4)
+
+    total_duration = implementation + testing + deployment
+    durations.append(total_duration)
+
+on_time = sum(duration <= deadline for duration in durations)
+estimated_probability = on_time / replications
+mean_duration = statistics.mean(durations)
+
+print(f"Replications:              {replications:,}")
+print(f"Mean project duration:     {mean_duration:.2f} days")
+print(f"Probability of finishing")
+print(f"within {deadline} days:       {estimated_probability:.2%}")
+```
+
+The list `durations` contains the output of every replication. The expression
+
+```python
+duration <= deadline
+```
+
+returns either `True` or `False`. In Python, these values behave like 1 and 0 when they are added. Dividing the number of successful replications by the total number of replications therefore gives the estimated probability of meeting the deadline.
+
+The call to `random.seed(2026)` initializes the random-number generator. Using a fixed seed makes the results reproducible: running the same code again produces the same sequence of pseudo-random values.
+
+### Examining the distribution of completion times
+
+The probability of meeting a particular deadline is useful, but it does not provide a complete picture. We may also want to understand the distribution of possible project durations.
+
+```{python}
+#| label: project-duration-histogram
+#| echo: true
+#| fig-cap: "Distribution of simulated project completion times."
+#| fig-alt: "Histogram of simulated project durations with a vertical line at the 35-day deadline."
+
+import matplotlib.pyplot as plt
+
+plt.hist(
+    durations,
+    bins=50,
+    edgecolor="white"
+)
+
+plt.axvline(
+    deadline,
+    color="red",
+    linestyle="--",
+    linewidth=2,
+    label=f"Deadline: {deadline} days"
+)
+
+plt.xlabel("Total project duration in days")
+plt.ylabel("Number of replications")
+plt.legend()
+plt.show()
+```
+
+The histogram approximates the probability distribution of the total project duration. Simulated durations to the left of the red line correspond to projects that finish on time. Durations to the right correspond to projects that miss the deadline.
+
+We can also calculate percentiles. For example, the 90th percentile is a duration that is exceeded in only approximately 10% of the simulated projects.
+
+```{python}
+#| label: project-percentiles
+#| echo: true
+
+import numpy as np
+
+percentiles = np.percentile(durations, [50, 80, 90, 95])
+
+for level, value in zip([50, 80, 90, 95], percentiles):
+    print(f"{level}th percentile: {value:.2f} days")
+```
+
+If the 90th percentile is 39 days, for example, a deadline of approximately 39 days would be met in about 90% of the scenarios represented by the model.
+
+This gives the project manager two related ways to formulate a question:
+
+1. **Deadline evaluation:** If the deadline is fixed at 35 days, what is the probability of meeting it?
+2. **Deadline selection:** If the desired confidence level is 90%, what deadline should be promised?
+
+### Monte Carlo estimates are themselves uncertain
+
+The result of a Monte Carlo simulation is an **estimate**. If we run only a small number of replications, the estimated probability can vary substantially.
+
+Assuming that the replications are independent, the estimated standard error of $\widehat{p}_R$ is
+
+$$
+\widehat{\operatorname{SE}}(\widehat{p}_R)
+=
+\sqrt{
+\frac{
+\widehat{p}_R(1-\widehat{p}_R)
+}{R}
+}.
+$$
+
+An approximate 95% confidence interval is
+
+$$
+\widehat{p}_R
+\pm
+1.96\,
+\widehat{\operatorname{SE}}(\widehat{p}_R).
+$$
+
+We can calculate this interval as follows:
+
+```{python}
+#| label: project-confidence-interval
+#| echo: true
+
+standard_error = (
+    estimated_probability
+    * (1 - estimated_probability)
+    / replications
+) ** 0.5
+
+lower = estimated_probability - 1.96 * standard_error
+upper = estimated_probability + 1.96 * standard_error
+
+print(
+    "Approximate 95% confidence interval: "
+    f"[{lower:.2%}, {upper:.2%}]"
+)
+```
+
+Increasing the number of replications reduces the Monte Carlo standard error. More precisely, the standard error decreases proportionally to $\frac{1}{\sqrt{R}}.$
+
+Consequently, reducing the simulation error by a factor of two generally requires approximately four times as many replications.
+
+In general, there are three sources of uncertainty in a Monte Carlo simulation:
+
+* **Input uncertainty** describes uncertainty about the actual task durations.
+* **Monte Carlo error** arises because we estimate the result using a finite number of replications.
+* **Model uncertainty** concerns whether our assumptions, such as the choice of triangular distributions or independence between tasks, adequately represent the real project.
+
+Running more replications reduces Monte Carlo error, but it does not correct unrealistic assumptions or inaccurate input estimates.
+
+### The Monte Carlo simulation algorithm
+
+The complete procedure can be summarized as follows:
+
+```text
+Input:
+    Number of replications R
+    Project deadline d_max
+    Probability distributions for all task durations
+
+Set successful_projects = 0
+
+For r = 1, ..., R:
+    Sample the duration of each task
+    Calculate the total project duration
+
+    If total duration <= d_max:
+        successful_projects = successful_projects + 1
+
+Estimate:
+    probability = successful_projects / R
+```
+
+This example illustrates the defining idea of Monte Carlo simulation:
+
+> Repeatedly sample uncertain inputs, evaluate the model for each sampled scenario, and summarize the resulting outputs.
+
+### Possible refinements of the model
+
+Our model is deliberately simple. A more realistic project simulation could include:
+
+* tasks that are performed in parallel;
+* precedence constraints between tasks;
+* dependencies between task durations;
+* the possibility that failed tests require rework;
+* uncertain staff availability;
+* interruptions caused by urgent maintenance tasks;
+* different team sizes or resource-allocation decisions;
+* financial penalties for missing the deadline.
+
+For example, suppose implementation and documentation can proceed in parallel, while testing starts only after both have been completed. If $D_I$ denotes implementation time and $D_A$ documentation time, the duration before testing can begin is
+
+$$
+\max(D_I,D_A)
+$$
+
+rather than
+
+$$
+D_I+D_A.
+$$
+
+The total duration would then be modeled as
+
+$$
+D=\max(D_I,D_A)+D_T+D_D.
+$$
+
+Although such extensions make the model more realistic, the basic Monte Carlo procedure remains unchanged: specify the uncertain inputs, generate scenarios, evaluate each scenario, and aggregate the results.
+
+Later chapters will examine how probability distributions are selected, how random values are generated, how simulation output is analyzed, and how Monte Carlo simulation can be combined with optimization methods.
+
+
+## Example 2: Simulating supermarket dynamics
 
 Imagine you are in your favourite grocery store waiting at the checkout queue. For simplicity, let's assume there is only one open counter. When you arrive at the queue, there might be other customers already 
 waiting, while the first customer at the queue is currently being served. Shortly after you, a new customer arrives, taking the next free spot right 
@@ -180,9 +538,9 @@ for a large number of steps (say $T=10^6$) and then calculate specific metrics l
 
 We will see examples of such simulators in the first part of the book.
 
-## Example 2: The traveling salesman
+## Example 3: The traveling salesman
 
-Let's not turn our attention to the other type of problems which are central to this book: *optimization problems*. 
+Let's now turn our attention to the other type of problems which are central to this book: *optimization problems*. 
 Imagine you are a sales representative for a vaccum cleaner manufacturer. Your task is to visit
 potential customers in cities across your area and, at the end of the day, return to where you started 
 your journey. As an environmental conscious employer and in order to save transport costs, your company introduces the restriction that each customer in the route has to be visited *exactly once*. So you need to think 
@@ -287,8 +645,7 @@ In this first chapter, we have introduced the concept of a *model* and have appl
 successfully to a simulation and an optimization problem. The rest of the book is structured 
 in two parts: Part I will be dedicated to simulation approaches, including the $M/M/c$ model
 we have seen in this chapter in @sec-simulation-basics. Monte Carlo methods are the main topic 
-of @sec-monte-carlo. After that, @sec-discrete-events focuses on the handling of discrete events,
-while @sec-agent-based concludes with considerations about agent-based modeling and simulation.
+of @sec-monte-carlo. After that, @sec-discrete-events focuses on the handling of discrete events and queuing theory.
 
 Part II is dedicated to optimization problems. In @sec-optimization-basics we introduce the mathematical
 basics of optimization. @sec-exact-methods is dedicated to exact optimization methods like the 
@@ -298,8 +655,9 @@ the importance of optimization methods for machine learning in @sec-opt-ml.
 
 ## Exercises
 
-1. Prove that in the supermarket example the local balance condition follows from the global balance condition
+1. In the Monte Carlo example, how can the smallest deadline $d$ that is met with a probability of at least 90% be estimated from the simulated project durations? Implement the procedure and report the resulting deadline.
+2. Prove that in the supermarket example the local balance condition follows from the global balance condition
 (Hint: use induction).
-2. What happens to the optimization model in presented in [Equations @eq-opt-model] if we remove
+3. What happens to the optimization model in presented in [Equations @eq-opt-model] if we remove
 @eq-1-10? Find an example of a tour that is valid according to the model but invalid for the 
 traveling salesman.
