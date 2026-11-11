@@ -588,7 +588,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>For each task, the team can provide a minimum plausible duration, a most likely duration, and a maximum plausible duration. A simple probability distribution that uses exactly these three estimates is the <strong>triangular distribution</strong>, which is widely used in risk analysis as a practical alternative to the beta distribution of classical PERT <span class="citation" data-cites="johnson_triangular_1997 kotz_beyond_2004">(<a href="references.html#ref-johnson_triangular_1997" role="doc-biblioref">Johnson 1997</a>; <a href="references.html#ref-kotz_beyond_2004" role="doc-biblioref">Kotz and Dorp 2004</a>)</span>.</p>
+<p>For each task, the team can provide a minimum plausible duration, a most likely duration, and a maximum plausible duration. A simple probability distribution that uses exactly these three estimates is the <strong>triangular distribution</strong>, which is widely used in risk analysis as a practical alternative to the beta distribution of classical PERT <span class="citation" data-cites="johnson_triangular_1997 kotz_beyond_2004">(<a href="references.html#ref-johnson_triangular_1997" role="doc-biblioref">Johnson 2002</a>; <a href="references.html#ref-kotz_beyond_2004" role="doc-biblioref">Kotz and Dorp 2004</a>)</span>.</p>
 <p>Let</p>
 <p><span class="math display">\[
 D_I \sim \operatorname{Triangular}(10,15,24)
@@ -638,10 +638,10 @@ d = d_I+d_T+d_D.
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total duration: </span><span class="sc">{</span>total_duration<span class="sc">:.1f}</span><span class="ss"> days"</span>)</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"On time:        </span><span class="sc">{</span>completed_on_time<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Implementation: 18.2 days
-Testing:        9.9 days
-Deployment:     5.8 days
-Total duration: 33.9 days
+<pre><code>Implementation: 19.7 days
+Testing:        8.2 days
+Deployment:     4.6 days
+Total duration: 32.6 days
 On time:        True</code></pre>
 </div>
 </div>
@@ -876,7 +876,7 @@ D=\max(D_I,D_A)+D_T+D_D.
 <li><strong>Inputs:</strong> Whatever information is fed into the system, e.g.&nbsp;arrival times, service times, etc. These inputs can contain statistical assumptions, like the distribution of arrival times.</li>
 <li><strong>Metrics:</strong> How we evaluate the system as a whole in a given time step. For instance, what is the average waiting time? How much time are the cashiers busy? How is the queue length distributed?</li>
 </ul>
-<p>This way of describing a system, in which the state changes only at discrete points in time when events occur, is the basis of <strong>discrete-event simulation</strong> <span class="citation" data-cites="law_simulation_2015 banks_discrete-event_2010">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015</a>; <a href="references.html#ref-banks_discrete-event_2010" role="doc-biblioref">Banks et al. 2010</a>)</span>. The system could be represented by the following Python code as a minimal variant, in which the pending events are kept in a priority queue ordered by time (the <em>future event list</em>).</p>
+<p>This way of describing a system, in which the state changes only at discrete points in time when events occur, is the basis of <strong>discrete-event simulation</strong> <span class="citation" data-cites="law_simulation_2015 banks_discrete-event_2010">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015</a>; <a href="references.html#ref-banks_discrete-event_2010" role="doc-biblioref">Banks et al. 2013</a>)</span>. The system could be represented by the following Python code as a minimal variant, in which the pending events are kept in a priority queue ordered by time (the <em>future event list</em>).</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> heapq, random</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># event = (time, type, customer_id)</span></span>
@@ -916,7 +916,7 @@ Figure&nbsp;1.1: An illustration of the supermarket dynamics.
 <p>In this figure, customers are denoted by <span class="math inline">\(r_i\)</span>, the amount of cashiers is <span class="math inline">\(c\)</span> and the total number of customers in the supermarket at time <span class="math inline">\(t\)</span> is denoted by <span class="math inline">\(N(t)\)</span>.</p>
 <p>Now let’s try to refine the dynamics of this system. We will now write some equations to describe the system’ dynamics according to the <strong>infinite waiting room</strong> <span class="math inline">\(M/M/c\)</span> model, written in the notation introduced by <span class="citation" data-cites="kendall_stochastic_1953 kleinrock_queueing_1975 shortle_fundamentals_2018">Kendall (<a href="references.html#ref-kendall_stochastic_1953" role="doc-biblioref">1953</a>; see also <a href="references.html#ref-kleinrock_queueing_1975" role="doc-biblioref">Kleinrock 1975</a>; <a href="references.html#ref-shortle_fundamentals_2018" role="doc-biblioref">Shortle et al. 2018</a>)</span>. Let’s make the following assumptions:</p>
 <ul>
-<li>Arrivals follow a Poisson distribution with mean <span class="math inline">\(\lambda\)</span> (arrivals per second), which for this case will be assumed to be stationary.</li>
+<li>Arrivals follow a Poisson process with mean <span class="math inline">\(\lambda\)</span> (arrivals per second), which for this case will be assumed to be stationary.</li>
 <li>The service times are assumed to be exponentially distributed with mean <span class="math inline">\(1/\mu\)</span>.</li>
 </ul>
 <p>What would be now the <em>traffic intensity per cashier</em>? That is, what is the mean customer flow that each cashier experiences from their own point of view? Let’s call this number <span class="math inline">\(\rho\)</span> and calculate it as follows:</p>
@@ -926,7 +926,7 @@ Figure&nbsp;1.1: An illustration of the supermarket dynamics.
 <p>In words, if customers arrive at a rate of <span class="math inline">\(\lambda=10\)</span> customers/s and each cashier serves 2 customers/s (yes, it’s a fast supermarket). With 5 cashiers, that means that <span class="math inline">\(\rho=10/5\times 2=1\)</span>. This means that each cashier has quite a lot to do right now.</p>
 <p>We are now interested in the probabilities of the states in this systems. In this case, we define a system by the number of customers currently present in the supermarket. So we can have <span class="math inline">\(N=1\)</span> if there is currently 1 customer present, or any other number of customers (we assume the supermarket is so large, we can accomodate any number of them). Let’s denote these probabilities by <span class="math inline">\(p_n=\operatorname{Pr}\{N=n\}\)</span>. We have:</p>
 <p><span id="eq-1-2"><span class="math display">\[
-p_n=\lim_{t\rightarrow\infty}\int_{0}^t \mathbb{1}_{\{N(s)=n\}} ds
+p_n=\lim_{t\rightarrow\infty}\frac{1}{t}\int_{0}^t \mathbb{1}_{\{N(s)=n\}} ds
 \tag{1.2}\]</span></span></p>
 <p>Intuitively, <span class="math inline">\(p_n\)</span> represents the fraction of time where the supermarket has exactly <span class="math inline">\(n\)</span> customers. As mentioned earlier, we will assume that arrivals do not depend of the current state <span class="math inline">\(n\)</span>, so we write <span class="math inline">\(\lambda_n=\lambda\)</span> for all <span class="math inline">\(n\ge 0\)</span>. However, note that the completion rates <span class="math inline">\(\mu_n\)</span> do <em>indeed</em> depend of the current state. To see this, imagine that there is only one customer in the supermarket (<span class="math inline">\(n=1\)</span>). The completion rate is then <span class="math inline">\(\mu_1=\mu\)</span> since the only one cashier is needed to perform checkout. However, if there are <span class="math inline">\(n=2\)</span> customers in the supermarket, two cashiers can serve those two customers in parallel, increasing the completion rate to <span class="math inline">\(\mu_2 = 2\mu\)</span>. The same reasoning applies until <span class="math inline">\(n=c\)</span>, the total number of cashiers. In this case, <span class="math inline">\(\mu_c=c\mu\)</span> and the next customer will have to wait in the queue. So we have:</p>
 <p><span id="eq-1-3"><span class="math display">\[
@@ -952,7 +952,7 @@ Figure&nbsp;1.2: Transition dynamics between neighboring states
 \tag{1.4}\]</span></span></p>
 <p>We can also write that, in the long term, the rate of transitions from <span class="math inline">\(n\)</span> to <span class="math inline">\(n+1\)</span> equals the transitions from <span class="math inline">\(n+1\)</span> to <span class="math inline">\(n\)</span>, which results in the more simple form (local balance)</p>
 <p><span id="eq-1-5"><span class="math display">\[
-\lambda p_n = \mu_{n+1}p_{n+1} \text{,   for }n\ge 1
+\lambda p_n = \mu_{n+1}p_{n+1} \text{,   for }n\ge 0
 \tag{1.5}\]</span></span></p>
 <p>This form follows from the global balance condition when only neighboring states are connected. Now, using this short form, we can provide closed-form expressions for different probabilities, using the following recursion (which directly follows from the above)</p>
 <p><span id="eq-1-6"><span class="math display">\[
@@ -1012,7 +1012,7 @@ x_{ij}=
 <p>The first equality means that, fixed a location <span class="math inline">\(i\)</span>, the sum of all <em>outgoing</em> edges is exactly one. Conversely, the second states that for a fixed location <span class="math inline">\(j\)</span>, the sum of all <em>incoming</em> edges is also exactly one. This ensures that each location is visited exactly once.</p>
 <p>We need another technical condition to guarantee that the tour is a single one and not composed of multiple sub-tours. There should be no subset <span class="math inline">\(S \subset N\)</span> such that is self contained, the number of visited cities equals exactly its size. Mathematically, this is expressed by the <em>subtour elimination constraints</em> introduced by <span class="citation" data-cites="dantzig_solution_1954">Dantzig, Fulkerson, and Johnson (<a href="references.html#ref-dantzig_solution_1954" role="doc-biblioref">1954</a>)</span>:</p>
 <p><span id="eq-1-10"><span class="math display">\[
-\sum_{i\in S}\sum_{j\in S} x_{ij} \le |S|-1\text{ for all subsets }S\subset N
+\sum_{\substack{i,j\in S\\ i\neq j}} x_{ij} \le |S|-1\text{ for all subsets }S\subset N
 \tag{1.10}\]</span></span></p>
 <p>To sum up, we now have modeled how valid tours should look like. If we find a tour <span class="math inline">\(T=\{x_{ij}\}\)</span> that satisfies the constraints outlined before, we can be sure it is a valid tour.</p>
 <p>But surely there are some tours that are better than others? This is where the second issue becomes important: we need an evaluation method to distinguish between good and bad solutions. In the optimization literature, we normally talk about <strong>objective functions</strong> <span class="citation" data-cites="hillier_introduction_2021">(<a href="references.html#ref-hillier_introduction_2021" role="doc-biblioref">Hillier and Lieberman 2021</a>)</span>. In our case, the traveling salesman would like the total distance to be <em>minimized</em>, meaning the sum of all distances between locations of the tour. Assume that <span class="math inline">\(c_{ij}&gt;0\)</span> is the distance between location <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> (for consistency assume <span class="math inline">\(c_{ii}=0\)</span>). Now we want to minimize the total distance traveled. For this we write:</p>
@@ -1025,7 +1025,7 @@ x_{ij}=
 T^* &amp; =\operatorname{argmin} \sum_{i\in N}\sum_{j\in N} c_{ij}x_{ij} \\
 \text{s.t. } &amp; \sum_{j=1}^n x_{ij} = 1\text{ for all }i\in N \\
 &amp; \sum_{i=1}^n x_{ij} = 1\text{ for all }j\in N \\
-&amp; \sum_{i\in N}\sum_{j\in N} x_{ij} \le |S|-1\text{ for all subsets }S\subset N \\
+&amp; \sum_{\substack{i,j\in S\\ i\neq j}} x_{ij} \le |S|-1\text{ for all subsets }S\subset N \\
 &amp; x_{ij} \in \{0,1\}
 \end{aligned}
 \tag{1.12}\]</span></span></p>
@@ -1054,7 +1054,7 @@ Applegate, David L., Robert E. Bixby, Vašek Chvátal, and William J. Cook. 2006
 Asmussen, Søren, and Peter W. Glynn. 2007. <em>Stochastic <span>Simulation</span>: <span>Algorithms</span> and <span>Analysis</span></em>. Vol. 57. Stochastic <span>Modelling</span> and <span>Applied</span> <span>Probability</span>. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-69033-9">https://doi.org/10.1007/978-0-387-69033-9</a>.
 </div>
 <div id="ref-banks_discrete-event_2010" class="csl-entry" role="listitem">
-Banks, Jerry, John S. Carson, Barry L. Nelson, and David M. Nicol. 2010. <em>Discrete-<span>Event</span> <span>System</span> <span>Simulation</span></em>. 5th ed. Upper Saddle River, NJ: Pearson.
+Banks, Jerry, John S. Carson, Barry L. Nelson, and David M. Nicol. 2013. <em>Discrete-<span>Event</span> <span>System</span> <span>Simulation</span></em>. 5th ed. Upper Saddle River, NJ: Pearson.
 </div>
 <div id="ref-bast_route_2016" class="csl-entry" role="listitem">
 Bast, Hannah, Daniel Delling, Andrew Goldberg, Matthias Müller-Hannemann, Thomas Pajor, Peter Sanders, Dorothea Wagner, and Renato F. Werneck. 2016. <span>“Route <span>Planning</span> in <span>Transportation</span> <span>Networks</span>.”</span> In <em>Algorithm <span>Engineering</span>: <span>Selected</span> <span>Results</span> and <span>Surveys</span></em>, edited by Lasse Kliemann and Peter Sanders, 9220:19–80. Lecture <span>Notes</span> in <span>Computer</span> <span>Science</span>. Cham: Springer International Publishing. <a href="https://doi.org/10.1007/978-3-319-49487-6_2">https://doi.org/10.1007/978-3-319-49487-6_2</a>.
@@ -1105,7 +1105,7 @@ Henderson, Shane G. 2003. <span>“Input Model Uncertainty: Why Do We Care and W
 Hillier, Frederick S., and Gerald J. Lieberman. 2021. <em>Introduction to <span>Operations</span> <span>Research</span></em>. 11th ed. New York: McGraw-Hill Education.
 </div>
 <div id="ref-johnson_triangular_1997" class="csl-entry" role="listitem">
-Johnson, David. 1997. <span>“The Triangular Distribution as a Proxy for the Beta Distribution in Risk Analysis.”</span> <em>Journal of the Royal Statistical Society: Series D (The Statistician)</em> 46 (3): 387–98. <a href="https://doi.org/10.1111/1467-9884.00091">https://doi.org/10.1111/1467-9884.00091</a>.
+Johnson, David. 2002. <span>“The Triangular Distribution as a Proxy for the Beta Distribution in Risk Analysis.”</span> <em>Journal of the Royal Statistical Society: Series D (The Statistician)</em> 46 (3): 387–98. <a href="https://doi.org/10.1111/1467-9884.00091">https://doi.org/10.1111/1467-9884.00091</a>.
 </div>
 <div id="ref-karp_reducibility_1972" class="csl-entry" role="listitem">
 Karp, Richard M. 1972. <span>“Reducibility Among <span>Combinatorial</span> <span>Problems</span>.”</span> In <em>Complexity of <span>Computer</span> <span>Computations</span></em>, edited by Raymond E. Miller and James W. Thatcher, 85–103. Boston, MA: Springer US. <a href="https://doi.org/10.1007/978-1-4684-2001-2_9">https://doi.org/10.1007/978-1-4684-2001-2_9</a>.

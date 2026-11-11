@@ -444,7 +444,7 @@ of customers in the supermarket at time $t$ is denoted by $N(t)$.
 Now let's try to refine the dynamics of this system. We will now write some equations to describe the system'
 dynamics according to the **infinite waiting room** $M/M/c$ model, written in the notation introduced by @kendall_stochastic_1953 [see also @kleinrock_queueing_1975; @shortle_fundamentals_2018]. Let's make the following assumptions:
 
-- Arrivals follow a Poisson distribution with mean $\lambda$ (arrivals per second), which for this case will be assumed to be stationary.
+- Arrivals follow a Poisson process with mean $\lambda$ (arrivals per second), which for this case will be assumed to be stationary.
 - The service times are assumed to be exponentially distributed with mean $1/\mu$.
 
 What would be now the *traffic intensity per cashier*? That is, what is the mean customer flow that each cashier 
@@ -464,7 +464,7 @@ present, or any other number of customers (we assume the supermarket is so large
 number of them). Let's denote these probabilities by $p_n=\operatorname{Pr}\{N=n\}$. We have:
 
 $$
-p_n=\lim_{t\rightarrow\infty}\int_{0}^t \mathbb{1}_{\{N(s)=n\}} ds
+p_n=\lim_{t\rightarrow\infty}\frac{1}{t}\int_{0}^t \mathbb{1}_{\{N(s)=n\}} ds
 $$ {#eq-1-2}
 
 Intuitively, $p_n$ represents the fraction of time where the supermarket has exactly $n$ customers. As mentioned 
@@ -509,7 +509,7 @@ We can also write that, in the long term, the rate of transitions from $n$ to $n
 from $n+1$ to $n$, which results in the more simple form (local balance)
 
 $$
-\lambda p_n = \mu_{n+1}p_{n+1} \text{,   for }n\ge 1
+\lambda p_n = \mu_{n+1}p_{n+1} \text{,   for }n\ge 0
 $$ {#eq-1-5}
 
 This form follows from the global balance condition when only neighboring states are connected. Now, using 
@@ -599,7 +599,7 @@ of multiple sub-tours. There should be no subset $S \subset N$ such that is self
 number of visited cities equals exactly its size. Mathematically, this is expressed by the *subtour elimination constraints* introduced by @dantzig_solution_1954:
 
 $$
-\sum_{i\in S}\sum_{j\in S} x_{ij} \le |S|-1\text{ for all subsets }S\subset N
+\sum_{\substack{i,j\in S\\ i\neq j}} x_{ij} \le |S|-1\text{ for all subsets }S\subset N
 $$ {#eq-1-10}
 
 To sum up, we now have modeled how valid tours should look like. If we find a tour 
@@ -626,7 +626,7 @@ $$
 T^* & =\operatorname{argmin} \sum_{i\in N}\sum_{j\in N} c_{ij}x_{ij} \\
 \text{s.t. } & \sum_{j=1}^n x_{ij} = 1\text{ for all }i\in N \\
 & \sum_{i=1}^n x_{ij} = 1\text{ for all }j\in N \\
-& \sum_{i\in N}\sum_{j\in N} x_{ij} \le |S|-1\text{ for all subsets }S\subset N \\
+& \sum_{\substack{i,j\in S\\ i\neq j}} x_{ij} \le |S|-1\text{ for all subsets }S\subset N \\
 & x_{ij} \in \{0,1\}
 \end{aligned}
 $$ {#eq-opt-model}
