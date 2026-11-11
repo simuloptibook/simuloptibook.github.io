@@ -595,7 +595,7 @@ of multiple sub-tours. There should be no subset $S \subset N$ such that is self
 number of visited cities equals exactly its size. Mathematically:
 
 $$
-\sum_{i\in N}\sum_{j\in N} x_{ij} \le |S|-1\text{ for all subsets }S\subset N
+\sum_{i\in S}\sum_{j\in S} x_{ij} \le |S|-1\text{ for all subsets }S\subset N
 $$ {#eq-1-10}
 
 To sum up, we now have modeled how valid tours should look like. If we find a tour 

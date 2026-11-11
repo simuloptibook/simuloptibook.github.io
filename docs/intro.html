@@ -618,11 +618,11 @@ d = d_I+d_T+d_D.
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total duration: </span><span class="sc">{</span>total_duration<span class="sc">:.1f}</span><span class="ss"> days"</span>)</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"On time:        </span><span class="sc">{</span>completed_on_time<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Implementation: 19.8 days
-Testing:        10.8 days
-Deployment:     5.4 days
-Total duration: 36.0 days
-On time:        False</code></pre>
+<pre><code>Implementation: 14.1 days
+Testing:        11.0 days
+Deployment:     5.3 days
+Total duration: 30.5 days
+On time:        True</code></pre>
 </div>
 </div>
 <p>The sampled values will generally be different each time the code is executed. This is not an error. Random variation is an essential part of the model.</p>
@@ -990,7 +990,7 @@ x_{ij}=
 <p>The first equality means that, fixed a location <span class="math inline">\(i\)</span>, the sum of all <em>outgoing</em> edges is exactly one. Conversely, the second states that for a fixed location <span class="math inline">\(j\)</span>, the sum of all <em>incoming</em> edges is also exactly one. This ensures that each location is visited exactly once.</p>
 <p>We need another technical condition to guarantee that the tour is a single one and not composed of multiple sub-tours. There should be no subset <span class="math inline">\(S \subset N\)</span> such that is self contained, the number of visited cities equals exactly its size. Mathematically:</p>
 <p><span id="eq-1-10"><span class="math display">\[
-\sum_{i\in N}\sum_{j\in N} x_{ij} \le |S|-1\text{ for all subsets }S\subset N
+\sum_{i\in S}\sum_{j\in S} x_{ij} \le |S|-1\text{ for all subsets }S\subset N
 \tag{1.10}\]</span></span></p>
 <p>To sum up, we now have modeled how valid tours should look like. If we find a tour <span class="math inline">\(T=\{x_{ij}\}\)</span> that satisfies the constraints outlined before, we can be sure it is a valid tour.</p>
 <p>But surely there are some tours that are better than others? This is where the second issue becomes important: we need an evaluation method to distinguish between good and bad solutions. In the optimization literature, we normally talk about <strong>objective functions</strong>. In our case, the traveling salesman would like the total distance to be <em>minimized</em>, meaning the sum of all distances between locations of the tour. Assume that <span class="math inline">\(c_{ij}&gt;0\)</span> is the distance between location <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> (for consistency assume <span class="math inline">\(c_{ii}=0\)</span>). Now we want to minimize the total distance traveled. For this we write:</p>

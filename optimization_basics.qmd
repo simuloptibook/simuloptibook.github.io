@@ -59,7 +59,7 @@ physical, financial and logical limits. Inequality constraints ($g_i(x)\le 0$) u
 or thresholds. For instance, if we want to express that the latency has to be under 100 ms, we might write
 $\operatorname{latency}(x)\le 100$, or in the canonical form $\operatorname{latency}(x)-100\le 0$. On the other
 side, equality constraints ($h_j(x)=0$) usually represent strict structural requirements. For instance, the
-conservation of flow equations we saw in @sec-sec-monte-carlo. If both $m=0$ and $p=0$, we call the problem
+conservation of flow equations we saw in @sec-monte-carlo. If both $m=0$ and $p=0$, we call the problem
 *unconstrained* and handle it usually by means of techniques like gradient descent.
 
 The intersection of all constraints is usually referred to as the **feasible region**, denoted by $\Omega$:

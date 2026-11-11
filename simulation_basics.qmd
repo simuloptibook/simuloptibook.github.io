@@ -54,8 +54,8 @@ to non-parametric distributions as well. We will hint at specific differences wh
 
 ### Pseudorandom Number Generators
 
-In general, any procedure to generate random numbers is called a *pseudorandom number generator* (PRNB).
-A PRNB can be defined as a deterministic algorithm that, given an initial seed, produces a long sequence of numbers that mimic the statistical properties of truly random samples. Although the sequence is fully determined by the seed (so it is not truly random, hence *pseudorandom*), a good PRNG yields values that are uniformly distributed, have minimal serial correlation, and pass standard statistical tests. Important PRNG properties include period length, equidistribution, independence, speed, and reproducibility (the same seed reproduces the same sequence). For simulation work we typically prefer generators with very long periods and strong statistical quality while cryptographic applications require cryptographically secure PRNGs. PRNGs are used to produce uniform variates that are then transformed into other distributions via methods such as inverse transform sampling, acceptance–rejection, or composition.
+In general, any procedure to generate random numbers is called a *pseudorandom number generator* (PRNG).
+A PRNG can be defined as a deterministic algorithm that, given an initial seed, produces a long sequence of numbers that mimic the statistical properties of truly random samples. Although the sequence is fully determined by the seed (so it is not truly random, hence *pseudorandom*), a good PRNG yields values that are uniformly distributed, have minimal serial correlation, and pass standard statistical tests. Important PRNG properties include period length, equidistribution, independence, speed, and reproducibility (the same seed reproduces the same sequence). For simulation work we typically prefer generators with very long periods and strong statistical quality while cryptographic applications require cryptographically secure PRNGs. PRNGs are used to produce uniform variates that are then transformed into other distributions via methods such as inverse transform sampling, acceptance–rejection, or composition.
 
 Let's explore the properties of a specific PRNG, the Linear Congruential Generator (LCG) using the following Python code.
 
@@ -128,7 +128,7 @@ int_sequence[:10]
 ```
 
 We have now generated 100000 random numbers using LCG (only first 10 are shown). But how can we ensure 
-if this PRNM works well in practice? We will look now at the **period length**, how to check for **uniformity**
+if this PRNG works well in practice? We will look now at the **period length**, how to check for **uniformity**
 and how to assert if there is **serial correlation**.
 
 **Period length**
@@ -262,7 +262,7 @@ print(f'The lag 1 correlation coefficient is {lag_1_correlation}')
 ```
 While the value is low, it's not as close to zero as it should, which is a known 
 weakness of the LCG (the generated numbers tend to fall onto a number of parallel 
-hyperplanes). This is the reason why PRNM like the LCG are not normally used in practice.
+hyperplanes). This is the reason why PRNGs like the LCG are not normally used in practice.
 The de-facto standard for pseudorandom number generation in practice is the algorithm
 known as the **Mersenne Twister**. This is the default generator used in Python or MATLAB, 
 and the preferred one for simulation purposes (but *not* for cryptographic purposes). The 

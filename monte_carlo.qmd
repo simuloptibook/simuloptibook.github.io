@@ -241,7 +241,7 @@ the standard normal distribution to calculate the confidence intervals:
 1. Calculate the sample standard deviation:
 
 $$
-s=\sqrt{\frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X}_n)}
+s=\sqrt{\frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X}_n)^2}
 $$
 
 2. Calculate the standard error $SE=s/\sqrt{n}$.
