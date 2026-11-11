@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -499,8 +519,8 @@ window.Quarto = {
 </header>
 
 
-<p>Simulation and optimization approaches are present in our everyday lives, albeit most of the time operating in a background plane. For example, when navigating with a GPS, the system simulates different routes and optimizes for the shortest or fastest path. Similarly, supply chains use optimization algorithms to minimize costs and maximize efficiency, while simulations help predict demand and manage inventory. These techniques are fundamental tools in decision-making processes across various industries, from transportation and logistics to finance and healthcare.</p>
-<p>But what do simulation and optimization approaches have in common, apart from being complementary tools? The answer lies in the concept of a <em>model</em>. In the context of machine learning, we normally refer to a model as a mathematical or computational representation that captures the relationships between input data and output predictions. In simulation and optimization, a model similarly serves as an abstraction of a real-world system or process, allowing us to analyze, predict, and improve its behavior through experimentation and algorithmic techniques.</p>
+<p>Simulation and optimization approaches are present in our everyday lives, albeit most of the time operating in a background plane. For example, when navigating with a GPS, the system simulates different routes and optimizes for the shortest or fastest path <span class="citation" data-cites="dijkstra_note_1959 bast_route_2016">(<a href="references.html#ref-dijkstra_note_1959" role="doc-biblioref">Dijkstra 1959</a>; <a href="references.html#ref-bast_route_2016" role="doc-biblioref">Bast et al. 2016</a>)</span>. Similarly, supply chains use optimization algorithms to minimize costs and maximize efficiency, while simulations help predict demand and manage inventory <span class="citation" data-cites="snyder_fundamentals_2019 law_simulation_2015">(<a href="references.html#ref-snyder_fundamentals_2019" role="doc-biblioref">Snyder and Shen 2019</a>; <a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015</a>)</span>. These techniques are fundamental tools in decision-making processes across various industries, from transportation and logistics to finance and healthcare <span class="citation" data-cites="hillier_introduction_2021 toth_vehicle_2014 glasserman_monte_2003 brailsford_analysis_2009">(<a href="references.html#ref-hillier_introduction_2021" role="doc-biblioref">Hillier and Lieberman 2021</a>; <a href="references.html#ref-toth_vehicle_2014" role="doc-biblioref">Toth and Vigo 2014</a>; <a href="references.html#ref-glasserman_monte_2003" role="doc-biblioref">Glasserman 2003</a>; <a href="references.html#ref-brailsford_analysis_2009" role="doc-biblioref">Brailsford et al. 2009</a>)</span>.</p>
+<p>But what do simulation and optimization approaches have in common, apart from being complementary tools? The answer lies in the concept of a <em>model</em>. In the context of machine learning, we normally refer to a model as a mathematical or computational representation that captures the relationships between input data and output predictions <span class="citation" data-cites="hastie_elements_2009">(<a href="references.html#ref-hastie_elements_2009" role="doc-biblioref">Hastie, Tibshirani, and Friedman 2009</a>)</span>. In simulation and optimization, a model similarly serves as an abstraction of a real-world system or process, allowing us to analyze, predict, and improve its behavior through experimentation and algorithmic techniques <span class="citation" data-cites="law_simulation_2015 osais_computer_2017">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015</a>; <a href="references.html#ref-osais_computer_2017" role="doc-biblioref">Osais 2017</a>)</span>.</p>
 <p>In the following, we will delve deeper into the concept of a model and how models are used in simulation and optimization contexts using some practical examples.</p>
 <section id="example-1-will-the-project-finish-on-time" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="example-1-will-the-project-finish-on-time"><span class="header-section-number">1.1</span> Example 1: Will the project finish on time?</h2>
@@ -516,7 +536,7 @@ window.Quarto = {
 <p>What is the probability that the project will be completed within 35 working days?</p>
 </blockquote>
 <p>Because the exact task durations are unknown, adding three fixed numbers is not sufficient. Instead, we describe each duration using a probability distribution and simulate many possible realizations of the project.</p>
-<p>This is a typical application of <strong>Monte Carlo simulation</strong>.</p>
+<p>This is a typical application of <strong>Monte Carlo simulation</strong> <span class="citation" data-cites="metropolis_monte_1949 rubinstein_simulation_2016">(<a href="references.html#ref-metropolis_monte_1949" role="doc-biblioref">Metropolis and Ulam 1949</a>; <a href="references.html#ref-rubinstein_simulation_2016" role="doc-biblioref">Rubinstein and Kroese 2016</a>)</span>. Using Monte Carlo sampling to estimate the completion-time distribution of a project network has a long tradition in project management, dating back to the early analyses of PERT networks <span class="citation" data-cites="malcolm_application_1959 van_slyke_monte_1963">(<a href="references.html#ref-malcolm_application_1959" role="doc-biblioref">Malcolm et al. 1959</a>; <a href="references.html#ref-van_slyke_monte_1963" role="doc-biblioref">Van Slyke 1963</a>)</span>.</p>
 <section id="identifying-the-elements-of-the-model" class="level3" data-number="1.1.1">
 <h3 data-number="1.1.1" class="anchored" data-anchor-id="identifying-the-elements-of-the-model"><span class="header-section-number">1.1.1</span> Identifying the elements of the model</h3>
 <p>As in other simulation models, we first identify the most important elements of the system. For a Monte Carlo simulation, we distinguish between <em>components</em>, <em>random inputs</em>, <em>model logic</em>, <em>outputs</em>, and <em>metrics</em>.</p>
@@ -568,7 +588,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>For each task, the team can provide a minimum plausible duration, a most likely duration, and a maximum plausible duration. A simple probability distribution that uses exactly these three estimates is the <strong>triangular distribution</strong>.</p>
+<p>For each task, the team can provide a minimum plausible duration, a most likely duration, and a maximum plausible duration. A simple probability distribution that uses exactly these three estimates is the <strong>triangular distribution</strong>, which is widely used in risk analysis as a practical alternative to the beta distribution of classical PERT <span class="citation" data-cites="johnson_triangular_1997 kotz_beyond_2004">(<a href="references.html#ref-johnson_triangular_1997" role="doc-biblioref">Johnson 1997</a>; <a href="references.html#ref-kotz_beyond_2004" role="doc-biblioref">Kotz and Dorp 2004</a>)</span>.</p>
 <p>Let</p>
 <p><span class="math display">\[
 D_I \sim \operatorname{Triangular}(10,15,24)
@@ -618,10 +638,10 @@ d = d_I+d_T+d_D.
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total duration: </span><span class="sc">{</span>total_duration<span class="sc">:.1f}</span><span class="ss"> days"</span>)</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"On time:        </span><span class="sc">{</span>completed_on_time<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Implementation: 14.1 days
-Testing:        11.0 days
-Deployment:     5.3 days
-Total duration: 30.5 days
+<pre><code>Implementation: 18.2 days
+Testing:        9.9 days
+Deployment:     5.8 days
+Total duration: 33.9 days
 On time:        True</code></pre>
 </div>
 </div>
@@ -683,7 +703,7 @@ within 35 days:       86.14%</code></pre>
 <p>The list <code>durations</code> contains the output of every replication. The expression</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>duration <span class="op">&lt;=</span> deadline</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>returns either <code>True</code> or <code>False</code>. In Python, these values behave like 1 and 0 when they are added. Dividing the number of successful replications by the total number of replications therefore gives the estimated probability of meeting the deadline.</p>
-<p>The call to <code>random.seed(2026)</code> initializes the random-number generator. Using a fixed seed makes the results reproducible: running the same code again produces the same sequence of pseudo-random values.</p>
+<p>The call to <code>random.seed(2026)</code> initializes the random-number generator. Using a fixed seed makes the results reproducible: running the same code again produces the same sequence of pseudo-random values. Python’s <code>random</code> module generates these values with the Mersenne Twister algorithm <span class="citation" data-cites="matsumoto_mersenne_1998">(<a href="references.html#ref-matsumoto_mersenne_1998" role="doc-biblioref">Matsumoto and Nishimura 1998</a>)</span>.</p>
 </section>
 <section id="examining-the-distribution-of-completion-times" class="level3" data-number="1.1.5">
 <h3 data-number="1.1.5" class="anchored" data-anchor-id="examining-the-distribution-of-completion-times"><span class="header-section-number">1.1.5</span> Examining the distribution of completion times</h3>
@@ -761,6 +781,7 @@ within 35 days:       86.14%</code></pre>
 1.96\,
 \widehat{\operatorname{SE}}(\widehat{p}_R).
 \]</span></p>
+<p>This interval follows from the central limit theorem and is reliable when <span class="math inline">\(R\)</span> is large and <span class="math inline">\(\widehat{p}_R\)</span> is not too close to 0 or 1; for small samples or extreme probabilities, better-behaved alternatives exist <span class="citation" data-cites="brown_interval_2001">(<a href="references.html#ref-brown_interval_2001" role="doc-biblioref">Brown, Cai, and DasGupta 2001</a>)</span>.</p>
 <p>We can calculate this interval as follows:</p>
 <div id="project-confidence-interval" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>standard_error <span class="op">=</span> (</span>
@@ -780,7 +801,7 @@ within 35 days:       86.14%</code></pre>
 <pre><code>Approximate 95% confidence interval: [85.93%, 86.36%]</code></pre>
 </div>
 </div>
-<p>Increasing the number of replications reduces the Monte Carlo standard error. More precisely, the standard error decreases proportionally to <span class="math inline">\(\frac{1}{\sqrt{R}}.\)</span></p>
+<p>Increasing the number of replications reduces the Monte Carlo standard error. More precisely, the standard error decreases proportionally to <span class="math inline">\(\frac{1}{\sqrt{R}}\)</span> <span class="citation" data-cites="asmussen_stochastic_2007">(<a href="references.html#ref-asmussen_stochastic_2007" role="doc-biblioref">Asmussen and Glynn 2007</a>, Ch. III)</span>.</p>
 <p>Consequently, reducing the simulation error by a factor of two generally requires approximately four times as many replications.</p>
 <p>In general, there are three sources of uncertainty in a Monte Carlo simulation:</p>
 <ul>
@@ -788,7 +809,7 @@ within 35 days:       86.14%</code></pre>
 <li><strong>Monte Carlo error</strong> arises because we estimate the result using a finite number of replications.</li>
 <li><strong>Model uncertainty</strong> concerns whether our assumptions, such as the choice of triangular distributions or independence between tasks, adequately represent the real project.</li>
 </ul>
-<p>Running more replications reduces Monte Carlo error, but it does not correct unrealistic assumptions or inaccurate input estimates.</p>
+<p>Running more replications reduces Monte Carlo error, but it does not correct unrealistic assumptions or inaccurate input estimates <span class="citation" data-cites="henderson_input_2003 song_advanced_2014">(<a href="references.html#ref-henderson_input_2003" role="doc-biblioref">Henderson 2003</a>; <a href="references.html#ref-song_advanced_2014" role="doc-biblioref">Song, Nelson, and Pegden 2014</a>)</span>. Assessing whether a model adequately represents the real system is the subject of model validation <span class="citation" data-cites="sargent_verification_2013 kennedy_bayesian_2001">(<a href="references.html#ref-sargent_verification_2013" role="doc-biblioref">Sargent 2013</a>; <a href="references.html#ref-kennedy_bayesian_2001" role="doc-biblioref">Kennedy and O’Hagan 2001</a>)</span>.</p>
 </section>
 <section id="the-monte-carlo-simulation-algorithm" class="level3" data-number="1.1.7">
 <h3 data-number="1.1.7" class="anchored" data-anchor-id="the-monte-carlo-simulation-algorithm"><span class="header-section-number">1.1.7</span> The Monte Carlo simulation algorithm</h3>
@@ -839,6 +860,7 @@ D_I+D_A.
 <p><span class="math display">\[
 D=\max(D_I,D_A)+D_T+D_D.
 \]</span></p>
+<p>The maximum of random durations is notoriously difficult to handle analytically, and ignoring it leads to systematically optimistic schedule estimates. This is one of the main reasons why simulation is preferred over simple analytical approximations for project networks <span class="citation" data-cites="clark_greatest_1961 maccrimmon_analytical_1964 van_slyke_monte_1963">(<a href="references.html#ref-clark_greatest_1961" role="doc-biblioref">Clark 1961</a>; <a href="references.html#ref-maccrimmon_analytical_1964" role="doc-biblioref">MacCrimmon and Ryavec 1964</a>; <a href="references.html#ref-van_slyke_monte_1963" role="doc-biblioref">Van Slyke 1963</a>)</span>.</p>
 <p>Although such extensions make the model more realistic, the basic Monte Carlo procedure remains unchanged: specify the uncertain inputs, generate scenarios, evaluate each scenario, and aggregate the results.</p>
 <p>Later chapters will examine how probability distributions are selected, how random values are generated, how simulation output is analyzed, and how Monte Carlo simulation can be combined with optimization methods.</p>
 </section>
@@ -854,7 +876,7 @@ D=\max(D_I,D_A)+D_T+D_D.
 <li><strong>Inputs:</strong> Whatever information is fed into the system, e.g.&nbsp;arrival times, service times, etc. These inputs can contain statistical assumptions, like the distribution of arrival times.</li>
 <li><strong>Metrics:</strong> How we evaluate the system as a whole in a given time step. For instance, what is the average waiting time? How much time are the cashiers busy? How is the queue length distributed?</li>
 </ul>
-<p>The system could be represented by the following Python code as a minimal variant.</p>
+<p>This way of describing a system, in which the state changes only at discrete points in time when events occur, is the basis of <strong>discrete-event simulation</strong> <span class="citation" data-cites="law_simulation_2015 banks_discrete-event_2010">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015</a>; <a href="references.html#ref-banks_discrete-event_2010" role="doc-biblioref">Banks et al. 2010</a>)</span>. The system could be represented by the following Python code as a minimal variant, in which the pending events are kept in a priority queue ordered by time (the <em>future event list</em>).</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> heapq, random</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># event = (time, type, customer_id)</span></span>
@@ -892,7 +914,7 @@ Figure&nbsp;1.1: An illustration of the supermarket dynamics.
 </figure>
 </div>
 <p>In this figure, customers are denoted by <span class="math inline">\(r_i\)</span>, the amount of cashiers is <span class="math inline">\(c\)</span> and the total number of customers in the supermarket at time <span class="math inline">\(t\)</span> is denoted by <span class="math inline">\(N(t)\)</span>.</p>
-<p>Now let’s try to refine the dynamics of this system. We will now write some equations to describe the system’ dynamics according to the <strong>infinite waiting room</strong> <span class="math inline">\(M/M/c\)</span> model. Let’s make the following assumptions:</p>
+<p>Now let’s try to refine the dynamics of this system. We will now write some equations to describe the system’ dynamics according to the <strong>infinite waiting room</strong> <span class="math inline">\(M/M/c\)</span> model, written in the notation introduced by <span class="citation" data-cites="kendall_stochastic_1953 kleinrock_queueing_1975 shortle_fundamentals_2018">Kendall (<a href="references.html#ref-kendall_stochastic_1953" role="doc-biblioref">1953</a>; see also <a href="references.html#ref-kleinrock_queueing_1975" role="doc-biblioref">Kleinrock 1975</a>; <a href="references.html#ref-shortle_fundamentals_2018" role="doc-biblioref">Shortle et al. 2018</a>)</span>. Let’s make the following assumptions:</p>
 <ul>
 <li>Arrivals follow a Poisson distribution with mean <span class="math inline">\(\lambda\)</span> (arrivals per second), which for this case will be assumed to be stationary.</li>
 <li>The service times are assumed to be exponentially distributed with mean <span class="math inline">\(1/\mu\)</span>.</li>
@@ -924,7 +946,7 @@ Figure&nbsp;1.2: Transition dynamics between neighboring states
 </figcaption>
 </figure>
 </div>
-<p>As can be seen in the previous figure, transitions flow away from state <span class="math inline">\(n\)</span> in two ways: first, to state <span class="math inline">\(n-1\)</span> when a customer is served with a rate <span class="math inline">\(\mu_n p_n\)</span> and to state <span class="math inline">\(n+1\)</span> when a new customer arrives with a rate <span class="math inline">\(\lambda p_n\)</span>. Similarly, one can transition from the other states to state <span class="math inline">\(n\)</span> either by having a customer served in state <span class="math inline">\(n+1\)</span> with a rate <span class="math inline">\(\mu_{n+1}p_{n+1}\)</span> or when being in state <span class="math inline">\(n-1\)</span> and a new customer arrives with a rate <span class="math inline">\(\lambda p_{n-1}\)</span>. Our modeling assumption now is that, for each state <span class="math inline">\(n\)</span>, the flow outwards balances out with the flow inwards (global balance):</p>
+<p>As can be seen in the previous figure, transitions flow away from state <span class="math inline">\(n\)</span> in two ways: first, to state <span class="math inline">\(n-1\)</span> when a customer is served with a rate <span class="math inline">\(\mu_n p_n\)</span> and to state <span class="math inline">\(n+1\)</span> when a new customer arrives with a rate <span class="math inline">\(\lambda p_n\)</span>. Similarly, one can transition from the other states to state <span class="math inline">\(n\)</span> either by having a customer served in state <span class="math inline">\(n+1\)</span> with a rate <span class="math inline">\(\mu_{n+1}p_{n+1}\)</span> or when being in state <span class="math inline">\(n-1\)</span> and a new customer arrives with a rate <span class="math inline">\(\lambda p_{n-1}\)</span>. Our modeling assumption now is that, for each state <span class="math inline">\(n\)</span>, the flow outwards balances out with the flow inwards (global balance) <span class="citation" data-cites="kleinrock_queueing_1975 harchol-balter_performance_2013">(<a href="references.html#ref-kleinrock_queueing_1975" role="doc-biblioref">Kleinrock 1975</a>; <a href="references.html#ref-harchol-balter_performance_2013" role="doc-biblioref">Harchol-Balter 2013</a>)</span>:</p>
 <p><span id="eq-1-4"><span class="math display">\[
 \lambda p_{n-1} + \mu_{n+1}p_{n+1} = \lambda p_n + \mu_n p_n\text{,   for }n\ge 1
 \tag{1.4}\]</span></span></p>
@@ -940,8 +962,8 @@ p_{n+1}=\frac{\lambda}{\mu_{n+1}}p_n
 <p><span id="eq-1-7"><span class="math display">\[
 P_W=p_0\frac{(\lambda/\mu)^c}{c!}\frac{1}{1-\rho}
 \tag{1.7}\]</span></span></p>
-<p>This is also called the <em>Erlang-C</em> probability and we will delve deeper into the details in the coming chapters.</p>
-<p>We can now write computer code that performs a step-by-step simulation of the system (i.e.&nbsp;in discrete time steps). This is specially useful if we are in a situation where there is no closed-form analytical solution, or the analytical solution is too complex to calculate. For instance, we can run the above simulator for a large number of steps (say <span class="math inline">\(T=10^6\)</span>) and then calculate specific metrics like:</p>
+<p>This is also called the <em>Erlang-C</em> probability, after the pioneering work of A. K. Erlang on telephone traffic <span class="citation" data-cites="erlang_solution_1917 shortle_fundamentals_2018">(<a href="references.html#ref-erlang_solution_1917" role="doc-biblioref">Erlang 1917</a>; <a href="references.html#ref-shortle_fundamentals_2018" role="doc-biblioref">Shortle et al. 2018</a>)</span>, and we will delve deeper into the details in the coming chapters.</p>
+<p>We can now write computer code that performs a step-by-step simulation of the system (i.e.&nbsp;in discrete time steps). This is specially useful if we are in a situation where there is no closed-form analytical solution, or the analytical solution is too complex to calculate <span class="citation" data-cites="law_simulation_2015">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015</a>)</span>. For instance, we can run the above simulator for a large number of steps (say <span class="math inline">\(T=10^6\)</span>) and then calculate specific metrics like:</p>
 <ul>
 <li>Mean queue length.</li>
 <li>Mean waiting time.</li>
@@ -953,7 +975,7 @@ P_W=p_0\frac{(\lambda/\mu)^c}{c!}\frac{1}{1-\rho}
 </section>
 <section id="example-3-the-traveling-salesman" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="example-3-the-traveling-salesman"><span class="header-section-number">1.3</span> Example 3: The traveling salesman</h2>
-<p>Let’s now turn our attention to the other type of problems which are central to this book: <em>optimization problems</em>. Imagine you are a sales representative for a vaccum cleaner manufacturer. Your task is to visit potential customers in cities across your area and, at the end of the day, return to where you started your journey. As an environmental conscious employer and in order to save transport costs, your company introduces the restriction that each customer in the route has to be visited <em>exactly once</em>. So you need to think carefully before getting into your car and starting your route.</p>
+<p>Let’s now turn our attention to the other type of problems which are central to this book: <em>optimization problems</em>. The following example is the classic <strong>traveling salesman problem</strong> (TSP), one of the most intensively studied problems in combinatorial optimization <span class="citation" data-cites="applegate_traveling_2006">(<a href="references.html#ref-applegate_traveling_2006" role="doc-biblioref">Applegate et al. 2006</a>)</span>. Imagine you are a sales representative for a vaccum cleaner manufacturer. Your task is to visit potential customers in cities across your area and, at the end of the day, return to where you started your journey. As an environmental conscious employer and in order to save transport costs, your company introduces the restriction that each customer in the route has to be visited <em>exactly once</em>. So you need to think carefully before getting into your car and starting your route.</p>
 <div id="fig-tsp-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tsp-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -980,7 +1002,7 @@ x_{ij}=
 \end{aligned}
 \tag{1.8}\]</span></span></p>
 <p>where <span class="math inline">\(i,j\in N\)</span>. We call <span class="math inline">\(x_{ij}\)</span> our <em>decision variables</em>. So if the traveling salesman specifies the value of each <span class="math inline">\(x_{ij}\)</span>, we have a candidate route to consider. However, not every assignment of the <span class="math inline">\(x_{ij}\)</span> variables to <span class="math inline">\(\{0,1\}\)</span> will make sense for the traveling salesman. For instance, imagine that we have in one assignment both <span class="math inline">\(x_{23}=1\)</span> and <span class="math inline">\(x_{43}=1\)</span>. That would mean that location 3 is visited twice, once from location 2 and another time from location 4. That violates the requirement that each location is visited exactly once.</p>
-<p>To model this situation, we need to introduce <em>constraints</em>. In optimization problems, constraints take usually the form of equalities or inequalities as functions of the decision variables. In our case, the requirement that each location is visited only once can be expressed by the following (linear) equalities:</p>
+<p>To model this situation, we need to introduce <em>constraints</em>. In optimization problems, constraints take usually the form of equalities or inequalities as functions of the decision variables. In our case, the requirement that each location is visited only once can be expressed by the following (linear) equalities, which are known as <em>assignment constraints</em> <span class="citation" data-cites="wolsey_integer_2020">(<a href="references.html#ref-wolsey_integer_2020" role="doc-biblioref">Wolsey 2020</a>)</span>:</p>
 <p><span id="eq-1-9"><span class="math display">\[
 \begin{aligned}
 \sum_{j=1}^n x_{ij} &amp; = 1\text{ for all }i\in N \\
@@ -988,12 +1010,12 @@ x_{ij}=
 \end{aligned}
 \tag{1.9}\]</span></span></p>
 <p>The first equality means that, fixed a location <span class="math inline">\(i\)</span>, the sum of all <em>outgoing</em> edges is exactly one. Conversely, the second states that for a fixed location <span class="math inline">\(j\)</span>, the sum of all <em>incoming</em> edges is also exactly one. This ensures that each location is visited exactly once.</p>
-<p>We need another technical condition to guarantee that the tour is a single one and not composed of multiple sub-tours. There should be no subset <span class="math inline">\(S \subset N\)</span> such that is self contained, the number of visited cities equals exactly its size. Mathematically:</p>
+<p>We need another technical condition to guarantee that the tour is a single one and not composed of multiple sub-tours. There should be no subset <span class="math inline">\(S \subset N\)</span> such that is self contained, the number of visited cities equals exactly its size. Mathematically, this is expressed by the <em>subtour elimination constraints</em> introduced by <span class="citation" data-cites="dantzig_solution_1954">Dantzig, Fulkerson, and Johnson (<a href="references.html#ref-dantzig_solution_1954" role="doc-biblioref">1954</a>)</span>:</p>
 <p><span id="eq-1-10"><span class="math display">\[
 \sum_{i\in S}\sum_{j\in S} x_{ij} \le |S|-1\text{ for all subsets }S\subset N
 \tag{1.10}\]</span></span></p>
 <p>To sum up, we now have modeled how valid tours should look like. If we find a tour <span class="math inline">\(T=\{x_{ij}\}\)</span> that satisfies the constraints outlined before, we can be sure it is a valid tour.</p>
-<p>But surely there are some tours that are better than others? This is where the second issue becomes important: we need an evaluation method to distinguish between good and bad solutions. In the optimization literature, we normally talk about <strong>objective functions</strong>. In our case, the traveling salesman would like the total distance to be <em>minimized</em>, meaning the sum of all distances between locations of the tour. Assume that <span class="math inline">\(c_{ij}&gt;0\)</span> is the distance between location <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> (for consistency assume <span class="math inline">\(c_{ii}=0\)</span>). Now we want to minimize the total distance traveled. For this we write:</p>
+<p>But surely there are some tours that are better than others? This is where the second issue becomes important: we need an evaluation method to distinguish between good and bad solutions. In the optimization literature, we normally talk about <strong>objective functions</strong> <span class="citation" data-cites="hillier_introduction_2021">(<a href="references.html#ref-hillier_introduction_2021" role="doc-biblioref">Hillier and Lieberman 2021</a>)</span>. In our case, the traveling salesman would like the total distance to be <em>minimized</em>, meaning the sum of all distances between locations of the tour. Assume that <span class="math inline">\(c_{ij}&gt;0\)</span> is the distance between location <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> (for consistency assume <span class="math inline">\(c_{ii}=0\)</span>). Now we want to minimize the total distance traveled. For this we write:</p>
 <p><span id="eq-total-cost"><span class="math display">\[
 \min \sum_{i\in N}\sum_{j\in N} c_{ij}x_{ij}
 \tag{1.11}\]</span></span></p>
@@ -1008,12 +1030,12 @@ T^* &amp; =\operatorname{argmin} \sum_{i\in N}\sum_{j\in N} c_{ij}x_{ij} \\
 \end{aligned}
 \tag{1.12}\]</span></span></p>
 <p>We call this set of expressions our <em>optimization model</em>. This will be the mathematical underpinning for all the methods and algorithms that we will use to find a solution to this problem. In the first line, we state our goal: to obtain a tour <span class="math inline">\(T^*\)</span> that is optimal in the sense of minimizing the total cost (the expression <span class="math inline">\(\operatorname{argmin}\)</span> means “the argument that minimizes”, so find the <span class="math inline">\(x_{ij}\)</span> that minimize the total cost function). The subsequent lines state the <em>constraints</em> that we listed before. In the last line we specify the <em>domain</em> of the decision variables, i.e.&nbsp;what are the possible values these variables can take.</p>
-<p>We will see that, depending on the form of the optimization model we will be able to choose from a toolbox of algorithms capable to solve the problem at hand, either exactly (<em>exact methods</em>) or approximately (<em>heuristic methods</em>).</p>
+<p>We will see that, depending on the form of the optimization model we will be able to choose from a toolbox of algorithms capable to solve the problem at hand, either exactly (<em>exact methods</em>) or approximately (<em>heuristic methods</em>). For the TSP, this choice is far from academic: the problem is NP-hard <span class="citation" data-cites="karp_reducibility_1972">(<a href="references.html#ref-karp_reducibility_1972" role="doc-biblioref">Karp 1972</a>)</span>, so no algorithm is known that solves every instance exactly in polynomial time, and heuristics are often the only practical option for very large instances <span class="citation" data-cites="applegate_traveling_2006 blum_metaheuristics_2003">(<a href="references.html#ref-applegate_traveling_2006" role="doc-biblioref">Applegate et al. 2006</a>; <a href="references.html#ref-blum_metaheuristics_2003" role="doc-biblioref">Blum and Roli 2003</a>)</span>.</p>
 </section>
 <section id="structure-of-the-book" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="structure-of-the-book"><span class="header-section-number">1.4</span> Structure of the book</h2>
 <p>In this first chapter, we have introduced the concept of a <em>model</em> and have applied it successfully to a simulation and an optimization problem. The rest of the book is structured in two parts: Part I will be dedicated to simulation approaches, including the <span class="math inline">\(M/M/c\)</span> model we have seen in this chapter in <a href="simulation_basics.html" class="quarto-xref"><span>Chapter 2</span></a>. Monte Carlo methods are the main topic of <a href="monte_carlo.html" class="quarto-xref"><span>Chapter 3</span></a>. After that, <a href="discrete_event.html" class="quarto-xref"><span>Chapter 4</span></a> focuses on the handling of discrete events and queuing theory.</p>
-<p>Part II is dedicated to optimization problems. In <a href="optimization_basics.html" class="quarto-xref"><span>Chapter 5</span></a> we introduce the mathematical basics of optimization. <a href="exact_methods.html" class="quarto-xref"><span>Chapter 6</span></a> is dedicated to exact optimization methods like the simplex method for linear programming. Approximate methods for complex optimization problems like metaheuristics and evolutionary algorithms are presented in <a href="metaheuristics.html" class="quarto-xref"><span>Chapter 7</span></a>. Finally, we review the importance of optimization methods for machine learning in <a href="optimization_in_ml.html" class="quarto-xref"><span>Chapter 8</span></a>.</p>
+<p>Part II is dedicated to optimization problems. In <a href="optimization_basics.html" class="quarto-xref"><span>Chapter 5</span></a> we introduce the mathematical basics of optimization. <a href="exact_methods.html" class="quarto-xref"><span>Chapter 6</span></a> is dedicated to exact optimization methods like the simplex method for linear programming <span class="citation" data-cites="dantzig_linear_1963">(<a href="references.html#ref-dantzig_linear_1963" role="doc-biblioref">Dantzig 1963</a>)</span>. Approximate methods for complex optimization problems like metaheuristics and evolutionary algorithms <span class="citation" data-cites="blum_metaheuristics_2003 eiben_introduction_2015">(<a href="references.html#ref-blum_metaheuristics_2003" role="doc-biblioref">Blum and Roli 2003</a>; <a href="references.html#ref-eiben_introduction_2015" role="doc-biblioref">Eiben and Smith 2015</a>)</span> are presented in <a href="metaheuristics.html" class="quarto-xref"><span>Chapter 7</span></a>. Finally, we review the importance of optimization methods for machine learning <span class="citation" data-cites="bottou_optimization_2018">(<a href="references.html#ref-bottou_optimization_2018" role="doc-biblioref">Bottou, Curtis, and Nocedal 2018</a>)</span> in <a href="optimization_in_ml.html" class="quarto-xref"><span>Chapter 8</span></a>.</p>
 </section>
 <section id="exercises" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">1.5</span> Exercises</h2>
@@ -1024,6 +1046,125 @@ T^* &amp; =\operatorname{argmin} \sum_{i\in N}\sum_{j\in N} c_{ij}x_{ij} \\
 </ol>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-applegate_traveling_2006" class="csl-entry" role="listitem">
+Applegate, David L., Robert E. Bixby, Vašek Chvátal, and William J. Cook. 2006. <em>The <span>Traveling</span> <span>Salesman</span> <span>Problem</span>: <span>A</span> <span>Computational</span> <span>Study</span></em>. Princeton <span>Series</span> in <span>Applied</span> <span>Mathematics</span>. Princeton, NJ: Princeton University Press.
+</div>
+<div id="ref-asmussen_stochastic_2007" class="csl-entry" role="listitem">
+Asmussen, Søren, and Peter W. Glynn. 2007. <em>Stochastic <span>Simulation</span>: <span>Algorithms</span> and <span>Analysis</span></em>. Vol. 57. Stochastic <span>Modelling</span> and <span>Applied</span> <span>Probability</span>. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-69033-9">https://doi.org/10.1007/978-0-387-69033-9</a>.
+</div>
+<div id="ref-banks_discrete-event_2010" class="csl-entry" role="listitem">
+Banks, Jerry, John S. Carson, Barry L. Nelson, and David M. Nicol. 2010. <em>Discrete-<span>Event</span> <span>System</span> <span>Simulation</span></em>. 5th ed. Upper Saddle River, NJ: Pearson.
+</div>
+<div id="ref-bast_route_2016" class="csl-entry" role="listitem">
+Bast, Hannah, Daniel Delling, Andrew Goldberg, Matthias Müller-Hannemann, Thomas Pajor, Peter Sanders, Dorothea Wagner, and Renato F. Werneck. 2016. <span>“Route <span>Planning</span> in <span>Transportation</span> <span>Networks</span>.”</span> In <em>Algorithm <span>Engineering</span>: <span>Selected</span> <span>Results</span> and <span>Surveys</span></em>, edited by Lasse Kliemann and Peter Sanders, 9220:19–80. Lecture <span>Notes</span> in <span>Computer</span> <span>Science</span>. Cham: Springer International Publishing. <a href="https://doi.org/10.1007/978-3-319-49487-6_2">https://doi.org/10.1007/978-3-319-49487-6_2</a>.
+</div>
+<div id="ref-blum_metaheuristics_2003" class="csl-entry" role="listitem">
+Blum, Christian, and Andrea Roli. 2003. <span>“Metaheuristics in Combinatorial Optimization: <span>Overview</span> and Conceptual Comparison.”</span> <em>ACM Computing Surveys</em> 35 (3): 268–308. <a href="https://doi.org/10.1145/937503.937505">https://doi.org/10.1145/937503.937505</a>.
+</div>
+<div id="ref-bottou_optimization_2018" class="csl-entry" role="listitem">
+Bottou, Léon, Frank E. Curtis, and Jorge Nocedal. 2018. <span>“Optimization <span>Methods</span> for <span>Large</span>-<span>Scale</span> <span>Machine</span> <span>Learning</span>.”</span> <em>SIAM Review</em> 60 (2): 223–311. <a href="https://doi.org/10.1137/16M1080173">https://doi.org/10.1137/16M1080173</a>.
+</div>
+<div id="ref-brailsford_analysis_2009" class="csl-entry" role="listitem">
+Brailsford, Sally C., Paul R. Harper, Bhakti Patel, and Martin Pitt. 2009. <span>“An Analysis of the Academic Literature on Simulation and Modelling in Health Care.”</span> <em>Journal of Simulation</em> 3 (3): 130–40. <a href="https://doi.org/10.1057/jos.2009.10">https://doi.org/10.1057/jos.2009.10</a>.
+</div>
+<div id="ref-brown_interval_2001" class="csl-entry" role="listitem">
+Brown, Lawrence D., T. Tony Cai, and Anirban DasGupta. 2001. <span>“Interval <span>Estimation</span> for a <span>Binomial</span> <span>Proportion</span>.”</span> <em>Statistical Science</em> 16 (2): 101–33. <a href="https://doi.org/10.1214/ss/1009213286">https://doi.org/10.1214/ss/1009213286</a>.
+</div>
+<div id="ref-clark_greatest_1961" class="csl-entry" role="listitem">
+Clark, Charles E. 1961. <span>“The <span>Greatest</span> of a <span>Finite</span> <span>Set</span> of <span>Random</span> <span>Variables</span>.”</span> <em>Operations Research</em> 9 (2): 145–62. <a href="https://doi.org/10.1287/opre.9.2.145">https://doi.org/10.1287/opre.9.2.145</a>.
+</div>
+<div id="ref-dantzig_linear_1963" class="csl-entry" role="listitem">
+Dantzig, George B. 1963. <em>Linear <span>Programming</span> and <span>Extensions</span></em>. Princeton, NJ: Princeton University Press. <a href="https://doi.org/10.1515/9781400884179">https://doi.org/10.1515/9781400884179</a>.
+</div>
+<div id="ref-dantzig_solution_1954" class="csl-entry" role="listitem">
+Dantzig, George B., D. Ray Fulkerson, and Selmer M. Johnson. 1954. <span>“Solution of a <span>Large</span>-<span>Scale</span> <span>Traveling</span>-<span>Salesman</span> <span>Problem</span>.”</span> <em>Journal of the Operations Research Society of America</em> 2 (4): 393–410. <a href="https://doi.org/10.1287/opre.2.4.393">https://doi.org/10.1287/opre.2.4.393</a>.
+</div>
+<div id="ref-dijkstra_note_1959" class="csl-entry" role="listitem">
+Dijkstra, Edsger W. 1959. <span>“A Note on Two Problems in Connexion with Graphs.”</span> <em>Numerische Mathematik</em> 1 (1): 269–71. <a href="https://doi.org/10.1007/BF01386390">https://doi.org/10.1007/BF01386390</a>.
+</div>
+<div id="ref-eiben_introduction_2015" class="csl-entry" role="listitem">
+Eiben, A. E., and J. E. Smith. 2015. <em>Introduction to <span>Evolutionary</span> <span>Computing</span></em>. 2nd ed. Natural <span>Computing</span> <span>Series</span>. Berlin, Heidelberg: Springer. <a href="https://doi.org/10.1007/978-3-662-44874-8">https://doi.org/10.1007/978-3-662-44874-8</a>.
+</div>
+<div id="ref-erlang_solution_1917" class="csl-entry" role="listitem">
+Erlang, Agner Krarup. 1917. <span>“Løsning Af Nogle <span>Problemer</span> Fra <span>Sandsynlighedsregningen</span> Af <span>Betydning</span> for de Automatiske <span>Telefoncentraler</span>.”</span> <em>Elektroteknikeren</em> 13: 5–13.
+</div>
+<div id="ref-glasserman_monte_2003" class="csl-entry" role="listitem">
+Glasserman, Paul. 2003. <em>Monte <span>Carlo</span> <span>Methods</span> in <span>Financial</span> <span>Engineering</span></em>. Vol. 53. Stochastic <span>Modelling</span> and <span>Applied</span> <span>Probability</span>. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-21617-1">https://doi.org/10.1007/978-0-387-21617-1</a>.
+</div>
+<div id="ref-harchol-balter_performance_2013" class="csl-entry" role="listitem">
+Harchol-Balter, Mor. 2013. <em>Performance <span>Modeling</span> and <span>Design</span> of <span>Computer</span> <span>Systems</span>: <span>Queueing</span> <span>Theory</span> in <span>Action</span></em>. Cambridge: Cambridge University Press. <a href="https://doi.org/10.1017/CBO9781139226424">https://doi.org/10.1017/CBO9781139226424</a>.
+</div>
+<div id="ref-hastie_elements_2009" class="csl-entry" role="listitem">
+Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2009. <em>The <span>Elements</span> of <span>Statistical</span> <span>Learning</span>: <span>Data</span> <span>Mining</span>, <span>Inference</span>, and <span>Prediction</span></em>. 2nd ed. Springer <span>Series</span> in <span>Statistics</span>. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-84858-7">https://doi.org/10.1007/978-0-387-84858-7</a>.
+</div>
+<div id="ref-henderson_input_2003" class="csl-entry" role="listitem">
+Henderson, Shane G. 2003. <span>“Input Model Uncertainty: Why Do We Care and What Should We Do about It?”</span> In <em>Proceedings of the 2003 <span>Winter</span> <span>Simulation</span> <span>Conference</span></em>, 90–100. IEEE. <a href="https://doi.org/10.1109/WSC.2003.1261412">https://doi.org/10.1109/WSC.2003.1261412</a>.
+</div>
+<div id="ref-hillier_introduction_2021" class="csl-entry" role="listitem">
+Hillier, Frederick S., and Gerald J. Lieberman. 2021. <em>Introduction to <span>Operations</span> <span>Research</span></em>. 11th ed. New York: McGraw-Hill Education.
+</div>
+<div id="ref-johnson_triangular_1997" class="csl-entry" role="listitem">
+Johnson, David. 1997. <span>“The Triangular Distribution as a Proxy for the Beta Distribution in Risk Analysis.”</span> <em>Journal of the Royal Statistical Society: Series D (The Statistician)</em> 46 (3): 387–98. <a href="https://doi.org/10.1111/1467-9884.00091">https://doi.org/10.1111/1467-9884.00091</a>.
+</div>
+<div id="ref-karp_reducibility_1972" class="csl-entry" role="listitem">
+Karp, Richard M. 1972. <span>“Reducibility Among <span>Combinatorial</span> <span>Problems</span>.”</span> In <em>Complexity of <span>Computer</span> <span>Computations</span></em>, edited by Raymond E. Miller and James W. Thatcher, 85–103. Boston, MA: Springer US. <a href="https://doi.org/10.1007/978-1-4684-2001-2_9">https://doi.org/10.1007/978-1-4684-2001-2_9</a>.
+</div>
+<div id="ref-kendall_stochastic_1953" class="csl-entry" role="listitem">
+Kendall, David G. 1953. <span>“Stochastic <span>Processes</span> <span>Occurring</span> in the <span>Theory</span> of <span>Queues</span> and Their <span>Analysis</span> by the <span>Method</span> of the <span>Imbedded</span> <span>Markov</span> <span>Chain</span>.”</span> <em>The Annals of Mathematical Statistics</em> 24 (3): 338–54. <a href="https://doi.org/10.1214/aoms/1177728975">https://doi.org/10.1214/aoms/1177728975</a>.
+</div>
+<div id="ref-kennedy_bayesian_2001" class="csl-entry" role="listitem">
+Kennedy, Marc C., and Anthony O’Hagan. 2001. <span>“Bayesian Calibration of Computer Models.”</span> <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em> 63 (3): 425–64. <a href="https://doi.org/10.1111/1467-9868.00294">https://doi.org/10.1111/1467-9868.00294</a>.
+</div>
+<div id="ref-kleinrock_queueing_1975" class="csl-entry" role="listitem">
+Kleinrock, Leonard. 1975. <em>Queueing <span>Systems</span>, <span>Volume</span> 1: <span>Theory</span></em>. New York: Wiley.
+</div>
+<div id="ref-kotz_beyond_2004" class="csl-entry" role="listitem">
+Kotz, Samuel, and Johan René van Dorp. 2004. <em>Beyond <span>Beta</span>: <span>Other</span> <span>Continuous</span> <span>Families</span> of <span>Distributions</span> with <span>Bounded</span> <span>Support</span> and <span>Applications</span></em>. Singapore: World Scientific. <a href="https://doi.org/10.1142/5720">https://doi.org/10.1142/5720</a>.
+</div>
+<div id="ref-law_simulation_2015" class="csl-entry" role="listitem">
+Law, Averill M. 2015. <em>Simulation <span>Modeling</span> and <span>Analysis</span></em>. 5th ed. New York: McGraw-Hill Education.
+</div>
+<div id="ref-maccrimmon_analytical_1964" class="csl-entry" role="listitem">
+MacCrimmon, Kenneth R., and Charles A. Ryavec. 1964. <span>“An <span>Analytical</span> <span>Study</span> of the <span>PERT</span> <span>Assumptions</span>.”</span> <em>Operations Research</em> 12 (1): 16–37. <a href="https://doi.org/10.1287/opre.12.1.16">https://doi.org/10.1287/opre.12.1.16</a>.
+</div>
+<div id="ref-malcolm_application_1959" class="csl-entry" role="listitem">
+Malcolm, D. G., J. H. Roseboom, C. E. Clark, and W. Fazar. 1959. <span>“Application of a <span>Technique</span> for <span>Research</span> and <span>Development</span> <span>Program</span> <span>Evaluation</span>.”</span> <em>Operations Research</em> 7 (5): 646–69. <a href="https://doi.org/10.1287/opre.7.5.646">https://doi.org/10.1287/opre.7.5.646</a>.
+</div>
+<div id="ref-matsumoto_mersenne_1998" class="csl-entry" role="listitem">
+Matsumoto, Makoto, and Takuji Nishimura. 1998. <span>“Mersenne Twister: A 623-Dimensionally Equidistributed Uniform Pseudo-Random Number Generator.”</span> <em>ACM Transactions on Modeling and Computer Simulation</em> 8 (1): 3–30. <a href="https://doi.org/10.1145/272991.272995">https://doi.org/10.1145/272991.272995</a>.
+</div>
+<div id="ref-metropolis_monte_1949" class="csl-entry" role="listitem">
+Metropolis, Nicholas, and Stanislaw Ulam. 1949. <span>“The <span>Monte</span> <span>Carlo</span> <span>Method</span>.”</span> <em>Journal of the American Statistical Association</em> 44 (247): 335–41. <a href="https://doi.org/10.1080/01621459.1949.10483310">https://doi.org/10.1080/01621459.1949.10483310</a>.
+</div>
+<div id="ref-osais_computer_2017" class="csl-entry" role="listitem">
+Osais, Yahya Esmail. 2017. <em>Computer <span>Simulation</span>: <span>A</span> <span>Foundational</span> <span>Approach</span> <span>Using</span> <span>Python</span></em>. New York: Chapman; Hall/CRC. <a href="https://doi.org/10.1201/9781315120294">https://doi.org/10.1201/9781315120294</a>.
+</div>
+<div id="ref-rubinstein_simulation_2016" class="csl-entry" role="listitem">
+Rubinstein, Reuven Y., and Dirk P. Kroese. 2016. <em>Simulation and the <span>Monte</span> <span>Carlo</span> <span>Method</span></em>. 3rd ed. Wiley <span>Series</span> in <span>Probability</span> and <span>Statistics</span>. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/9781118631980">https://doi.org/10.1002/9781118631980</a>.
+</div>
+<div id="ref-sargent_verification_2013" class="csl-entry" role="listitem">
+Sargent, Robert G. 2013. <span>“Verification and Validation of Simulation Models.”</span> <em>Journal of Simulation</em> 7 (1): 12–24. <a href="https://doi.org/10.1057/jos.2012.20">https://doi.org/10.1057/jos.2012.20</a>.
+</div>
+<div id="ref-shortle_fundamentals_2018" class="csl-entry" role="listitem">
+Shortle, John F., James M. Thompson, Donald Gross, and Carl M. Harris. 2018. <em>Fundamentals of <span>Queueing</span> <span>Theory</span></em>. 5th ed. Wiley <span>Series</span> in <span>Probability</span> and <span>Statistics</span>. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/9781119453765">https://doi.org/10.1002/9781119453765</a>.
+</div>
+<div id="ref-snyder_fundamentals_2019" class="csl-entry" role="listitem">
+Snyder, Lawrence V., and Zuo-Jun Max Shen. 2019. <em>Fundamentals of <span>Supply</span> <span>Chain</span> <span>Theory</span></em>. 2nd ed. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/9781119584445">https://doi.org/10.1002/9781119584445</a>.
+</div>
+<div id="ref-song_advanced_2014" class="csl-entry" role="listitem">
+Song, Eunhye, Barry L. Nelson, and C. Dennis Pegden. 2014. <span>“Advanced Tutorial: <span>Input</span> Uncertainty Quantification.”</span> In <em>Proceedings of the 2014 <span>Winter</span> <span>Simulation</span> <span>Conference</span></em>, 162–76. IEEE. <a href="https://doi.org/10.1109/WSC.2014.7019886">https://doi.org/10.1109/WSC.2014.7019886</a>.
+</div>
+<div id="ref-toth_vehicle_2014" class="csl-entry" role="listitem">
+Toth, Paolo, and Daniele Vigo, eds. 2014. <em>Vehicle <span>Routing</span>: <span>Problems</span>, <span>Methods</span>, and <span>Applications</span></em>. 2nd ed. <span>MOS</span>-<span>SIAM</span> <span>Series</span> on <span>Optimization</span>. Philadelphia, PA: Society for Industrial; Applied Mathematics. <a href="https://doi.org/10.1137/1.9781611973594">https://doi.org/10.1137/1.9781611973594</a>.
+</div>
+<div id="ref-van_slyke_monte_1963" class="csl-entry" role="listitem">
+Van Slyke, Richard M. 1963. <span>“Monte <span>Carlo</span> <span>Methods</span> and the <span>PERT</span> <span>Problem</span>.”</span> <em>Operations Research</em> 11 (5): 839–60. <a href="https://doi.org/10.1287/opre.11.5.839">https://doi.org/10.1287/opre.11.5.839</a>.
+</div>
+<div id="ref-wolsey_integer_2020" class="csl-entry" role="listitem">
+Wolsey, Laurence A. 2020. <em>Integer <span>Programming</span></em>. 2nd ed. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/9781119606475">https://doi.org/10.1002/9781119606475</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->

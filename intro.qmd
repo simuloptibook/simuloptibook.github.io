@@ -8,14 +8,14 @@ format:
 # Introduction {#sec-introduction}
 
 Simulation and optimization approaches are present in our everyday lives, albeit most of the time operating in a background plane. For example, 
-when navigating with a GPS, the system simulates different routes and optimizes for the shortest or fastest path. 
+when navigating with a GPS, the system simulates different routes and optimizes for the shortest or fastest path [@dijkstra_note_1959; @bast_route_2016]. 
 Similarly, supply chains use optimization algorithms to minimize costs and maximize efficiency, while simulations help predict demand and manage 
-inventory. These techniques are fundamental tools in decision-making processes across various industries, from transportation and logistics to finance and healthcare.
+inventory [@snyder_fundamentals_2019; @law_simulation_2015]. These techniques are fundamental tools in decision-making processes across various industries, from transportation and logistics to finance and healthcare [@hillier_introduction_2021; @toth_vehicle_2014; @glasserman_monte_2003; @brailsford_analysis_2009].
 
 But what do simulation and optimization approaches have in common, apart from being complementary tools? The answer lies in the concept of a *model*. In the context
-of machine learning, we normally refer to a model as a mathematical or computational representation that captures the relationships between input data and output predictions. 
+of machine learning, we normally refer to a model as a mathematical or computational representation that captures the relationships between input data and output predictions [@hastie_elements_2009]. 
 In simulation and optimization, a model similarly serves as an abstraction of a real-world system or process, allowing us to analyze, predict, and improve its behavior 
-through experimentation and algorithmic techniques.
+through experimentation and algorithmic techniques [@law_simulation_2015; @osais_computer_2017].
 
 In the following, we will delve deeper into the concept of a model and how models are used in simulation and optimization contexts using some practical examples.
 
@@ -35,7 +35,7 @@ The project manager has promised that the application will be ready within 35 wo
 
 Because the exact task durations are unknown, adding three fixed numbers is not sufficient. Instead, we describe each duration using a probability distribution and simulate many possible realizations of the project.
 
-This is a typical application of **Monte Carlo simulation**.
+This is a typical application of **Monte Carlo simulation** [@metropolis_monte_1949; @rubinstein_simulation_2016]. Using Monte Carlo sampling to estimate the completion-time distribution of a project network has a long tradition in project management, dating back to the early analyses of PERT networks [@malcolm_application_1959; @van_slyke_monte_1963].
 
 ### Identifying the elements of the model
 
@@ -63,7 +63,7 @@ Suppose the project team provides the following estimates:
 | Testing | 5 days | 8 days | 16 days |
 | Deployment | 2 days | 4 days | 8 days |
 
-For each task, the team can provide a minimum plausible duration, a most likely duration, and a maximum plausible duration. A simple probability distribution that uses exactly these three estimates is the **triangular distribution**.
+For each task, the team can provide a minimum plausible duration, a most likely duration, and a maximum plausible duration. A simple probability distribution that uses exactly these three estimates is the **triangular distribution**, which is widely used in risk analysis as a practical alternative to the beta distribution of classical PERT [@johnson_triangular_1997; @kotz_beyond_2004].
 
 Let
 
@@ -199,7 +199,7 @@ duration <= deadline
 
 returns either `True` or `False`. In Python, these values behave like 1 and 0 when they are added. Dividing the number of successful replications by the total number of replications therefore gives the estimated probability of meeting the deadline.
 
-The call to `random.seed(2026)` initializes the random-number generator. Using a fixed seed makes the results reproducible: running the same code again produces the same sequence of pseudo-random values.
+The call to `random.seed(2026)` initializes the random-number generator. Using a fixed seed makes the results reproducible: running the same code again produces the same sequence of pseudo-random values. Python's `random` module generates these values with the Mersenne Twister algorithm [@matsumoto_mersenne_1998].
 
 ### Examining the distribution of completion times
 
@@ -281,6 +281,8 @@ $$
 \widehat{\operatorname{SE}}(\widehat{p}_R).
 $$
 
+This interval follows from the central limit theorem and is reliable when $R$ is large and $\widehat{p}_R$ is not too close to 0 or 1; for small samples or extreme probabilities, better-behaved alternatives exist [@brown_interval_2001].
+
 We can calculate this interval as follows:
 
 ```{python}
@@ -302,7 +304,7 @@ print(
 )
 ```
 
-Increasing the number of replications reduces the Monte Carlo standard error. More precisely, the standard error decreases proportionally to $\frac{1}{\sqrt{R}}.$
+Increasing the number of replications reduces the Monte Carlo standard error. More precisely, the standard error decreases proportionally to $\frac{1}{\sqrt{R}}$ [@asmussen_stochastic_2007, Ch. III].
 
 Consequently, reducing the simulation error by a factor of two generally requires approximately four times as many replications.
 
@@ -312,7 +314,7 @@ In general, there are three sources of uncertainty in a Monte Carlo simulation:
 * **Monte Carlo error** arises because we estimate the result using a finite number of replications.
 * **Model uncertainty** concerns whether our assumptions, such as the choice of triangular distributions or independence between tasks, adequately represent the real project.
 
-Running more replications reduces Monte Carlo error, but it does not correct unrealistic assumptions or inaccurate input estimates.
+Running more replications reduces Monte Carlo error, but it does not correct unrealistic assumptions or inaccurate input estimates [@henderson_input_2003; @song_advanced_2014]. Assessing whether a model adequately represents the real system is the subject of model validation [@sargent_verification_2013; @kennedy_bayesian_2001].
 
 ### The Monte Carlo simulation algorithm
 
@@ -372,6 +374,8 @@ $$
 D=\max(D_I,D_A)+D_T+D_D.
 $$
 
+The maximum of random durations is notoriously difficult to handle analytically, and ignoring it leads to systematically optimistic schedule estimates. This is one of the main reasons why simulation is preferred over simple analytical approximations for project networks [@clark_greatest_1961; @maccrimmon_analytical_1964; @van_slyke_monte_1963].
+
 Although such extensions make the model more realistic, the basic Monte Carlo procedure remains unchanged: specify the uncertain inputs, generate scenarios, evaluate each scenario, and aggregate the results.
 
 Later chapters will examine how probability distributions are selected, how random values are generated, how simulation output is analyzed, and how Monte Carlo simulation can be combined with optimization methods.
@@ -396,7 +400,7 @@ the distribution of arrival times.
 - **Metrics:** How we evaluate the system as a whole in a given time step. For instance, what is the average waiting time? How much time are the cashiers busy?
 How is the queue length distributed? 
 
-The system could be represented by the following Python code as a minimal variant. 
+This way of describing a system, in which the state changes only at discrete points in time when events occur, is the basis of **discrete-event simulation** [@law_simulation_2015; @banks_discrete-event_2010]. The system could be represented by the following Python code as a minimal variant, in which the pending events are kept in a priority queue ordered by time (the *future event list*). 
 
 ```python
 import heapq, random
@@ -438,7 +442,7 @@ In this figure, customers are denoted by $r_i$, the amount of cashiers is $c$ an
 of customers in the supermarket at time $t$ is denoted by $N(t)$.
 
 Now let's try to refine the dynamics of this system. We will now write some equations to describe the system'
-dynamics according to the **infinite waiting room** $M/M/c$ model. Let's make the following assumptions:
+dynamics according to the **infinite waiting room** $M/M/c$ model, written in the notation introduced by @kendall_stochastic_1953 [see also @kleinrock_queueing_1975; @shortle_fundamentals_2018]. Let's make the following assumptions:
 
 - Arrivals follow a Poisson distribution with mean $\lambda$ (arrivals per second), which for this case will be assumed to be stationary.
 - The service times are assumed to be exponentially distributed with mean $1/\mu$.
@@ -495,7 +499,7 @@ $n-1$ when a customer is served with a rate $\mu_n p_n$ and to state $n+1$ when 
 with a rate $\lambda p_n$. Similarly, one can transition from the other states to state $n$ either by 
 having a customer served in state $n+1$ with a rate $\mu_{n+1}p_{n+1}$ or when being in state $n-1$ and a 
 new customer arrives with a rate $\lambda p_{n-1}$. Our modeling assumption now is that, for each 
-state $n$, the flow outwards balances out with the flow inwards (global balance):
+state $n$, the flow outwards balances out with the flow inwards (global balance) [@kleinrock_queueing_1975; @harchol-balter_performance_2013]:
 
 $$
 \lambda p_{n-1} + \mu_{n+1}p_{n+1} = \lambda p_n + \mu_n p_n\text{,   for }n\ge 1
@@ -523,11 +527,11 @@ $$
 P_W=p_0\frac{(\lambda/\mu)^c}{c!}\frac{1}{1-\rho}
 $$ {#eq-1-7}
 
-This is also called the *Erlang-C* probability and we will delve deeper into the details in the coming chapters.
+This is also called the *Erlang-C* probability, after the pioneering work of A. K. Erlang on telephone traffic [@erlang_solution_1917; @shortle_fundamentals_2018], and we will delve deeper into the details in the coming chapters.
 
 We can now write computer code that performs a step-by-step simulation of the system (i.e. in discrete time steps).
 This is specially useful if we are in a situation where there is no closed-form analytical solution, 
-or the analytical solution is too complex to calculate. For instance, we can run the above simulator 
+or the analytical solution is too complex to calculate [@law_simulation_2015]. For instance, we can run the above simulator 
 for a large number of steps (say $T=10^6$) and then calculate specific metrics like:
 
 - Mean queue length.
@@ -540,7 +544,7 @@ We will see examples of such simulators in the first part of the book.
 
 ## Example 3: The traveling salesman
 
-Let's now turn our attention to the other type of problems which are central to this book: *optimization problems*. 
+Let's now turn our attention to the other type of problems which are central to this book: *optimization problems*. The following example is the classic **traveling salesman problem** (TSP), one of the most intensively studied problems in combinatorial optimization [@applegate_traveling_2006]. 
 Imagine you are a sales representative for a vaccum cleaner manufacturer. Your task is to visit
 potential customers in cities across your area and, at the end of the day, return to where you started 
 your journey. As an environmental conscious employer and in order to save transport costs, your company introduces the restriction that each customer in the route has to be visited *exactly once*. So you need to think 
@@ -577,7 +581,7 @@ violates the requirement that each location is visited exactly once.
 To model this situation, we need to introduce *constraints*.  In optimization problems, 
 constraints take usually the form of equalities or inequalities as functions of the decision
 variables. In our case, the requirement that each location is visited only once can be 
-expressed by the following (linear) equalities:
+expressed by the following (linear) equalities, which are known as *assignment constraints* [@wolsey_integer_2020]:
 
 $$
 \begin{aligned}
@@ -592,7 +596,7 @@ exactly one. This ensures that each location is visited exactly once.
 
 We need another technical condition to guarantee that the tour is a single one and not composed 
 of multiple sub-tours. There should be no subset $S \subset N$ such that is self contained, the 
-number of visited cities equals exactly its size. Mathematically:
+number of visited cities equals exactly its size. Mathematically, this is expressed by the *subtour elimination constraints* introduced by @dantzig_solution_1954:
 
 $$
 \sum_{i\in S}\sum_{j\in S} x_{ij} \le |S|-1\text{ for all subsets }S\subset N
@@ -603,7 +607,7 @@ $T=\{x_{ij}\}$ that satisfies the constraints outlined before, we can be sure it
 
 But surely there are some tours that are better than others? This is where the second issue becomes 
 important: we need an evaluation method to distinguish between good and bad solutions. In the 
-optimization literature, we normally talk about **objective functions**. In our case, 
+optimization literature, we normally talk about **objective functions** [@hillier_introduction_2021]. In our case, 
 the traveling salesman would like the total distance to be *minimized*, meaning the sum of all 
 distances between locations of the tour. Assume that $c_{ij}>0$ is the distance between
 location $i$ and $j$ (for consistency assume $c_{ii}=0$). Now we want to minimize the total 
@@ -637,7 +641,7 @@ of the decision variables, i.e. what are the possible values these variables can
 
 We will see that, depending on the form of the optimization model we will be able to choose
 from a toolbox of algorithms capable to solve the problem at hand, either exactly (*exact methods*)
-or approximately (*heuristic methods*).
+or approximately (*heuristic methods*). For the TSP, this choice is far from academic: the problem is NP-hard [@karp_reducibility_1972], so no algorithm is known that solves every instance exactly in polynomial time, and heuristics are often the only practical option for very large instances [@applegate_traveling_2006; @blum_metaheuristics_2003].
 
 ## Structure of the book
 
@@ -649,9 +653,9 @@ of @sec-monte-carlo. After that, @sec-discrete-events focuses on the handling of
 
 Part II is dedicated to optimization problems. In @sec-optimization-basics we introduce the mathematical
 basics of optimization. @sec-exact-methods is dedicated to exact optimization methods like the 
-simplex method for linear programming. Approximate methods for complex optimization problems like 
-metaheuristics and evolutionary algorithms are presented in @sec-metaheuristics. Finally, we review
-the importance of optimization methods for machine learning in @sec-opt-ml.
+simplex method for linear programming [@dantzig_linear_1963]. Approximate methods for complex optimization problems like 
+metaheuristics and evolutionary algorithms [@blum_metaheuristics_2003; @eiben_introduction_2015] are presented in @sec-metaheuristics. Finally, we review
+the importance of optimization methods for machine learning [@bottou_optimization_2018] in @sec-opt-ml.
 
 ## Exercises
 
