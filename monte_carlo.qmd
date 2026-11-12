@@ -6,7 +6,7 @@ We call **Monte-Carlo (MC) simulation methods** to a broad class of computationa
 approximate solutions to complex problems which can't often be obtained by traditional analytical 
 methods. The main idea of MC methods is to repeatedly sample randomly from pre-specified probability
 distributions to obtain numerical results that can be used to approximate the problem or
-phenomenon of interest.
+phenomenon of interest [@rubinstein_simulation_2016; @kroese_handbook_2011; @owen_monte_2013].
 
 Usually, each MC method comprises the following steps:
 
@@ -22,7 +22,7 @@ for each run.
 The final result is a **distribution of possible outcomes** and the probability of each outcome occurring, 
 which provides a clear picture of the risk and potential variability inherent in the system.
 
-The Monte Carlo method was developed in the 1940s by scientists working on the Manhattan Project, including Stanislaw Ulam and John von Neumann. The method was named after the Monte Carlo Casino in Monaco, reflecting the element of chance central to the technique. Initially used to solve problems in nuclear physics, the method has since been widely adopted across various fields, including finance, engineering, and computer science, due to its versatility and effectiveness in solving complex probabilistic problems.
+The Monte Carlo method was developed in the 1940s by scientists working on the Manhattan Project, including Stanislaw Ulam and John von Neumann. The method was named after the Monte Carlo Casino in Monaco, reflecting the element of chance central to the technique [@metropolis_monte_1949; @metropolis_beginning_1987; @eckhardt_stan_1987]. Initially used to solve problems in nuclear physics, the method has since been widely adopted across various fields, including finance, engineering, and computer science, due to its versatility and effectiveness in solving complex probabilistic problems [@glasserman_monte_2003; @kroese_handbook_2011].
 
 ### The intuition behind Monte-Carlo simulation
 
@@ -104,11 +104,11 @@ Albeit powerful, MC simulation has a number of limitations that need to be taken
 - **Variance:** Since MC is an inherently probabilistic method, the estimates have a degree of 
 statistical uncertainty. Therefore different simulation runs will typically produce different estimates.
 - **Slow convergence:** In order to reduce this variance, the number $N$ of iterations (samples) has to be 
-dramatically increased. In general, the standard error decreases like $1/\sqrt{N}$. So to halve 
+dramatically increased. In general, the standard error decreases like $1/\sqrt{N}$ [@caflisch_monte_1998]. So to halve 
 the error, it's not enough to *double* the number of samples, but it needs to be *four times larger*.
 - **Random number generators:** Here the quality of the PRNG used (see [@sec-simulation-basics]) plays 
 a critical role. The used generator has to produce samples which are as random and independent as possible or 
-otherwise MC won't work.
+otherwise MC won't work [@matsumoto_mersenne_1998; @lecuyer_testu01_2007].
 
 In the next sections, we will uncover the foundations of MC simulation. First we will explore the core 
 concepts and mathematical foundations behind it. After that, we will study classical MC techniques and 
@@ -118,7 +118,7 @@ Monte Carlo (MCMC), one essential technique widely used in machine learning.
 ## Core Concepts
 
 The core idea of MC simulation is to leverage the **Law of Large Numbers** to approximate complex 
-quantities: the average of a random variable over a large number of samples will converge to its expected value. This allows us to approximate quantities that are difficult or impossible to compute analytically by simulating random samples and calculating their average.
+quantities: the average of a random variable over a large number of samples will converge to its expected value [@durrett_probability_2019]. This allows us to approximate quantities that are difficult or impossible to compute analytically by simulating random samples and calculating their average.
 
 Mathematically, the goal of MC simulation is to estimate the expected value of a function of a random variable
 $E[g(X)]$. The true expected value is defined by the integral:
@@ -138,7 +138,7 @@ $$
 \hat{E}[g(X)]=\frac{1}{N}\sum_{i=1}^N g(X_i)
 $$ {#eq-est-mc}
 
-We call $\hat{E}[g(X)]$ the **Monte Carlo estimator**. Note that we can approximate *any integral* with MC simulation using a simple trick. Assume we want to
+We call $\hat{E}[g(X)]$ the **Monte Carlo estimator** [@robert_monte_2004, Ch. 3; @owen_monte_2013, Ch. 2]. Note that we can approximate *any integral* with MC simulation using a simple trick. Assume we want to
 calculate the following integral:
 
 $$
@@ -177,7 +177,7 @@ E[\hat{E}[g(X)]]&=E\left[\frac{1}{N}\sum_{i=1}^N g(X_i)\right]=\frac{1}{N}\sum_{
 $$
 
 By the law of large numbers, we know that $\hat{E}[g(X)]$ converges in probability to $E[g(X)]$. 
-Additionally, by the Central Limit Theorem (CLT), the standard error is proportional to $1/\sqrt{N}$.
+Additionally, by the Central Limit Theorem (CLT), the standard error is proportional to $1/\sqrt{N}$ [@durrett_probability_2019; @asmussen_stochastic_2007].
 
 $$
 \text{Standard error} \propto \frac{\sigma}{\sqrt{N}}
@@ -197,7 +197,7 @@ $$
 \bar{X}_n=\frac{X_1+X_2+\dots+X_n}{n}
 $$
 
-The law of large numbers states in its strong version that
+The law of large numbers states in its strong version [@durrett_probability_2019, Thm. 2.4.1] that
 
 $$
 P\left(\lim_{n\rightarrow\infty}\hat{X}_n=\mu\right)=1
@@ -222,14 +222,14 @@ as $n\rightarrow\infty$, and we end up in the limit with $\bar{X}_n \approx \mu$
 
 Note that the independece assumption of the $X_i$ is *critical*, since otherwise the error
 terms would compound rather than cancel out. This is the reason why only high-quality PRNG 
-are used with MC simulation.
+are used with MC simulation [@lecuyer_testu01_2007].
 
 ### Confidence intervals
 
 In order to quantify the uncertainty given by a MC estimate, confidence intevals represent 
 an appropriate tool. For the calculation, we rely on the **Central Limit Theorem** already
 mentioned above. By this theorem, we know that the distribution of the *sample mean* tends
-towards a **normal distribution** when the number of iterations becomes large. Formally:
+towards a **normal distribution** when the number of iterations becomes large [@durrett_probability_2019, Thm. 3.4.1]. Formally:
 
 $$
 \sqrt{n}(\bar{X}_n-\mu)\sim N(0,\sigma^2)
@@ -253,6 +253,7 @@ CI=\bar{X}_n \pm \left(z_{\alpha/2}\times\frac{s}{\sqrt{n}}\right)
 $$
 
 where $z_{\alpha/2}$ represents the $\alpha/2$-level quantile of the standard normal distribution.
+This procedure is standard in the output analysis of simulation experiments [@law_simulation_2015; @asmussen_stochastic_2007, Ch. III].
 As an example, consider the following implementation for the estimate of $\pi$ using Python code:
 
 ```{python}
@@ -297,12 +298,12 @@ happens when we need to sample from a much higher dimensional space? For instanc
 sampling 100 numbers in a one-dimensional space might be enough for a good estimation. In a 
 $2D$ space, we would need to sample $100\times 100=10^4$ points to reach a similar coverage, which 
 would be still doable. However, what if our sampling space has 10 dimensions? That would amount
-to sampling $(100)^{10}$ points! This is called the **curse of dimensionality** and is one 
+to sampling $(100)^{10}$ points! This is called the **curse of dimensionality** [@bellman_adaptive_1961] and is one 
 of the central problems in practical, high-dimensional problems.
 
 One of the main advantages of MC simulation is that the error depends primarily on the number 
 of samples and the variance of the simulation, and not on the dimension of the problem 
-(see @eq-std-error). The problem is that the square root in the denominator forces us 
+(see @eq-std-error) [@caflisch_monte_1998]. The problem is that the square root in the denominator forces us 
 to increase the number of samples quadratically to achieve a specific error level. For example, if a 
 simulation takes 1h to run, making it 10 times more accurate would take not 10, but 100 hours 
 (more than 4 days).
@@ -311,7 +312,7 @@ However, there is another knob in @eq-std-error that we can use: the *standard d
 If we manage to reduce this standard deviation (or equivalently, the variance) of the simulation,
 we can increase the accuracy of the simulation as well. We will now see some methods for reducing 
 the variance effectively in MC simulation: antithetic variates, control variates, importance
-sampling and stratified sampling.
+sampling and stratified sampling. Comprehensive treatments of these techniques can be found in @glasserman_monte_2003 [Ch. 4], @rubinstein_simulation_2016 [Ch. 5] and @owen_monte_2013 [Chs. 8--10].
 
 ### Antithetic variates
 
@@ -319,14 +320,14 @@ Imagine the draw a large value for a random variable $X_i$ during our simulation
 to the true mean $\mu$). Automatically, this value will increase the sample variance 
 significantly. One simple way of compensating for this large value is to generate a "mirror"
 value that makes the large value cancel out. This is the main idea of the **antithetic variates**
-method. For instance, if we sample a random variable $U$ in $[0,1]$, we do include also the 
+method [@hammersley_new_1956]. For instance, if we sample a random variable $U$ in $[0,1]$, we do include also the 
 value $1-U$ in our sample. Therefore, instead of sampling $n$ times independently, we sample
 $n/2$ pairs $(U, 1-U)$. This typically already reduces the variance by a significant margin, 
-improving the effectiveness of the MC simulation.
+improving the effectiveness of the MC simulation. A reduction is guaranteed, for instance, when the simulation output is a monotone function of the input $U$, because then $f(U)$ and $f(1-U)$ are negatively correlated [@glasserman_monte_2003, Sec. 4.2].
 
 ### Control variates
 
-Another highly effective method for reducing the variance is to use **control variates**. The 
+Another highly effective method for reducing the variance is to use **control variates** [@lavenberg_perspective_1981; @nelson_control_1990]. The 
 main intuition behind this method is the following: imagine that you want to weigh an
 object $Y$, however the scale has unknown accuracy. Let's say we put it on the scale and 
 it shows 10.5 kg. Now we have another object $X$ for which we know, for sure, that it 
@@ -354,7 +355,7 @@ $$
 \operatorname{Var}(Y_{cv})=\operatorname{Var}(Y)+c^2\operatorname{Var}(X)-2c\operatorname{Cov}(X,Y)
 $$ {#eq-var-cv}
 
-If we take the value $c^*$ that minimizes this variance, it turns out to be
+If we take the value $c^*$ that minimizes this variance, it turns out to be [@glasserman_monte_2003, Sec. 4.1]
 
 $$
 c^*=\frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}
@@ -458,12 +459,12 @@ The next method is used in cases where the region of interest in the sampling sp
 events we try to simulate are very rare. Imagine we want to estimate the probability for a market crash. If we
 simulate the market for 1,000,000 times, we might still miss all crash events (e.g. if the market crash
 is considered to be a five-sigma event, its probability amounts to about 1 in 3.5 million). Therefore, 
-standard MC would come up with a probability of 0, which is incorrect.
+standard MC would come up with a probability of 0, which is incorrect. Estimating such rare-event probabilities is one of the most important applications of importance sampling [@heidelberger_fast_1995; @bucklew_introduction_2004].
 
 Instead of that, we sample from a probability distribution where market crashes are common.
 The good news is that now, we will have plenty of points to work with. However, by doing this we introduce 
 a significant bias in the simulation, so our result will not be correct. The trick used by **importance 
-sampling** is to "un-bias" the simulation by assigning a *weight* to each sample which is basically
+sampling** [@kahn_methods_1953] is to "un-bias" the simulation by assigning a *weight* to each sample which is basically
 proportional to its *likelihood*. Samples which are more likely according to the original distribution will
 get a higher weight, whereas rare samples will be assigned a low weight. 
 
@@ -568,7 +569,7 @@ $|f(x)|p(x)$ is also high, since this will significantly steer sampling towards 
 and reduce the variance. On the other side, if $q(x)$ is zero in regions where $p(x)$ is not, we might
 stop sampling in regions that matter. In this case, the answer will definitely be biased. As a rule
 of thumb, the tails of $q(x)$ need to be heavier than those of $p(x)$, since we do not want $q(x)$ to
-decrease faster than $p(x)$.
+decrease faster than $p(x)$; otherwise, the weights $p(x)/q(x)$ can become unbounded and the estimator may have infinite variance [@geweke_bayesian_1989; @owen_monte_2013, Ch. 9].
 
 ### Stratified sampling
 
@@ -577,7 +578,7 @@ increases or *always* decreases). Think e.g. about $f(x)=e^x$ in $[0,1]$. If we 
 random numbers, we might get trapped either in the low or the high region of the function. This might
 well happen because PRNG might accidentally "cluster" samples in a specific region. Alas, that would 
 be bad, because it would significantly bias our estimate. In this case, we need to make sure that 
-we sample equally well from all regions. This is the main idea of **stratified sampling**. 
+we sample equally well from all regions. This is the main idea of **stratified sampling**, a technique originating in survey sampling [@neyman_two_1934; @cochran_sampling_1977]. 
 
 The mathematical trick now is to divide the sampling space into disjoint **strata**, which represent
 separate regions that cover the whole space. Depending on the form of the target function, the strata
@@ -594,7 +595,7 @@ $$
 \mu=E[Y]=\sum_{h=1}^H p_h\mu_h
 $$
 
-In order to calculate the variance, we use the *law of total variance* to decompose it into:
+In order to calculate the variance, we use the *law of total variance* [@durrett_probability_2019] to decompose it into:
 
 $$ 
 \sigma^2=\operatorname{Var}(Y)=E[\operatorname{Var}(Y|S)]+\operatorname{Var}(E[Y|S])
@@ -648,7 +649,7 @@ $$
 \end{aligned}
 $$
 
-And since $\sigma_B^2 \ge 0$, we have our variance reduction $\operatorname{Var}(\hat{Y}_{SE})\le \operatorname{Var}(\hat{Y}_{MC})$.
+And since $\sigma_B^2 \ge 0$, we have our variance reduction $\operatorname{Var}(\hat{Y}_{SE})\le \operatorname{Var}(\hat{Y}_{MC})$ [@cochran_sampling_1977, Ch. 5; @glasserman_monte_2003, Sec. 4.3]. Proportional allocation is not the only choice: allocating samples proportionally to $p_h\sigma_h$ (the so-called *Neyman allocation*) minimizes the variance of the stratified estimator [@neyman_two_1934].
 
 In summary, stratified sampling using proportional strata is always equal to or better than standard sampling because it eliminates the variance caused by the variability in sampling proportions across strata with different means.
 
@@ -743,7 +744,7 @@ the random numbers tend to clump and form gaps.
 ### Latin Hypercube Sampling
 
 The last variance reduction technique we will see is a modification of stratified sampling that comes
-to the rescue in high-dimensional problems: **Latin Hypercube Sampling**. The problem of stratified 
+to the rescue in high-dimensional problems: **Latin Hypercube Sampling** (LHS), introduced by @mckay_comparison_1979. The problem of stratified 
 sampling in higher dimensions is that the number of strata required grows exponentially with the
 dimension of the problem. For instance, if we wish to stratify each dimension using 100 bins, the
 number of strata becomes already prohibitive for e.g. 10 dimensions ($100^{10}$ points would be needed).
@@ -758,7 +759,7 @@ TODO: visualization
 
 If we now look at each dimension in isolation, there is always exactly one rook in each row/column. The
 advantage is that samples are now spread out maximally across the range of each variable individually, thus
-effectively reducing the variance in higher dimensions.
+effectively reducing the variance in higher dimensions. @stein_large_1987 showed that, asymptotically, LHS removes the variance contributed by the additive (one-dimensional) components of the integrand, and it never performs much worse than standard MC.
 
 The method to build a latin hypercube for sampling $n$ points is as follows:
 
@@ -833,7 +834,7 @@ f(\mathbf{x})=\sum_{i=1}^5 x_i^2
 $$
 
 in the interval $[-1,1]$ for each dimension $x_i$. For this, we will use the standard latin hypersquare 
-sampling implementation of the SciPy library ``scipy.stats.qmc``.
+sampling implementation of the SciPy library ``scipy.stats.qmc`` [@virtanen_scipy_2020; @roy_quasi-monte_2023].
 
 ```{python}
 import numpy as np
@@ -899,7 +900,7 @@ print(f"Improvement Factor: {errors_mc[-1]/errors_lhs[-1]:.1f}x more accurate")
 In this plot, we have used a logarithmic scale on the $y$-axis to better see small errors. 
 Additionally, a trend line is provided which is the moving average of the errors. As can 
 be seen, the LHS errors are clearly lower than the standard MC errors and the method
-is about 100x more accurate than standard MC using the same number of samples.
+is about 100x more accurate than standard MC using the same number of samples. This large gain is partly due to the choice of test function: since $f$ is a sum of one-dimensional terms, it is exactly the kind of additive function for which LHS is most effective [@stein_large_1987].
 
 ### Summary of Variance Reduction Techniques
 
@@ -930,11 +931,11 @@ Each technique has its strengths and is suited for specific scenarios. By select
 ## Markov Chain Monte Carlo
 
 Until now, all methods for standard Monte Carlo that we have seen so far rely explicitly on the assumption that we can generate independent samples directly from the target distribution. 
-However, in many practical scenarios, generating independent samples directly from the target distribution is either computationally expensive or infeasible. This is where **Markov Chain Monte Carlo (MCMC)** methods come into play. MCMC methods allow us to sample from complex distributions by constructing a Markov chain whose stationary distribution matches the target distribution.
+However, in many practical scenarios, generating independent samples directly from the target distribution is either computationally expensive or infeasible. This is where **Markov Chain Monte Carlo (MCMC)** methods come into play [@robert_monte_2004; @brooks_handbook_2011]. MCMC methods allow us to sample from complex distributions by constructing a Markov chain whose stationary distribution matches the target distribution.
 
 The key idea is to design a Markov chain that "explores" the target distribution efficiently, even if the samples are not independent. Over time, the chain converges to the target distribution, and we can use the samples generated to approximate expectations.
 
-In the next sections, we will explore the foundations of MCMC, including the **Metropolis-Hastings** algorithm as one of the most widely used MCMC techniques.
+In the next sections, we will explore the foundations of MCMC, including the **Metropolis-Hastings** algorithm [@metropolis_equation_1953; @hastings_monte_1970] as one of the most widely used MCMC techniques.
 
 ### Motivation for MCMC
 
@@ -981,15 +982,15 @@ $$
 p(D)=\int p(D|\theta)p(\theta)d\theta
 $$
 
-This integral is usually intractable, either because of the high dimensionality of $\theta$ (think e.g. of neural network weights) or because there is no closed form solution. MCMC allows sampling without explicitly calculating this constant, as we will see shortly.
+This integral is usually intractable, either because of the high dimensionality of $\theta$ (think e.g. of neural network weights) or because there is no closed form solution. MCMC allows sampling without explicitly calculating this constant, as we will see shortly. The adoption of MCMC for this purpose transformed Bayesian statistics from the 1990s onwards [@gelfand_sampling-based_1990; @gelman_bayesian_2013; @neal_bayesian_1996].
 
 3. **Non-standard distributions**: When the target distribution does not have a closed-form expression or does not belong to a standard family of distributions.
 
-4. **Rare event probabilities**: When estimating probabilities of rare events, MCMC can efficiently explore the regions of interest.
+4. **Rare event probabilities**: When estimating probabilities of rare events, MCMC can efficiently explore the regions of interest, for example in *subset simulation* [@au_estimation_2001].
 
 5. **Integration over complex spaces**: MCMC is used to approximate integrals in cases where the integrand is defined over a complex or irregular domain.
 
-Applications of MCMC include cryptography (deciphering substitution ciphers), detecting gerrymandering in political science, protein folding in computational biology, Bayesian inference in machine learning, and epidemiology.
+Applications of MCMC include cryptography (deciphering substitution ciphers) [@diaconis_markov_2009], detecting gerrymandering in political science [@chikina_assessing_2017; @deford_recombination_2021], protein folding in computational biology [@hansmann_new_1999], Bayesian inference in machine learning [@neal_bayesian_1996], and epidemiology [@oneill_bayesian_1999].
 
 ### Foundations of MCMC
 
@@ -1017,6 +1018,8 @@ $$
 T(x|x')\pi(x')=T(x'|x)\pi(x)
 $$ {#eq-mcmc-equilibrium}
 
+This condition is known as **detailed balance** or *reversibility* [@levin_markov_2017; @robert_monte_2004].
+
 This means that the probability flow between any two points $x,x'$ should remain equal. In summary, 
 when this condition holds, then this implies @eq-mcmc-stationarity and $\pi$ becomes our stationary
 distribution as desired. However, we still haven't any guarantees that the chain, indeed, will 
@@ -1028,7 +1031,7 @@ no return? To answer this question affirmatively, we need to pose another condit
 other state $x'$. This means that the chain cannot get trapped forever in an isolated environment.
 2. The chain is **aperiodic**: it must not get stuck in a cycle (i.e. a fixed loop).
 
-If these two requirements are met, the following theorem (**Ergodic Theorem**) applies: Let $\{X_t\}$ be
+If these two requirements are met, the following theorem (**Ergodic Theorem**) applies [@tierney_markov_1994; @roberts_general_2004]: Let $\{X_t\}$ be
 a Markov chain that is irreducible, aperiodic and has a stationary distribution $\pi$. Then, for any
 starting point $X_0$, we have:
 
@@ -1042,10 +1045,10 @@ That is, in the limit the time average of the chain equals the mean of the targe
 
 We now focus on a specific algorithm for building a transition kernel $T$ for a Markov chain that
 fulfills the equilibrium condition @eq-mcmc-equilibrium and the conditions for ergodicity. For this, 
-a seminal approach is the **Metropolis-Hastings** algorithm. The main idea is to decompose the 
+a seminal approach is the **Metropolis-Hastings** algorithm, proposed by @metropolis_equation_1953 for symmetric proposals and generalized by @hastings_monte_1970 (see also @chib_understanding_1995). The main idea is to decompose the 
 kernel $T(x'|x)$ into two parts:
 
-1. A **proposal** distribution $q(x'|x)$, which is usually a distribution we know how to sample from (e.g. usually a Gaussian centered at the current state $N(x, \sigma)$).
+1. A **proposal** distribution $q(x'|x)$, which is usually a distribution we know how to sample from (e.g. usually a Gaussian centered at the current state $N(x, \sigma)$, which yields the *random-walk Metropolis* algorithm [@roberts_weak_1997]).
 2. An **acceptance probability** $\alpha(x'|x)$ that expresses the probability that we accept the proposed move. 
 
 So we have:

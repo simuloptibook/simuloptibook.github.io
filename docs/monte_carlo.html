@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -508,7 +528,7 @@ window.Quarto = {
 
 <section id="what-is-monte-carlo-simulation" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="what-is-monte-carlo-simulation"><span class="header-section-number">3.1</span> What is Monte-Carlo Simulation?</h2>
-<p>We call <strong>Monte-Carlo (MC) simulation methods</strong> to a broad class of computational methods used to approximate solutions to complex problems which can’t often be obtained by traditional analytical methods. The main idea of MC methods is to repeatedly sample randomly from pre-specified probability distributions to obtain numerical results that can be used to approximate the problem or phenomenon of interest.</p>
+<p>We call <strong>Monte-Carlo (MC) simulation methods</strong> to a broad class of computational methods used to approximate solutions to complex problems which can’t often be obtained by traditional analytical methods. The main idea of MC methods is to repeatedly sample randomly from pre-specified probability distributions to obtain numerical results that can be used to approximate the problem or phenomenon of interest <span class="citation" data-cites="rubinstein_simulation_2016 kroese_handbook_2011 owen_monte_2013">(<a href="references.html#ref-rubinstein_simulation_2016" role="doc-biblioref">Rubinstein and Kroese 2016</a>; <a href="references.html#ref-kroese_handbook_2011" role="doc-biblioref">Kroese, Taimre, and Botev 2011</a>; <a href="references.html#ref-owen_monte_2013" role="doc-biblioref">Owen 2013</a>)</span>.</p>
 <p>Usually, each MC method comprises the following steps:</p>
 <ol type="1">
 <li><strong>Define a model:</strong> The first step is to define a mathematical model of the phenomenon of interest, for instance stock prices, project duration, interest rates, etc.</li>
@@ -516,7 +536,7 @@ window.Quarto = {
 <li><strong>Simulate and aggregate:</strong> We run simulations of the model for large sample sizes and record the results for each run.</li>
 </ol>
 <p>The final result is a <strong>distribution of possible outcomes</strong> and the probability of each outcome occurring, which provides a clear picture of the risk and potential variability inherent in the system.</p>
-<p>The Monte Carlo method was developed in the 1940s by scientists working on the Manhattan Project, including Stanislaw Ulam and John von Neumann. The method was named after the Monte Carlo Casino in Monaco, reflecting the element of chance central to the technique. Initially used to solve problems in nuclear physics, the method has since been widely adopted across various fields, including finance, engineering, and computer science, due to its versatility and effectiveness in solving complex probabilistic problems.</p>
+<p>The Monte Carlo method was developed in the 1940s by scientists working on the Manhattan Project, including Stanislaw Ulam and John von Neumann. The method was named after the Monte Carlo Casino in Monaco, reflecting the element of chance central to the technique <span class="citation" data-cites="metropolis_monte_1949 metropolis_beginning_1987 eckhardt_stan_1987">(<a href="references.html#ref-metropolis_monte_1949" role="doc-biblioref">Metropolis and Ulam 1949</a>; <a href="references.html#ref-metropolis_beginning_1987" role="doc-biblioref">Metropolis 1987</a>; <a href="references.html#ref-eckhardt_stan_1987" role="doc-biblioref">Eckhardt 1987</a>)</span>. Initially used to solve problems in nuclear physics, the method has since been widely adopted across various fields, including finance, engineering, and computer science, due to its versatility and effectiveness in solving complex probabilistic problems <span class="citation" data-cites="glasserman_monte_2003 kroese_handbook_2011">(<a href="references.html#ref-glasserman_monte_2003" role="doc-biblioref">Glasserman 2003</a>; <a href="references.html#ref-kroese_handbook_2011" role="doc-biblioref">Kroese, Taimre, and Botev 2011</a>)</span>.</p>
 <section id="the-intuition-behind-monte-carlo-simulation" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="the-intuition-behind-monte-carlo-simulation"><span class="header-section-number">3.1.1</span> The intuition behind Monte-Carlo simulation</h3>
 <p>Imagine that you want to know the probability of a particular outcome in a complex system with many uncertain variables that possibly interact in complicated ways. For instance, what is the probability that a new product launch will be successful, given uncertain factors like manufacturing costs, consumer demand and competitor pricing?</p>
@@ -536,7 +556,7 @@ Figure&nbsp;3.1: Example of Monte-Carlo simulation to calculate <span class="mat
 </figure>
 </div>
 <p>Let’s use some code to make this more concrete:</p>
-<div id="c7718a46" class="cell" data-execution_count="1">
+<div id="ad7f8ab3" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -567,7 +587,7 @@ Figure&nbsp;3.1: Example of Monte-Carlo simulation to calculate <span class="mat
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>estimated_pi <span class="op">=</span> estimate_pi_monte_carlo(N)</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>estimated_pi</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>3.15504</code></pre>
+<pre><code>3.13512</code></pre>
 </div>
 </div>
 <p>In this code, we make use of the modeling fact that points <span class="math inline">\((x,y)\)</span> inside of the circle satisfy <span class="math inline">\(x^2+y^2\le 1\)</span>.</p>
@@ -577,15 +597,15 @@ Figure&nbsp;3.1: Example of Monte-Carlo simulation to calculate <span class="mat
 <p>Albeit powerful, MC simulation has a number of limitations that need to be taken into account.</p>
 <ul>
 <li><strong>Variance:</strong> Since MC is an inherently probabilistic method, the estimates have a degree of statistical uncertainty. Therefore different simulation runs will typically produce different estimates.</li>
-<li><strong>Slow convergence:</strong> In order to reduce this variance, the number <span class="math inline">\(N\)</span> of iterations (samples) has to be dramatically increased. In general, the standard error decreases like <span class="math inline">\(1/\sqrt{N}\)</span>. So to halve the error, it’s not enough to <em>double</em> the number of samples, but it needs to be <em>four times larger</em>.</li>
-<li><strong>Random number generators:</strong> Here the quality of the PRNG used (see <a href="simulation_basics.html" class="quarto-xref"><span>Chapter 2</span></a>) plays a critical role. The used generator has to produce samples which are as random and independent as possible or otherwise MC won’t work.</li>
+<li><strong>Slow convergence:</strong> In order to reduce this variance, the number <span class="math inline">\(N\)</span> of iterations (samples) has to be dramatically increased. In general, the standard error decreases like <span class="math inline">\(1/\sqrt{N}\)</span> <span class="citation" data-cites="caflisch_monte_1998">(<a href="references.html#ref-caflisch_monte_1998" role="doc-biblioref">Caflisch 1998</a>)</span>. So to halve the error, it’s not enough to <em>double</em> the number of samples, but it needs to be <em>four times larger</em>.</li>
+<li><strong>Random number generators:</strong> Here the quality of the PRNG used (see <a href="simulation_basics.html" class="quarto-xref"><span>Chapter 2</span></a>) plays a critical role. The used generator has to produce samples which are as random and independent as possible or otherwise MC won’t work <span class="citation" data-cites="matsumoto_mersenne_1998 lecuyer_testu01_2007">(<a href="references.html#ref-matsumoto_mersenne_1998" role="doc-biblioref">Matsumoto and Nishimura 1998</a>; <a href="references.html#ref-lecuyer_testu01_2007" role="doc-biblioref">L’Ecuyer and Simard 2007</a>)</span>.</li>
 </ul>
 <p>In the next sections, we will uncover the foundations of MC simulation. First we will explore the core concepts and mathematical foundations behind it. After that, we will study classical MC techniques and how to calculate confidence intervals for their outputs. We will conclude this chapter with Markov Chain Monte Carlo (MCMC), one essential technique widely used in machine learning.</p>
 </section>
 </section>
 <section id="core-concepts" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="core-concepts"><span class="header-section-number">3.2</span> Core Concepts</h2>
-<p>The core idea of MC simulation is to leverage the <strong>Law of Large Numbers</strong> to approximate complex quantities: the average of a random variable over a large number of samples will converge to its expected value. This allows us to approximate quantities that are difficult or impossible to compute analytically by simulating random samples and calculating their average.</p>
+<p>The core idea of MC simulation is to leverage the <strong>Law of Large Numbers</strong> to approximate complex quantities: the average of a random variable over a large number of samples will converge to its expected value <span class="citation" data-cites="durrett_probability_2019">(<a href="references.html#ref-durrett_probability_2019" role="doc-biblioref">Durrett 2019</a>)</span>. This allows us to approximate quantities that are difficult or impossible to compute analytically by simulating random samples and calculating their average.</p>
 <p>Mathematically, the goal of MC simulation is to estimate the expected value of a function of a random variable <span class="math inline">\(E[g(X)]\)</span>. The true expected value is defined by the integral:</p>
 <p><span id="eq-mc-ev"><span class="math display">\[
 E[g(x)]=\int_{-\infty}^{\infty} g(x)f(x)dx
@@ -599,7 +619,7 @@ E[g(x)]=\int_{-\infty}^{\infty} g(x)f(x)dx
 <p><span id="eq-est-mc"><span class="math display">\[
 \hat{E}[g(X)]=\frac{1}{N}\sum_{i=1}^N g(X_i)
 \tag{3.2}\]</span></span></p>
-<p>We call <span class="math inline">\(\hat{E}[g(X)]\)</span> the <strong>Monte Carlo estimator</strong>. Note that we can approximate <em>any integral</em> with MC simulation using a simple trick. Assume we want to calculate the following integral:</p>
+<p>We call <span class="math inline">\(\hat{E}[g(X)]\)</span> the <strong>Monte Carlo estimator</strong> <span class="citation" data-cites="robert_monte_2004 owen_monte_2013">(<a href="references.html#ref-robert_monte_2004" role="doc-biblioref">Robert and Casella 2004</a>, Ch. 3; <a href="references.html#ref-owen_monte_2013" role="doc-biblioref">Owen 2013</a>, Ch. 2)</span>. Note that we can approximate <em>any integral</em> with MC simulation using a simple trick. Assume we want to calculate the following integral:</p>
 <p><span class="math display">\[
 I=\int_a^b h(x) dx
 \]</span></p>
@@ -625,7 +645,7 @@ E[\hat{E}[g(X)]]&amp;=E\left[\frac{1}{N}\sum_{i=1}^N g(X_i)\right]=\frac{1}{N}\s
 &amp;\overset{iid}{=} \frac{1}{N}\sum_{i=1}^N E[g(X)]=\frac{1}{N}N\cdot E[g(X)]=E[g(X)]
 \end{aligned}
 \]</span></p>
-<p>By the law of large numbers, we know that <span class="math inline">\(\hat{E}[g(X)]\)</span> converges in probability to <span class="math inline">\(E[g(X)]\)</span>. Additionally, by the Central Limit Theorem (CLT), the standard error is proportional to <span class="math inline">\(1/\sqrt{N}\)</span>.</p>
+<p>By the law of large numbers, we know that <span class="math inline">\(\hat{E}[g(X)]\)</span> converges in probability to <span class="math inline">\(E[g(X)]\)</span>. Additionally, by the Central Limit Theorem (CLT), the standard error is proportional to <span class="math inline">\(1/\sqrt{N}\)</span> <span class="citation" data-cites="durrett_probability_2019 asmussen_stochastic_2007">(<a href="references.html#ref-durrett_probability_2019" role="doc-biblioref">Durrett 2019</a>; <a href="references.html#ref-asmussen_stochastic_2007" role="doc-biblioref">Asmussen and Glynn 2007</a>)</span>.</p>
 <p><span id="eq-std-error"><span class="math display">\[
 \text{Standard error} \propto \frac{\sigma}{\sqrt{N}}
 \tag{3.4}\]</span></span></p>
@@ -638,7 +658,7 @@ E[\hat{E}[g(X)]]&amp;=E\left[\frac{1}{N}\sum_{i=1}^N g(X_i)\right]=\frac{1}{N}\s
 <p><span class="math display">\[
 \bar{X}_n=\frac{X_1+X_2+\dots+X_n}{n}
 \]</span></p>
-<p>The law of large numbers states in its strong version that</p>
+<p>The law of large numbers states in its strong version <span class="citation" data-cites="durrett_probability_2019">(<a href="references.html#ref-durrett_probability_2019" role="doc-biblioref">Durrett 2019</a>, Thm. 2.4.1)</span> that</p>
 <p><span id="eq-law-large-numbers"><span class="math display">\[
 P\left(\lim_{n\rightarrow\infty}\hat{X}_n=\mu\right)=1
 \tag{3.5}\]</span></span></p>
@@ -648,11 +668,11 @@ P\left(\lim_{n\rightarrow\infty}\hat{X}_n=\mu\right)=1
 \hat{X}_n=\frac{1}{n}\sum_{i=1}^n (\mu+\epsilon_i)=\mu+\frac{1}{n}\sum_{i=1}^n \epsilon_i
 \]</span></p>
 <p>But because the noise terms cancel out over time, we have <span class="math inline">\(\frac{1}{n}\sum \epsilon_i\rightarrow 0\)</span> as <span class="math inline">\(n\rightarrow\infty\)</span>, and we end up in the limit with <span class="math inline">\(\bar{X}_n \approx \mu\)</span>.</p>
-<p>Note that the independece assumption of the <span class="math inline">\(X_i\)</span> is <em>critical</em>, since otherwise the error terms would compound rather than cancel out. This is the reason why only high-quality PRNG are used with MC simulation.</p>
+<p>Note that the independece assumption of the <span class="math inline">\(X_i\)</span> is <em>critical</em>, since otherwise the error terms would compound rather than cancel out. This is the reason why only high-quality PRNG are used with MC simulation <span class="citation" data-cites="lecuyer_testu01_2007">(<a href="references.html#ref-lecuyer_testu01_2007" role="doc-biblioref">L’Ecuyer and Simard 2007</a>)</span>.</p>
 </section>
 <section id="confidence-intervals" class="level3" data-number="3.2.3">
 <h3 data-number="3.2.3" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">3.2.3</span> Confidence intervals</h3>
-<p>In order to quantify the uncertainty given by a MC estimate, confidence intevals represent an appropriate tool. For the calculation, we rely on the <strong>Central Limit Theorem</strong> already mentioned above. By this theorem, we know that the distribution of the <em>sample mean</em> tends towards a <strong>normal distribution</strong> when the number of iterations becomes large. Formally:</p>
+<p>In order to quantify the uncertainty given by a MC estimate, confidence intevals represent an appropriate tool. For the calculation, we rely on the <strong>Central Limit Theorem</strong> already mentioned above. By this theorem, we know that the distribution of the <em>sample mean</em> tends towards a <strong>normal distribution</strong> when the number of iterations becomes large <span class="citation" data-cites="durrett_probability_2019">(<a href="references.html#ref-durrett_probability_2019" role="doc-biblioref">Durrett 2019</a>, Thm. 3.4.1)</span>. Formally:</p>
 <p><span class="math display">\[
 \sqrt{n}(\bar{X}_n-\mu)\sim N(0,\sigma^2)
 \]</span></p>
@@ -671,8 +691,8 @@ s=\sqrt{\frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X}_n)^2}
 <p><span class="math display">\[
 CI=\bar{X}_n \pm \left(z_{\alpha/2}\times\frac{s}{\sqrt{n}}\right)
 \]</span></p>
-<p>where <span class="math inline">\(z_{\alpha/2}\)</span> represents the <span class="math inline">\(\alpha/2\)</span>-level quantile of the standard normal distribution. As an example, consider the following implementation for the estimate of <span class="math inline">\(\pi\)</span> using Python code:</p>
-<div id="f1a31446" class="cell" data-execution_count="2">
+<p>where <span class="math inline">\(z_{\alpha/2}\)</span> represents the <span class="math inline">\(\alpha/2\)</span>-level quantile of the standard normal distribution. This procedure is standard in the output analysis of simulation experiments <span class="citation" data-cites="law_simulation_2015 asmussen_stochastic_2007">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015</a>; <a href="references.html#ref-asmussen_stochastic_2007" role="doc-biblioref">Asmussen and Glynn 2007</a>, Ch. III)</span>. As an example, consider the following implementation for the estimate of <span class="math inline">\(\pi\)</span> using Python code:</p>
+<div id="26e2dde5" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -703,24 +723,24 @@ CI=\bar{X}_n \pm \left(z_{\alpha/2}\times\frac{s}{\sqrt{n}}\right)
 <span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Estimate: </span><span class="sc">{</span>mu<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"95% CI:   [</span><span class="sc">{</span>lower<span class="sc">:.4f}</span><span class="ss">, </span><span class="sc">{</span>upper<span class="sc">:.4f}</span><span class="ss">]"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Estimate: 3.1428
-95% CI:   [3.1106, 3.1750]</code></pre>
+<pre><code>Estimate: 3.1260
+95% CI:   [3.0936, 3.1584]</code></pre>
 </div>
 </div>
 </section>
 </section>
 <section id="sec-var-reduction" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="sec-var-reduction"><span class="header-section-number">3.3</span> Variance Reduction Techniques</h2>
-<p>Until now, we have considered situations where sampling the probability space is effective. For instance, in the <span class="math inline">\(\pi\)</span> calculation example, we are sampling points <span class="math inline">\((x,y)\)</span> from a well-defined 2-dimensional space. By sampling a large number of points we expect our estimate to converge to the true value as the number of samples tends to infinity. However, what happens when we need to sample from a much higher dimensional space? For instance, sampling 100 numbers in a one-dimensional space might be enough for a good estimation. In a <span class="math inline">\(2D\)</span> space, we would need to sample <span class="math inline">\(100\times 100=10^4\)</span> points to reach a similar coverage, which would be still doable. However, what if our sampling space has 10 dimensions? That would amount to sampling <span class="math inline">\((100)^{10}\)</span> points! This is called the <strong>curse of dimensionality</strong> and is one of the central problems in practical, high-dimensional problems.</p>
-<p>One of the main advantages of MC simulation is that the error depends primarily on the number of samples and the variance of the simulation, and not on the dimension of the problem (see <a href="#eq-std-error" class="quarto-xref">Equation&nbsp;<span>3.4</span></a>). The problem is that the square root in the denominator forces us to increase the number of samples quadratically to achieve a specific error level. For example, if a simulation takes 1h to run, making it 10 times more accurate would take not 10, but 100 hours (more than 4 days).</p>
-<p>However, there is another knob in <a href="#eq-std-error" class="quarto-xref">Equation&nbsp;<span>3.4</span></a> that we can use: the <em>standard deviation</em> <span class="math inline">\(\sigma\)</span>. If we manage to reduce this standard deviation (or equivalently, the variance) of the simulation, we can increase the accuracy of the simulation as well. We will now see some methods for reducing the variance effectively in MC simulation: antithetic variates, control variates, importance sampling and stratified sampling.</p>
+<p>Until now, we have considered situations where sampling the probability space is effective. For instance, in the <span class="math inline">\(\pi\)</span> calculation example, we are sampling points <span class="math inline">\((x,y)\)</span> from a well-defined 2-dimensional space. By sampling a large number of points we expect our estimate to converge to the true value as the number of samples tends to infinity. However, what happens when we need to sample from a much higher dimensional space? For instance, sampling 100 numbers in a one-dimensional space might be enough for a good estimation. In a <span class="math inline">\(2D\)</span> space, we would need to sample <span class="math inline">\(100\times 100=10^4\)</span> points to reach a similar coverage, which would be still doable. However, what if our sampling space has 10 dimensions? That would amount to sampling <span class="math inline">\((100)^{10}\)</span> points! This is called the <strong>curse of dimensionality</strong> <span class="citation" data-cites="bellman_adaptive_1961">(<a href="references.html#ref-bellman_adaptive_1961" role="doc-biblioref">Bellman 1961</a>)</span> and is one of the central problems in practical, high-dimensional problems.</p>
+<p>One of the main advantages of MC simulation is that the error depends primarily on the number of samples and the variance of the simulation, and not on the dimension of the problem (see <a href="#eq-std-error" class="quarto-xref">Equation&nbsp;<span>3.4</span></a>) <span class="citation" data-cites="caflisch_monte_1998">(<a href="references.html#ref-caflisch_monte_1998" role="doc-biblioref">Caflisch 1998</a>)</span>. The problem is that the square root in the denominator forces us to increase the number of samples quadratically to achieve a specific error level. For example, if a simulation takes 1h to run, making it 10 times more accurate would take not 10, but 100 hours (more than 4 days).</p>
+<p>However, there is another knob in <a href="#eq-std-error" class="quarto-xref">Equation&nbsp;<span>3.4</span></a> that we can use: the <em>standard deviation</em> <span class="math inline">\(\sigma\)</span>. If we manage to reduce this standard deviation (or equivalently, the variance) of the simulation, we can increase the accuracy of the simulation as well. We will now see some methods for reducing the variance effectively in MC simulation: antithetic variates, control variates, importance sampling and stratified sampling. Comprehensive treatments of these techniques can be found in <span class="citation" data-cites="glasserman_monte_2003">Glasserman (<a href="references.html#ref-glasserman_monte_2003" role="doc-biblioref">2003</a>, Ch. 4)</span>, <span class="citation" data-cites="rubinstein_simulation_2016">Rubinstein and Kroese (<a href="references.html#ref-rubinstein_simulation_2016" role="doc-biblioref">2016</a>, Ch. 5)</span> and <span class="citation" data-cites="owen_monte_2013">Owen (<a href="references.html#ref-owen_monte_2013" role="doc-biblioref">2013</a>, Chs. 8–10)</span>.</p>
 <section id="antithetic-variates" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="antithetic-variates"><span class="header-section-number">3.3.1</span> Antithetic variates</h3>
-<p>Imagine the draw a large value for a random variable <span class="math inline">\(X_i\)</span> during our simulation (large compared to the true mean <span class="math inline">\(\mu\)</span>). Automatically, this value will increase the sample variance significantly. One simple way of compensating for this large value is to generate a “mirror” value that makes the large value cancel out. This is the main idea of the <strong>antithetic variates</strong> method. For instance, if we sample a random variable <span class="math inline">\(U\)</span> in <span class="math inline">\([0,1]\)</span>, we do include also the value <span class="math inline">\(1-U\)</span> in our sample. Therefore, instead of sampling <span class="math inline">\(n\)</span> times independently, we sample <span class="math inline">\(n/2\)</span> pairs <span class="math inline">\((U, 1-U)\)</span>. This typically already reduces the variance by a significant margin, improving the effectiveness of the MC simulation.</p>
+<p>Imagine the draw a large value for a random variable <span class="math inline">\(X_i\)</span> during our simulation (large compared to the true mean <span class="math inline">\(\mu\)</span>). Automatically, this value will increase the sample variance significantly. One simple way of compensating for this large value is to generate a “mirror” value that makes the large value cancel out. This is the main idea of the <strong>antithetic variates</strong> method <span class="citation" data-cites="hammersley_new_1956">(<a href="references.html#ref-hammersley_new_1956" role="doc-biblioref">Hammersley and Morton 1956</a>)</span>. For instance, if we sample a random variable <span class="math inline">\(U\)</span> in <span class="math inline">\([0,1]\)</span>, we do include also the value <span class="math inline">\(1-U\)</span> in our sample. Therefore, instead of sampling <span class="math inline">\(n\)</span> times independently, we sample <span class="math inline">\(n/2\)</span> pairs <span class="math inline">\((U, 1-U)\)</span>. This typically already reduces the variance by a significant margin, improving the effectiveness of the MC simulation. A reduction is guaranteed, for instance, when the simulation output is a monotone function of the input <span class="math inline">\(U\)</span>, because then <span class="math inline">\(f(U)\)</span> and <span class="math inline">\(f(1-U)\)</span> are negatively correlated <span class="citation" data-cites="glasserman_monte_2003">(<a href="references.html#ref-glasserman_monte_2003" role="doc-biblioref">Glasserman 2003, vol. 53, sec. 4.2</a>)</span>.</p>
 </section>
 <section id="control-variates" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="control-variates"><span class="header-section-number">3.3.2</span> Control variates</h3>
-<p>Another highly effective method for reducing the variance is to use <strong>control variates</strong>. The main intuition behind this method is the following: imagine that you want to weigh an object <span class="math inline">\(Y\)</span>, however the scale has unknown accuracy. Let’s say we put it on the scale and it shows 10.5 kg. Now we have another object <span class="math inline">\(X\)</span> for which we know, for sure, that it weighs exactly 10 kg. After putting it on the scale, we get a measurement of 10.2 kg. This means that the <em>scale is off by 0.2 kg</em>, so we can now correct our previous measurement and correctly conclude that <span class="math inline">\(Y\)</span> weighs 10.3 kg.</p>
+<p>Another highly effective method for reducing the variance is to use <strong>control variates</strong> <span class="citation" data-cites="lavenberg_perspective_1981 nelson_control_1990">(<a href="references.html#ref-lavenberg_perspective_1981" role="doc-biblioref">Lavenberg and Welch 1981</a>; <a href="references.html#ref-nelson_control_1990" role="doc-biblioref">Nelson 1990</a>)</span>. The main intuition behind this method is the following: imagine that you want to weigh an object <span class="math inline">\(Y\)</span>, however the scale has unknown accuracy. Let’s say we put it on the scale and it shows 10.5 kg. Now we have another object <span class="math inline">\(X\)</span> for which we know, for sure, that it weighs exactly 10 kg. After putting it on the scale, we get a measurement of 10.2 kg. This means that the <em>scale is off by 0.2 kg</em>, so we can now correct our previous measurement and correctly conclude that <span class="math inline">\(Y\)</span> weighs 10.3 kg.</p>
 <p>In our case, we want to estimate <span class="math inline">\(E[Y]\)</span> using MC simulation, for which there is no analytical solution. However, there is a control <span class="math inline">\(X\)</span> for which we can calculate <span class="math inline">\(E[X]\)</span> exactly and is highly correlated with <span class="math inline">\(Y\)</span>. Then, we can define a corrected estimator as:</p>
 <p><span id="eq-control-variates"><span class="math display">\[
 Y_{cv}=Y-c(X-E[X])
@@ -733,7 +753,7 @@ E[Y_{cv}]=E[Y]-c(E[X]-E[X])=E[Y]
 <p><span id="eq-var-cv"><span class="math display">\[
 \operatorname{Var}(Y_{cv})=\operatorname{Var}(Y)+c^2\operatorname{Var}(X)-2c\operatorname{Cov}(X,Y)
 \tag{3.7}\]</span></span></p>
-<p>If we take the value <span class="math inline">\(c^*\)</span> that minimizes this variance, it turns out to be</p>
+<p>If we take the value <span class="math inline">\(c^*\)</span> that minimizes this variance, it turns out to be <span class="citation" data-cites="glasserman_monte_2003">(<a href="references.html#ref-glasserman_monte_2003" role="doc-biblioref">Glasserman 2003, vol. 53, sec. 4.1</a>)</span></p>
 <p><span class="math display">\[
 c^*=\frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}
 \]</span></p>
@@ -751,7 +771,7 @@ I=\int_0^1 e^{x^2} dx
 \int_0^1 (1+x^2)dx = \left[x+\frac{x^3}{3}\right]_0^1=1+\frac{1}{3}=1.3333\dots
 \]</span></p>
 <p>We will now estimate both quantities in the same loop to calculate the controlled estimate.</p>
-<div id="2c335abd" class="cell" data-execution_count="3">
+<div id="d838fa6e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -788,7 +808,7 @@ I=\int_0^1 e^{x^2} dx
 <span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s now run the code for 10000 iterations and compare the results:</p>
-<div id="c1532c09" class="cell" data-execution_count="4">
+<div id="1e445c33" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">10000</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> simulation_control_variates(N)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -811,22 +831,22 @@ I=\int_0^1 e^{x^2} dx
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Results with N=10,000 ---
 True Value:               1.462652
-Naive MC Estimate:        1.455698 (Error: 0.006954)
-Control Variate Estimate: 1.461940 (Error: 0.000712)
+Naive MC Estimate:        1.471212 (Error: 0.008561)
+Control Variate Estimate: 1.462234 (Error: 0.000418)
 
 --- Variance Analysis ---
-Correlation (X, Y):       0.9916
-Naive Variance:           0.219584
-CV Variance:              0.003674
-Variance Reduction:       59.8x lower variance</code></pre>
+Correlation (X, Y):       0.9915
+Naive Variance:           0.227714
+CV Variance:              0.003866
+Variance Reduction:       58.9x lower variance</code></pre>
 </div>
 </div>
 <p>As can be seen, the variance reduction achieved by the control variates method is in this case around 60x, which means that running 10,000 iterations using the control variates method is <em>as good as running classical MC with 600,000 iterations</em>.</p>
 </section>
 <section id="importance-sampling" class="level3" data-number="3.3.3">
 <h3 data-number="3.3.3" class="anchored" data-anchor-id="importance-sampling"><span class="header-section-number">3.3.3</span> Importance sampling</h3>
-<p>The next method is used in cases where the region of interest in the sampling space is very small, i.e.&nbsp;the events we try to simulate are very rare. Imagine we want to estimate the probability for a market crash. If we simulate the market for 1,000,000 times, we might still miss all crash events (e.g.&nbsp;if the market crash is considered to be a five-sigma event, its probability amounts to about 1 in 3.5 million). Therefore, standard MC would come up with a probability of 0, which is incorrect.</p>
-<p>Instead of that, we sample from a probability distribution where market crashes are common. The good news is that now, we will have plenty of points to work with. However, by doing this we introduce a significant bias in the simulation, so our result will not be correct. The trick used by <strong>importance sampling</strong> is to “un-bias” the simulation by assigning a <em>weight</em> to each sample which is basically proportional to its <em>likelihood</em>. Samples which are more likely according to the original distribution will get a higher weight, whereas rare samples will be assigned a low weight.</p>
+<p>The next method is used in cases where the region of interest in the sampling space is very small, i.e.&nbsp;the events we try to simulate are very rare. Imagine we want to estimate the probability for a market crash. If we simulate the market for 1,000,000 times, we might still miss all crash events (e.g.&nbsp;if the market crash is considered to be a five-sigma event, its probability amounts to about 1 in 3.5 million). Therefore, standard MC would come up with a probability of 0, which is incorrect. Estimating such rare-event probabilities is one of the most important applications of importance sampling <span class="citation" data-cites="heidelberger_fast_1995 bucklew_introduction_2004">(<a href="references.html#ref-heidelberger_fast_1995" role="doc-biblioref">Heidelberger 1995</a>; <a href="references.html#ref-bucklew_introduction_2004" role="doc-biblioref">Bucklew 2004</a>)</span>.</p>
+<p>Instead of that, we sample from a probability distribution where market crashes are common. The good news is that now, we will have plenty of points to work with. However, by doing this we introduce a significant bias in the simulation, so our result will not be correct. The trick used by <strong>importance sampling</strong> <span class="citation" data-cites="kahn_methods_1953">(<a href="references.html#ref-kahn_methods_1953" role="doc-biblioref">Kahn and Marshall 1953</a>)</span> is to “un-bias” the simulation by assigning a <em>weight</em> to each sample which is basically proportional to its <em>likelihood</em>. Samples which are more likely according to the original distribution will get a higher weight, whereas rare samples will be assigned a low weight.</p>
 <p>More formally, we want to calculate the expectation of a function of a random variable <span class="math inline">\(f(x)\)</span> under a probability distribution characterized by its pdf <span class="math inline">\(p(x)\)</span>.</p>
 <p><span class="math display">\[
 E_p[f(x)]=\int f(x)p(x)dx
@@ -844,7 +864,7 @@ E_p[f(x)]=\int f(x)p(x)dx
 \hat{I}=\frac{1}{n}\sum_{i=1}^n f(x_i)\cdot\frac{p(x_i)}{q(x_i)}=\frac{1}{n}\sum_{i=1}^n w_i f(x_i)
 \tag{3.8}\]</span></span></p>
 <p>Note that our samples now come from <span class="math inline">\(q(x)\)</span> instead of <span class="math inline">\(p(x)\)</span> (because we sample from the biased distribution). Let’s now consider as an example a five-sigma event under a standard normal distribution governed by the probability <span class="math inline">\(P(X&gt;5)\)</span>, where the true probability is about <span class="math inline">\(2.87\times 10^{-7}\)</span>. In the real world, the true probability distribution is <span class="math inline">\(N(0,1)\)</span>. Now we can sample from a biased distribution by moving the mean: <span class="math inline">\(N(5,1)\)</span>. In this distribution, events <span class="math inline">\(X&gt;5\)</span> happen roughly 50% of the time.</p>
-<div id="25c5a655" class="cell" data-execution_count="5">
+<div id="66597dc3" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -876,7 +896,7 @@ E_p[f(x)]=\int f(x)p(x)dx
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> prob_naive, var_naive, prob_is, var_is</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In this code, we compare the probability estimates and the variances obtained by standard MC and importance sampling.</p>
-<div id="e3a546cc" class="cell" data-execution_count="6">
+<div id="f0698c83" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">10000</span> <span class="co"># Only 10,000 samples (Small for a rare event!)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>target <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -900,24 +920,24 @@ E_p[f(x)]=\int f(x)p(x)dx
 True Probability: 0.0000002867
 Naive MC Estimate: 0.0000000000
 Naive Variance:    0.0000000000 (Likely zero if no hits occurred)
-Imp. Samp Estimate:0.0000002876
-Imp. Samp Variance:0.00000000000000004699
+Imp. Samp Estimate:0.0000002863
+Imp. Samp Variance:0.00000000000000004573
 Naive method failed completely (0 hits). Importance Sampling is infinitely better here.</code></pre>
 </div>
 </div>
 <p>As can be seen, the estimate obtained by importance sampling is quite close to the true probability. With only 10,000 iterations, standard MC fails to sample a single extreme event, and therefore both the estimate and the variance are 0.</p>
 <p><strong>How to choose a good <span class="math inline">\(q(x)\)</span></strong></p>
-<p>We have seen that, in general, we should choose <span class="math inline">\(q(x)\)</span> so that it is biased towards regions where the events of interest are more common. Concretely this means that <span class="math inline">\(q(x)\)</span> should have high density where <span class="math inline">\(|f(x)|p(x)\)</span> is also high, since this will significantly steer sampling towards the “important” region and reduce the variance. On the other side, if <span class="math inline">\(q(x)\)</span> is zero in regions where <span class="math inline">\(p(x)\)</span> is not, we might stop sampling in regions that matter. In this case, the answer will definitely be biased. As a rule of thumb, the tails of <span class="math inline">\(q(x)\)</span> need to be heavier than those of <span class="math inline">\(p(x)\)</span>, since we do not want <span class="math inline">\(q(x)\)</span> to decrease faster than <span class="math inline">\(p(x)\)</span>.</p>
+<p>We have seen that, in general, we should choose <span class="math inline">\(q(x)\)</span> so that it is biased towards regions where the events of interest are more common. Concretely this means that <span class="math inline">\(q(x)\)</span> should have high density where <span class="math inline">\(|f(x)|p(x)\)</span> is also high, since this will significantly steer sampling towards the “important” region and reduce the variance. On the other side, if <span class="math inline">\(q(x)\)</span> is zero in regions where <span class="math inline">\(p(x)\)</span> is not, we might stop sampling in regions that matter. In this case, the answer will definitely be biased. As a rule of thumb, the tails of <span class="math inline">\(q(x)\)</span> need to be heavier than those of <span class="math inline">\(p(x)\)</span>, since we do not want <span class="math inline">\(q(x)\)</span> to decrease faster than <span class="math inline">\(p(x)\)</span>; otherwise, the weights <span class="math inline">\(p(x)/q(x)\)</span> can become unbounded and the estimator may have infinite variance <span class="citation" data-cites="geweke_bayesian_1989 owen_monte_2013">(<a href="references.html#ref-geweke_bayesian_1989" role="doc-biblioref">Geweke 1989</a>; <a href="references.html#ref-owen_monte_2013" role="doc-biblioref">Owen 2013</a>, Ch. 9)</span>.</p>
 </section>
 <section id="stratified-sampling" class="level3" data-number="3.3.4">
 <h3 data-number="3.3.4" class="anchored" data-anchor-id="stratified-sampling"><span class="header-section-number">3.3.4</span> Stratified sampling</h3>
-<p>Let’s assume we want to integrate a monotonic function (that is, a function that either <em>always</em> increases or <em>always</em> decreases). Think e.g.&nbsp;about <span class="math inline">\(f(x)=e^x\)</span> in <span class="math inline">\([0,1]\)</span>. If we start sampling random numbers, we might get trapped either in the low or the high region of the function. This might well happen because PRNG might accidentally “cluster” samples in a specific region. Alas, that would be bad, because it would significantly bias our estimate. In this case, we need to make sure that we sample equally well from all regions. This is the main idea of <strong>stratified sampling</strong>.</p>
+<p>Let’s assume we want to integrate a monotonic function (that is, a function that either <em>always</em> increases or <em>always</em> decreases). Think e.g.&nbsp;about <span class="math inline">\(f(x)=e^x\)</span> in <span class="math inline">\([0,1]\)</span>. If we start sampling random numbers, we might get trapped either in the low or the high region of the function. This might well happen because PRNG might accidentally “cluster” samples in a specific region. Alas, that would be bad, because it would significantly bias our estimate. In this case, we need to make sure that we sample equally well from all regions. This is the main idea of <strong>stratified sampling</strong>, a technique originating in survey sampling <span class="citation" data-cites="neyman_two_1934 cochran_sampling_1977">(<a href="references.html#ref-neyman_two_1934" role="doc-biblioref">Neyman 1934</a>; <a href="references.html#ref-cochran_sampling_1977" role="doc-biblioref">Cochran 1977</a>)</span>.</p>
 <p>The mathematical trick now is to divide the sampling space into disjoint <strong>strata</strong>, which represent separate regions that cover the whole space. Depending on the form of the target function, the strata might be different in size. However, if possible, choosing strata of equal size might simplify the calculations.</p>
 <p>Let’s denote by <span class="math inline">\(H\)</span> the number of strata and <span class="math inline">\(p_h\)</span> the probability that a random sample falls into stratum <span class="math inline">\(h\)</span>. We denote by <span class="math inline">\(S\)</span> the random variable that represents the index of the stratum. Therefore, <span class="math inline">\(p_h = P(S=h)\)</span> and <span class="math inline">\(\sum p_h = 1\)</span>. Each stratum has its own mean <span class="math inline">\(\mu_h=E[Y|S=h]\)</span> and variance <span class="math inline">\(\sigma_h^2=\operatorname{Var}(Y|S=h)\)</span>. The total expected value that we are trying to estimate with stratified MC becomes then:</p>
 <p><span class="math display">\[
 \mu=E[Y]=\sum_{h=1}^H p_h\mu_h
 \]</span></p>
-<p>In order to calculate the variance, we use the <em>law of total variance</em> to decompose it into:</p>
+<p>In order to calculate the variance, we use the <em>law of total variance</em> <span class="citation" data-cites="durrett_probability_2019">(<a href="references.html#ref-durrett_probability_2019" role="doc-biblioref">Durrett 2019</a>)</span> to decompose it into:</p>
 <p><span id="eq-total-var"><span class="math display">\[
 \sigma^2=\operatorname{Var}(Y)=E[\operatorname{Var}(Y|S)]+\operatorname{Var}(E[Y|S])
 \tag{3.9}\]</span></span></p>
@@ -951,11 +971,11 @@ Naive method failed completely (0 hits). Importance Sampling is infinitely bette
 \sigma_{SE}^2 &amp;=\frac{1}{n}\sigma_W^2
 \end{aligned}
 \]</span></p>
-<p>And since <span class="math inline">\(\sigma_B^2 \ge 0\)</span>, we have our variance reduction <span class="math inline">\(\operatorname{Var}(\hat{Y}_{SE})\le \operatorname{Var}(\hat{Y}_{MC})\)</span>.</p>
+<p>And since <span class="math inline">\(\sigma_B^2 \ge 0\)</span>, we have our variance reduction <span class="math inline">\(\operatorname{Var}(\hat{Y}_{SE})\le \operatorname{Var}(\hat{Y}_{MC})\)</span> <span class="citation" data-cites="cochran_sampling_1977 glasserman_monte_2003">(<a href="references.html#ref-cochran_sampling_1977" role="doc-biblioref">Cochran 1977</a>, Ch. 5; <a href="references.html#ref-glasserman_monte_2003" role="doc-biblioref">Glasserman 2003, vol. 53, sec. 4.3</a>)</span>. Proportional allocation is not the only choice: allocating samples proportionally to <span class="math inline">\(p_h\sigma_h\)</span> (the so-called <em>Neyman allocation</em>) minimizes the variance of the stratified estimator <span class="citation" data-cites="neyman_two_1934">(<a href="references.html#ref-neyman_two_1934" role="doc-biblioref">Neyman 1934</a>)</span>.</p>
 <p>In summary, stratified sampling using proportional strata is always equal to or better than standard sampling because it eliminates the variance caused by the variability in sampling proportions across strata with different means.</p>
 <p><strong>Example</strong></p>
 <p>As an example, let’s integrate <span class="math inline">\(f(x)=e^x\)</span> in the interval <span class="math inline">\([0,1]\)</span>. For this, we will define <span class="math inline">\(H\)</span> equally-spaced strata in this interval.</p>
-<div id="0a2d6fb8" class="cell" data-execution_count="7">
+<div id="f372973c" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -976,7 +996,7 @@ Naive method failed completely (0 hits). Importance Sampling is infinitely bette
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> est_naive, est_stratified</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We now run the experiment multiple times to determine the variance of the method. Because stratified samples are not iid, we need to repeat the experiment to get an estimate of its variance:</p>
-<div id="c32b7c82" class="cell" data-execution_count="8">
+<div id="7039c8d8" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>experiments <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">100</span> <span class="co"># Samples per experiment</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1030,10 +1050,10 @@ Naive method failed completely (0 hits). Importance Sampling is infinitely bette
 <div class="cell-output cell-output-stdout">
 <pre><code>True Value: 1.718282
 ------------------------------
-Naive MC Variance (across 1000 runs):      0.00232443
-Stratified MC Variance (across 1000 runs): 0.00000026
+Naive MC Variance (across 1000 runs):      0.00250678
+Stratified MC Variance (across 1000 runs): 0.00000028
 ------------------------------
-Variance Reduction Factor: 9082.1x</code></pre>
+Variance Reduction Factor: 8846.8x</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -1047,10 +1067,10 @@ Variance Reduction Factor: 9082.1x</code></pre>
 </section>
 <section id="latin-hypercube-sampling" class="level3" data-number="3.3.5">
 <h3 data-number="3.3.5" class="anchored" data-anchor-id="latin-hypercube-sampling"><span class="header-section-number">3.3.5</span> Latin Hypercube Sampling</h3>
-<p>The last variance reduction technique we will see is a modification of stratified sampling that comes to the rescue in high-dimensional problems: <strong>Latin Hypercube Sampling</strong>. The problem of stratified sampling in higher dimensions is that the number of strata required grows exponentially with the dimension of the problem. For instance, if we wish to stratify each dimension using 100 bins, the number of strata becomes already prohibitive for e.g.&nbsp;10 dimensions (<span class="math inline">\(100^{10}\)</span> points would be needed).</p>
+<p>The last variance reduction technique we will see is a modification of stratified sampling that comes to the rescue in high-dimensional problems: <strong>Latin Hypercube Sampling</strong> (LHS), introduced by <span class="citation" data-cites="mckay_comparison_1979">McKay, Beckman, and Conover (<a href="references.html#ref-mckay_comparison_1979" role="doc-biblioref">1979</a>)</span>. The problem of stratified sampling in higher dimensions is that the number of strata required grows exponentially with the dimension of the problem. For instance, if we wish to stratify each dimension using 100 bins, the number of strata becomes already prohibitive for e.g.&nbsp;10 dimensions (<span class="math inline">\(100^{10}\)</span> points would be needed).</p>
 <p>Latin hypercube sampling is a clever way to organize the sampling space. The main idea is to stratify every single dimension <strong>simultaneously</strong>, but without filling the entire grid. Our goal is to sample <span class="math inline">\(n\)</span> points such that, when looking from the perspective of any single dimension, there is always exactly one point in every bin. To visualize this, imagine a chess board with 8 rooks, and try to place each rook so that <em>no rook can attack another</em>.</p>
 <p>TODO: visualization</p>
-<p>If we now look at each dimension in isolation, there is always exactly one rook in each row/column. The advantage is that samples are now spread out maximally across the range of each variable individually, thus effectively reducing the variance in higher dimensions.</p>
+<p>If we now look at each dimension in isolation, there is always exactly one rook in each row/column. The advantage is that samples are now spread out maximally across the range of each variable individually, thus effectively reducing the variance in higher dimensions. <span class="citation" data-cites="stein_large_1987">Stein (<a href="references.html#ref-stein_large_1987" role="doc-biblioref">1987</a>)</span> showed that, asymptotically, LHS removes the variance contributed by the additive (one-dimensional) components of the integrand, and it never performs much worse than standard MC.</p>
 <p>The method to build a latin hypercube for sampling <span class="math inline">\(n\)</span> points is as follows:</p>
 <ol type="1">
 <li>Divide the range <span class="math inline">\([0,1]\)</span> into <span class="math inline">\(n\)</span> equal intervals.</li>
@@ -1058,7 +1078,7 @@ Variance Reduction Factor: 9082.1x</code></pre>
 <li>Based on these permutations, we assign the intervals to the samples.</li>
 <li>To avoid each sample to be exactly at the center, we add a random jitter to each point.</li>
 </ol>
-<div id="3e66dfd6" class="cell" data-execution_count="9">
+<div id="8d4e4cde" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1075,7 +1095,7 @@ Variance Reduction Factor: 9082.1x</code></pre>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> samples</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In two dimensions, this would look like the following:</p>
-<div id="16eaf12d" class="cell" data-execution_count="10">
+<div id="634e0173" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">10</span> <span class="co"># 10 samples</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> <span class="dv">2</span>  <span class="co"># 2 dimensions</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1122,8 +1142,8 @@ Variance Reduction Factor: 9082.1x</code></pre>
 <p><span class="math display">\[
 f(\mathbf{x})=\sum_{i=1}^5 x_i^2
 \]</span></p>
-<p>in the interval <span class="math inline">\([-1,1]\)</span> for each dimension <span class="math inline">\(x_i\)</span>. For this, we will use the standard latin hypersquare sampling implementation of the SciPy library <code>scipy.stats.qmc</code>.</p>
-<div id="7032407f" class="cell" data-execution_count="11">
+<p>in the interval <span class="math inline">\([-1,1]\)</span> for each dimension <span class="math inline">\(x_i\)</span>. For this, we will use the standard latin hypersquare sampling implementation of the SciPy library <code>scipy.stats.qmc</code> <span class="citation" data-cites="virtanen_scipy_2020 roy_quasi-monte_2023">(<a href="references.html#ref-virtanen_scipy_2020" role="doc-biblioref">Virtanen et al. 2020</a>; <a href="references.html#ref-roy_quasi-monte_2023" role="doc-biblioref">Roy et al. 2023</a>)</span>.</p>
+<div id="8a15cf36" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> qmc</span>
@@ -1154,7 +1174,7 @@ f(\mathbf{x})=\sum_{i=1}^5 x_i^2
 <span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    errors_lhs.append(<span class="bu">abs</span>(lhs_estimate <span class="op">-</span> true_mean))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that the <code>LatinHypercube</code> sampler outputs samples in the interval <span class="math inline">\([0,1]\)</span> which need so be scaled to <span class="math inline">\([-1,1]\)</span> using the scaler <code>qmc.scale</code>. Let’s now visualize the results:</p>
-<div id="48d6add1" class="cell" data-execution_count="12">
+<div id="a35048af" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>plt.semilogy(sample_sizes, errors_mc, color<span class="op">=</span><span class="st">'red'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">'Standard Monte Carlo Noise'</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.semilogy(sample_sizes, errors_lhs, color<span class="op">=</span><span class="st">'green'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">'LHS Noise'</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1188,12 +1208,12 @@ f(\mathbf{x})=\sum_{i=1}^5 x_i^2
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Final Error (N=990):
-Standard MC Error: 0.009175
-LHS Error:         0.000024
-Improvement Factor: 386.1x more accurate</code></pre>
+Standard MC Error: 0.003136
+LHS Error:         0.000052
+Improvement Factor: 60.1x more accurate</code></pre>
 </div>
 </div>
-<p>In this plot, we have used a logarithmic scale on the <span class="math inline">\(y\)</span>-axis to better see small errors. Additionally, a trend line is provided which is the moving average of the errors. As can be seen, the LHS errors are clearly lower than the standard MC errors and the method is about 100x more accurate than standard MC using the same number of samples.</p>
+<p>In this plot, we have used a logarithmic scale on the <span class="math inline">\(y\)</span>-axis to better see small errors. Additionally, a trend line is provided which is the moving average of the errors. As can be seen, the LHS errors are clearly lower than the standard MC errors and the method is about 100x more accurate than standard MC using the same number of samples. This large gain is partly due to the choice of test function: since <span class="math inline">\(f\)</span> is a sum of one-dimensional terms, it is exactly the kind of additive function for which LHS is most effective <span class="citation" data-cites="stein_large_1987">(<a href="references.html#ref-stein_large_1987" role="doc-biblioref">Stein 1987</a>)</span>.</p>
 </section>
 <section id="summary-of-variance-reduction-techniques" class="level3" data-number="3.3.6">
 <h3 data-number="3.3.6" class="anchored" data-anchor-id="summary-of-variance-reduction-techniques"><span class="header-section-number">3.3.6</span> Summary of Variance Reduction Techniques</h3>
@@ -1230,9 +1250,9 @@ Improvement Factor: 386.1x more accurate</code></pre>
 </section>
 <section id="markov-chain-monte-carlo" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="markov-chain-monte-carlo"><span class="header-section-number">3.4</span> Markov Chain Monte Carlo</h2>
-<p>Until now, all methods for standard Monte Carlo that we have seen so far rely explicitly on the assumption that we can generate independent samples directly from the target distribution. However, in many practical scenarios, generating independent samples directly from the target distribution is either computationally expensive or infeasible. This is where <strong>Markov Chain Monte Carlo (MCMC)</strong> methods come into play. MCMC methods allow us to sample from complex distributions by constructing a Markov chain whose stationary distribution matches the target distribution.</p>
+<p>Until now, all methods for standard Monte Carlo that we have seen so far rely explicitly on the assumption that we can generate independent samples directly from the target distribution. However, in many practical scenarios, generating independent samples directly from the target distribution is either computationally expensive or infeasible. This is where <strong>Markov Chain Monte Carlo (MCMC)</strong> methods come into play <span class="citation" data-cites="robert_monte_2004 brooks_handbook_2011">(<a href="references.html#ref-robert_monte_2004" role="doc-biblioref">Robert and Casella 2004</a>; <a href="references.html#ref-brooks_handbook_2011" role="doc-biblioref">Brooks et al. 2011</a>)</span>. MCMC methods allow us to sample from complex distributions by constructing a Markov chain whose stationary distribution matches the target distribution.</p>
 <p>The key idea is to design a Markov chain that “explores” the target distribution efficiently, even if the samples are not independent. Over time, the chain converges to the target distribution, and we can use the samples generated to approximate expectations.</p>
-<p>In the next sections, we will explore the foundations of MCMC, including the <strong>Metropolis-Hastings</strong> algorithm as one of the most widely used MCMC techniques.</p>
+<p>In the next sections, we will explore the foundations of MCMC, including the <strong>Metropolis-Hastings</strong> algorithm <span class="citation" data-cites="metropolis_equation_1953 hastings_monte_1970">(<a href="references.html#ref-metropolis_equation_1953" role="doc-biblioref">Metropolis et al. 1953</a>; <a href="references.html#ref-hastings_monte_1970" role="doc-biblioref">Hastings 1970</a>)</span> as one of the most widely used MCMC techniques.</p>
 <section id="motivation-for-mcmc" class="level3" data-number="3.4.1">
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="motivation-for-mcmc"><span class="header-section-number">3.4.1</span> Motivation for MCMC</h3>
 <p>Imagine that we want to map the mountain peaks on a mountain range that is covered in thick fog. We have basically two options:</p>
@@ -1266,13 +1286,13 @@ p(\theta|D)=\frac{p(D|\theta)p(\theta)}{p(D)}
 <p><span class="math display">\[
 p(D)=\int p(D|\theta)p(\theta)d\theta
 \]</span></p>
-<p>This integral is usually intractable, either because of the high dimensionality of <span class="math inline">\(\theta\)</span> (think e.g.&nbsp;of neural network weights) or because there is no closed form solution. MCMC allows sampling without explicitly calculating this constant, as we will see shortly.</p>
+<p>This integral is usually intractable, either because of the high dimensionality of <span class="math inline">\(\theta\)</span> (think e.g.&nbsp;of neural network weights) or because there is no closed form solution. MCMC allows sampling without explicitly calculating this constant, as we will see shortly. The adoption of MCMC for this purpose transformed Bayesian statistics from the 1990s onwards <span class="citation" data-cites="gelfand_sampling-based_1990 gelman_bayesian_2013 neal_bayesian_1996">(<a href="references.html#ref-gelfand_sampling-based_1990" role="doc-biblioref">Gelfand and Smith 1990</a>; <a href="references.html#ref-gelman_bayesian_2013" role="doc-biblioref">Gelman et al. 2013</a>; <a href="references.html#ref-neal_bayesian_1996" role="doc-biblioref">Neal 1996</a>)</span>.</p>
 <ol start="3" type="1">
 <li><p><strong>Non-standard distributions</strong>: When the target distribution does not have a closed-form expression or does not belong to a standard family of distributions.</p></li>
-<li><p><strong>Rare event probabilities</strong>: When estimating probabilities of rare events, MCMC can efficiently explore the regions of interest.</p></li>
+<li><p><strong>Rare event probabilities</strong>: When estimating probabilities of rare events, MCMC can efficiently explore the regions of interest, for example in <em>subset simulation</em> <span class="citation" data-cites="au_estimation_2001">(<a href="references.html#ref-au_estimation_2001" role="doc-biblioref">Au and Beck 2001</a>)</span>.</p></li>
 <li><p><strong>Integration over complex spaces</strong>: MCMC is used to approximate integrals in cases where the integrand is defined over a complex or irregular domain.</p></li>
 </ol>
-<p>Applications of MCMC include cryptography (deciphering substitution ciphers), detecting gerrymandering in political science, protein folding in computational biology, Bayesian inference in machine learning, and epidemiology.</p>
+<p>Applications of MCMC include cryptography (deciphering substitution ciphers) <span class="citation" data-cites="diaconis_markov_2009">(<a href="references.html#ref-diaconis_markov_2009" role="doc-biblioref">Diaconis 2009</a>)</span>, detecting gerrymandering in political science <span class="citation" data-cites="chikina_assessing_2017 deford_recombination_2021">(<a href="references.html#ref-chikina_assessing_2017" role="doc-biblioref">Chikina, Frieze, and Pegden 2017</a>; <a href="references.html#ref-deford_recombination_2021" role="doc-biblioref">DeFord, Duchin, and Solomon 2021</a>)</span>, protein folding in computational biology <span class="citation" data-cites="hansmann_new_1999">(<a href="references.html#ref-hansmann_new_1999" role="doc-biblioref">Hansmann and Okamoto 1999</a>)</span>, Bayesian inference in machine learning <span class="citation" data-cites="neal_bayesian_1996">(<a href="references.html#ref-neal_bayesian_1996" role="doc-biblioref">Neal 1996</a>)</span>, and epidemiology <span class="citation" data-cites="oneill_bayesian_1999">(<a href="references.html#ref-oneill_bayesian_1999" role="doc-biblioref">O’Neill and Roberts 1999</a>)</span>.</p>
 </section>
 <section id="foundations-of-mcmc" class="level3" data-number="3.4.3">
 <h3 data-number="3.4.3" class="anchored" data-anchor-id="foundations-of-mcmc"><span class="header-section-number">3.4.3</span> Foundations of MCMC</h3>
@@ -1285,12 +1305,13 @@ p(D)=\int p(D|\theta)p(\theta)d\theta
 <p><span id="eq-mcmc-equilibrium"><span class="math display">\[
 T(x|x')\pi(x')=T(x'|x)\pi(x)
 \tag{3.11}\]</span></span></p>
+<p>This condition is known as <strong>detailed balance</strong> or <em>reversibility</em> <span class="citation" data-cites="levin_markov_2017 robert_monte_2004">(<a href="references.html#ref-levin_markov_2017" role="doc-biblioref">Levin and Peres 2017</a>; <a href="references.html#ref-robert_monte_2004" role="doc-biblioref">Robert and Casella 2004</a>)</span>.</p>
 <p>This means that the probability flow between any two points <span class="math inline">\(x,x'\)</span> should remain equal. In summary, when this condition holds, then this implies <a href="#eq-mcmc-stationarity" class="quarto-xref">Equation&nbsp;<span>3.10</span></a> and <span class="math inline">\(\pi\)</span> becomes our stationary distribution as desired. However, we still haven’t any guarantees that the chain, indeed, will converge to <span class="math inline">\(\pi\)</span>. As soon as it does, it will stay there forever, but will it reach that point of no return? To answer this question affirmatively, we need to pose another condition and that is <strong>ergodicity</strong>. In essence, this boils down to the following two critical requirements:</p>
 <ol type="1">
 <li>The chain is <strong>irreducible</strong>: there must be a non-zero probability of reaching a state <span class="math inline">\(x\)</span> from any other state <span class="math inline">\(x'\)</span>. This means that the chain cannot get trapped forever in an isolated environment.</li>
 <li>The chain is <strong>aperiodic</strong>: it must not get stuck in a cycle (i.e.&nbsp;a fixed loop).</li>
 </ol>
-<p>If these two requirements are met, the following theorem (<strong>Ergodic Theorem</strong>) applies: Let <span class="math inline">\(\{X_t\}\)</span> be a Markov chain that is irreducible, aperiodic and has a stationary distribution <span class="math inline">\(\pi\)</span>. Then, for any starting point <span class="math inline">\(X_0\)</span>, we have:</p>
+<p>If these two requirements are met, the following theorem (<strong>Ergodic Theorem</strong>) applies <span class="citation" data-cites="tierney_markov_1994 roberts_general_2004">(<a href="references.html#ref-tierney_markov_1994" role="doc-biblioref">Tierney 1994</a>; <a href="references.html#ref-roberts_general_2004" role="doc-biblioref">Gareth O. Roberts and Rosenthal 2004</a>)</span>: Let <span class="math inline">\(\{X_t\}\)</span> be a Markov chain that is irreducible, aperiodic and has a stationary distribution <span class="math inline">\(\pi\)</span>. Then, for any starting point <span class="math inline">\(X_0\)</span>, we have:</p>
 <p><span id="eq-ergodic-thm"><span class="math display">\[
 \lim_{T\rightarrow\infty} \frac{1}{T}\sum_{t=1}^T g(X_t) = E_\pi \left[ g(X) \right]
 \tag{3.12}\]</span></span></p>
@@ -1298,9 +1319,9 @@ T(x|x')\pi(x')=T(x'|x)\pi(x)
 </section>
 <section id="metropolis-hastings" class="level3" data-number="3.4.4">
 <h3 data-number="3.4.4" class="anchored" data-anchor-id="metropolis-hastings"><span class="header-section-number">3.4.4</span> Metropolis-Hastings</h3>
-<p>We now focus on a specific algorithm for building a transition kernel <span class="math inline">\(T\)</span> for a Markov chain that fulfills the equilibrium condition <a href="#eq-mcmc-equilibrium" class="quarto-xref">Equation&nbsp;<span>3.11</span></a> and the conditions for ergodicity. For this, a seminal approach is the <strong>Metropolis-Hastings</strong> algorithm. The main idea is to decompose the kernel <span class="math inline">\(T(x'|x)\)</span> into two parts:</p>
+<p>We now focus on a specific algorithm for building a transition kernel <span class="math inline">\(T\)</span> for a Markov chain that fulfills the equilibrium condition <a href="#eq-mcmc-equilibrium" class="quarto-xref">Equation&nbsp;<span>3.11</span></a> and the conditions for ergodicity. For this, a seminal approach is the <strong>Metropolis-Hastings</strong> algorithm, proposed by <span class="citation" data-cites="metropolis_equation_1953">Metropolis et al. (<a href="references.html#ref-metropolis_equation_1953" role="doc-biblioref">1953</a>)</span> for symmetric proposals and generalized by <span class="citation" data-cites="hastings_monte_1970">Hastings (<a href="references.html#ref-hastings_monte_1970" role="doc-biblioref">1970</a>)</span> (see also <span class="citation" data-cites="chib_understanding_1995">Chib and Greenberg (<a href="references.html#ref-chib_understanding_1995" role="doc-biblioref">1995</a>)</span>). The main idea is to decompose the kernel <span class="math inline">\(T(x'|x)\)</span> into two parts:</p>
 <ol type="1">
-<li>A <strong>proposal</strong> distribution <span class="math inline">\(q(x'|x)\)</span>, which is usually a distribution we know how to sample from (e.g.&nbsp;usually a Gaussian centered at the current state <span class="math inline">\(N(x, \sigma)\)</span>).</li>
+<li>A <strong>proposal</strong> distribution <span class="math inline">\(q(x'|x)\)</span>, which is usually a distribution we know how to sample from (e.g.&nbsp;usually a Gaussian centered at the current state <span class="math inline">\(N(x, \sigma)\)</span>, which yields the <em>random-walk Metropolis</em> algorithm <span class="citation" data-cites="roberts_weak_1997">(<a href="references.html#ref-roberts_weak_1997" role="doc-biblioref">G. O. Roberts, Gelman, and Gilks 1997</a>)</span>).</li>
 <li>An <strong>acceptance probability</strong> <span class="math inline">\(\alpha(x'|x)\)</span> that expresses the probability that we accept the proposed move.</li>
 </ol>
 <p>So we have:</p>
@@ -1353,7 +1374,7 @@ T(x'|x)=\alpha(x'|x)\cdot q(x'|x)
 <p><strong>Example</strong></p>
 <p>Let’s sample from a bimodal distribution which is a mixture of two Gaussians. Without MCMC, classical algorithms would frequently get stuck in one peak or the other. For instance, <span class="math inline">\(\pi(x)=0.3 N(-2,1) +
 0.7 N(2,1)\)</span>.</p>
-<div id="721f4333" class="cell" data-execution_count="13">
+<div id="3cde2407" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
@@ -1401,7 +1422,7 @@ T(x'|x)=\alpha(x'|x)\cdot q(x'|x)
 <span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(samples), accepted_count <span class="op">/</span> n_samples</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now let’s run a simulation for 10,000 steps.</p>
-<div id="da21a3bd" class="cell" data-execution_count="14">
+<div id="3966b2f7" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">10000</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>start_x <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>step_size <span class="op">=</span> <span class="fl">2.0</span> </span>
@@ -1450,6 +1471,143 @@ T(x'|x)=\alpha(x'|x)\cdot q(x'|x)
 </ol>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-asmussen_stochastic_2007" class="csl-entry" role="listitem">
+Asmussen, Søren, and Peter W. Glynn. 2007. <em>Stochastic <span>Simulation</span>: <span>Algorithms</span> and <span>Analysis</span></em>. Vol. 57. Stochastic <span>Modelling</span> and <span>Applied</span> <span>Probability</span>. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-69033-9">https://doi.org/10.1007/978-0-387-69033-9</a>.
+</div>
+<div id="ref-au_estimation_2001" class="csl-entry" role="listitem">
+Au, Siu-Kui, and James L. Beck. 2001. <span>“Estimation of Small Failure Probabilities in High Dimensions by Subset Simulation.”</span> <em>Probabilistic Engineering Mechanics</em> 16 (4): 263–77. <a href="https://doi.org/10.1016/S0266-8920(01)00019-4">https://doi.org/10.1016/S0266-8920(01)00019-4</a>.
+</div>
+<div id="ref-bellman_adaptive_1961" class="csl-entry" role="listitem">
+Bellman, Richard E. 1961. <em>Adaptive <span>Control</span> <span>Processes</span>: <span>A</span> <span>Guided</span> <span>Tour</span></em>. Princeton, NJ: Princeton University Press. <a href="https://doi.org/10.1515/9781400874668">https://doi.org/10.1515/9781400874668</a>.
+</div>
+<div id="ref-brooks_handbook_2011" class="csl-entry" role="listitem">
+Brooks, Steve, Andrew Gelman, Galin L. Jones, and Xiao-Li Meng, eds. 2011. <em>Handbook of <span>Markov</span> <span>Chain</span> <span>Monte</span> <span>Carlo</span></em>. Boca Raton, FL: Chapman; Hall/CRC. <a href="https://doi.org/10.1201/b10905">https://doi.org/10.1201/b10905</a>.
+</div>
+<div id="ref-bucklew_introduction_2004" class="csl-entry" role="listitem">
+Bucklew, James Antonio. 2004. <em>Introduction to <span>Rare</span> <span>Event</span> <span>Simulation</span></em>. Springer <span>Series</span> in <span>Statistics</span>. New York: Springer. <a href="https://doi.org/10.1007/978-1-4757-4078-3">https://doi.org/10.1007/978-1-4757-4078-3</a>.
+</div>
+<div id="ref-caflisch_monte_1998" class="csl-entry" role="listitem">
+Caflisch, Russel E. 1998. <span>“Monte <span>Carlo</span> and Quasi-<span>Monte</span> <span>Carlo</span> Methods.”</span> <em>Acta Numerica</em> 7: 1–49. <a href="https://doi.org/10.1017/S0962492900002804">https://doi.org/10.1017/S0962492900002804</a>.
+</div>
+<div id="ref-chib_understanding_1995" class="csl-entry" role="listitem">
+Chib, Siddhartha, and Edward Greenberg. 1995. <span>“Understanding the <span>Metropolis</span>-<span>Hastings</span> <span>Algorithm</span>.”</span> <em>The American Statistician</em> 49 (4): 327–35. <a href="https://doi.org/10.1080/00031305.1995.10476177">https://doi.org/10.1080/00031305.1995.10476177</a>.
+</div>
+<div id="ref-chikina_assessing_2017" class="csl-entry" role="listitem">
+Chikina, Maria, Alan Frieze, and Wesley Pegden. 2017. <span>“Assessing Significance in a <span>Markov</span> Chain Without Mixing.”</span> <em>Proceedings of the National Academy of Sciences</em> 114 (11): 2860–64. <a href="https://doi.org/10.1073/pnas.1617540114">https://doi.org/10.1073/pnas.1617540114</a>.
+</div>
+<div id="ref-cochran_sampling_1977" class="csl-entry" role="listitem">
+Cochran, William G. 1977. <em>Sampling <span>Techniques</span></em>. 3rd ed. New York: Wiley.
+</div>
+<div id="ref-deford_recombination_2021" class="csl-entry" role="listitem">
+DeFord, Daryl, Moon Duchin, and Justin Solomon. 2021. <span>“Recombination: <span>A</span> <span>Family</span> of <span>Markov</span> <span>Chains</span> for <span>Redistricting</span>.”</span> <em>Harvard Data Science Review</em> 3 (1). <a href="https://doi.org/10.1162/99608f92.eb30390f">https://doi.org/10.1162/99608f92.eb30390f</a>.
+</div>
+<div id="ref-diaconis_markov_2009" class="csl-entry" role="listitem">
+Diaconis, Persi. 2009. <span>“The <span>Markov</span> Chain <span>Monte</span> <span>Carlo</span> Revolution.”</span> <em>Bulletin of the American Mathematical Society</em> 46 (2): 179–205. <a href="https://doi.org/10.1090/S0273-0979-08-01238-X">https://doi.org/10.1090/S0273-0979-08-01238-X</a>.
+</div>
+<div id="ref-durrett_probability_2019" class="csl-entry" role="listitem">
+Durrett, Rick. 2019. <em>Probability: <span>Theory</span> and <span>Examples</span></em>. 5th ed. Cambridge: Cambridge University Press. <a href="https://doi.org/10.1017/9781108591034">https://doi.org/10.1017/9781108591034</a>.
+</div>
+<div id="ref-eckhardt_stan_1987" class="csl-entry" role="listitem">
+Eckhardt, Roger. 1987. <span>“Stan <span>Ulam</span>, <span>John</span> von <span>Neumann</span>, and the <span>Monte</span> <span>Carlo</span> Method.”</span> <em>Los Alamos Science</em> 15: 131–37.
+</div>
+<div id="ref-gelfand_sampling-based_1990" class="csl-entry" role="listitem">
+Gelfand, Alan E., and Adrian F. M. Smith. 1990. <span>“Sampling-<span>Based</span> <span>Approaches</span> to <span>Calculating</span> <span>Marginal</span> <span>Densities</span>.”</span> <em>Journal of the American Statistical Association</em> 85 (410): 398–409. <a href="https://doi.org/10.1080/01621459.1990.10476213">https://doi.org/10.1080/01621459.1990.10476213</a>.
+</div>
+<div id="ref-gelman_bayesian_2013" class="csl-entry" role="listitem">
+Gelman, Andrew, John B. Carlin, Hal S. Stern, David B. Dunson, Aki Vehtari, and Donald B. Rubin. 2013. <em>Bayesian <span>Data</span> <span>Analysis</span></em>. 3rd ed. Boca Raton, FL: Chapman; Hall/CRC. <a href="https://doi.org/10.1201/b16018">https://doi.org/10.1201/b16018</a>.
+</div>
+<div id="ref-geweke_bayesian_1989" class="csl-entry" role="listitem">
+Geweke, John. 1989. <span>“Bayesian <span>Inference</span> in <span>Econometric</span> <span>Models</span> <span>Using</span> <span>Monte</span> <span>Carlo</span> <span>Integration</span>.”</span> <em>Econometrica</em> 57 (6): 1317–39. <a href="https://doi.org/10.2307/1913710">https://doi.org/10.2307/1913710</a>.
+</div>
+<div id="ref-glasserman_monte_2003" class="csl-entry" role="listitem">
+Glasserman, Paul. 2003. <em>Monte <span>Carlo</span> <span>Methods</span> in <span>Financial</span> <span>Engineering</span></em>. Vol. 53. Stochastic <span>Modelling</span> and <span>Applied</span> <span>Probability</span>. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-21617-1">https://doi.org/10.1007/978-0-387-21617-1</a>.
+</div>
+<div id="ref-hammersley_new_1956" class="csl-entry" role="listitem">
+Hammersley, J. M., and K. W. Morton. 1956. <span>“A New <span>Monte</span> <span>Carlo</span> Technique: Antithetic Variates.”</span> <em>Mathematical Proceedings of the Cambridge Philosophical Society</em> 52 (3): 449–75. <a href="https://doi.org/10.1017/S0305004100031455">https://doi.org/10.1017/S0305004100031455</a>.
+</div>
+<div id="ref-hansmann_new_1999" class="csl-entry" role="listitem">
+Hansmann, Ulrich H. E., and Yuko Okamoto. 1999. <span>“New <span>Monte</span> <span>Carlo</span> Algorithms for Protein Folding.”</span> <em>Current Opinion in Structural Biology</em> 9 (2): 177–83. <a href="https://doi.org/10.1016/S0959-440X(99)80025-6">https://doi.org/10.1016/S0959-440X(99)80025-6</a>.
+</div>
+<div id="ref-hastings_monte_1970" class="csl-entry" role="listitem">
+Hastings, W. K. 1970. <span>“Monte <span>Carlo</span> Sampling Methods Using <span>Markov</span> Chains and Their Applications.”</span> <em>Biometrika</em> 57 (1): 97–109. <a href="https://doi.org/10.1093/biomet/57.1.97">https://doi.org/10.1093/biomet/57.1.97</a>.
+</div>
+<div id="ref-heidelberger_fast_1995" class="csl-entry" role="listitem">
+Heidelberger, Philip. 1995. <span>“Fast Simulation of Rare Events in Queueing and Reliability Models.”</span> <em>ACM Transactions on Modeling and Computer Simulation</em> 5 (1): 43–85. <a href="https://doi.org/10.1145/203091.203094">https://doi.org/10.1145/203091.203094</a>.
+</div>
+<div id="ref-kahn_methods_1953" class="csl-entry" role="listitem">
+Kahn, Herman, and Andrew W. Marshall. 1953. <span>“Methods of <span>Reducing</span> <span>Sample</span> <span>Size</span> in <span>Monte</span> <span>Carlo</span> <span>Computations</span>.”</span> <em>Journal of the Operations Research Society of America</em> 1 (5): 263–78. <a href="https://doi.org/10.1287/opre.1.5.263">https://doi.org/10.1287/opre.1.5.263</a>.
+</div>
+<div id="ref-kroese_handbook_2011" class="csl-entry" role="listitem">
+Kroese, Dirk P., Thomas Taimre, and Zdravko I. Botev. 2011. <em>Handbook of <span>Monte</span> <span>Carlo</span> <span>Methods</span></em>. Wiley <span>Series</span> in <span>Probability</span> and <span>Statistics</span>. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/9781118014967">https://doi.org/10.1002/9781118014967</a>.
+</div>
+<div id="ref-lecuyer_testu01_2007" class="csl-entry" role="listitem">
+L’Ecuyer, Pierre, and Richard Simard. 2007. <span>“<span>TestU01</span>: <span>A</span> <span>C</span> Library for Empirical Testing of Random Number Generators.”</span> <em>ACM Transactions on Mathematical Software</em> 33 (4): 22:1–40. <a href="https://doi.org/10.1145/1268776.1268777">https://doi.org/10.1145/1268776.1268777</a>.
+</div>
+<div id="ref-lavenberg_perspective_1981" class="csl-entry" role="listitem">
+Lavenberg, Stephen S., and Peter D. Welch. 1981. <span>“A <span>Perspective</span> on the <span>Use</span> of <span>Control</span> <span>Variables</span> to <span>Increase</span> the <span>Efficiency</span> of <span>Monte</span> <span>Carlo</span> <span>Simulations</span>.”</span> <em>Management Science</em> 27 (3): 322–35. <a href="https://doi.org/10.1287/mnsc.27.3.322">https://doi.org/10.1287/mnsc.27.3.322</a>.
+</div>
+<div id="ref-law_simulation_2015" class="csl-entry" role="listitem">
+Law, Averill M. 2015. <em>Simulation <span>Modeling</span> and <span>Analysis</span></em>. 5th ed. New York: McGraw-Hill Education.
+</div>
+<div id="ref-levin_markov_2017" class="csl-entry" role="listitem">
+Levin, David A., and Yuval Peres. 2017. <em>Markov <span>Chains</span> and <span>Mixing</span> <span>Times</span></em>. 2nd ed. Providence, RI: American Mathematical Society. <a href="https://doi.org/10.1090/mbk/107">https://doi.org/10.1090/mbk/107</a>.
+</div>
+<div id="ref-matsumoto_mersenne_1998" class="csl-entry" role="listitem">
+Matsumoto, Makoto, and Takuji Nishimura. 1998. <span>“Mersenne Twister: A 623-Dimensionally Equidistributed Uniform Pseudo-Random Number Generator.”</span> <em>ACM Transactions on Modeling and Computer Simulation</em> 8 (1): 3–30. <a href="https://doi.org/10.1145/272991.272995">https://doi.org/10.1145/272991.272995</a>.
+</div>
+<div id="ref-mckay_comparison_1979" class="csl-entry" role="listitem">
+McKay, M. D., R. J. Beckman, and W. J. Conover. 1979. <span>“A <span>Comparison</span> of <span>Three</span> <span>Methods</span> for <span>Selecting</span> <span>Values</span> of <span>Input</span> <span>Variables</span> in the <span>Analysis</span> of <span>Output</span> from a <span>Computer</span> <span>Code</span>.”</span> <em>Technometrics</em> 21 (2): 239–45. <a href="https://doi.org/10.2307/1268522">https://doi.org/10.2307/1268522</a>.
+</div>
+<div id="ref-metropolis_beginning_1987" class="csl-entry" role="listitem">
+Metropolis, Nicholas. 1987. <span>“The Beginning of the <span>Monte</span> <span>Carlo</span> Method.”</span> <em>Los Alamos Science</em> 15: 125–30.
+</div>
+<div id="ref-metropolis_equation_1953" class="csl-entry" role="listitem">
+Metropolis, Nicholas, Arianna W. Rosenbluth, Marshall N. Rosenbluth, Augusta H. Teller, and Edward Teller. 1953. <span>“Equation of <span>State</span> <span>Calculations</span> by <span>Fast</span> <span>Computing</span> <span>Machines</span>.”</span> <em>The Journal of Chemical Physics</em> 21 (6): 1087–92. <a href="https://doi.org/10.1063/1.1699114">https://doi.org/10.1063/1.1699114</a>.
+</div>
+<div id="ref-metropolis_monte_1949" class="csl-entry" role="listitem">
+Metropolis, Nicholas, and Stanislaw Ulam. 1949. <span>“The <span>Monte</span> <span>Carlo</span> <span>Method</span>.”</span> <em>Journal of the American Statistical Association</em> 44 (247): 335–41. <a href="https://doi.org/10.1080/01621459.1949.10483310">https://doi.org/10.1080/01621459.1949.10483310</a>.
+</div>
+<div id="ref-neal_bayesian_1996" class="csl-entry" role="listitem">
+Neal, Radford M. 1996. <em>Bayesian <span>Learning</span> for <span>Neural</span> <span>Networks</span></em>. Vol. 118. Lecture <span>Notes</span> in <span>Statistics</span>. New York: Springer. <a href="https://doi.org/10.1007/978-1-4612-0745-0">https://doi.org/10.1007/978-1-4612-0745-0</a>.
+</div>
+<div id="ref-nelson_control_1990" class="csl-entry" role="listitem">
+Nelson, Barry L. 1990. <span>“Control <span>Variate</span> <span>Remedies</span>.”</span> <em>Operations Research</em> 38 (6): 974–92. <a href="https://doi.org/10.1287/opre.38.6.974">https://doi.org/10.1287/opre.38.6.974</a>.
+</div>
+<div id="ref-neyman_two_1934" class="csl-entry" role="listitem">
+Neyman, Jerzy. 1934. <span>“On the <span>Two</span> <span>Different</span> <span>Aspects</span> of the <span>Representative</span> <span>Method</span>: <span>The</span> <span>Method</span> of <span>Stratified</span> <span>Sampling</span> and the <span>Method</span> of <span>Purposive</span> <span>Selection</span>.”</span> <em>Journal of the Royal Statistical Society</em> 97 (4): 558–625. <a href="https://doi.org/10.2307/2342192">https://doi.org/10.2307/2342192</a>.
+</div>
+<div id="ref-oneill_bayesian_1999" class="csl-entry" role="listitem">
+O’Neill, Philip D., and Gareth O. Roberts. 1999. <span>“Bayesian <span>Inference</span> for <span>Partially</span> <span>Observed</span> <span>Stochastic</span> <span>Epidemics</span>.”</span> <em>Journal of the Royal Statistical Society: Series A (Statistics in Society)</em> 162 (1): 121–29. <a href="https://doi.org/10.1111/1467-985X.00125">https://doi.org/10.1111/1467-985X.00125</a>.
+</div>
+<div id="ref-owen_monte_2013" class="csl-entry" role="listitem">
+Owen, Art B. 2013. <em>Monte <span>Carlo</span> Theory, Methods and Examples</em>. <a href="https://artowen.su.domains/mc/">https://artowen.su.domains/mc/</a>.
+</div>
+<div id="ref-robert_monte_2004" class="csl-entry" role="listitem">
+Robert, Christian P., and George Casella. 2004. <em>Monte <span>Carlo</span> <span>Statistical</span> <span>Methods</span></em>. 2nd ed. Springer <span>Texts</span> in <span>Statistics</span>. New York: Springer. <a href="https://doi.org/10.1007/978-1-4757-4145-2">https://doi.org/10.1007/978-1-4757-4145-2</a>.
+</div>
+<div id="ref-roberts_weak_1997" class="csl-entry" role="listitem">
+Roberts, G. O., A. Gelman, and W. R. Gilks. 1997. <span>“Weak Convergence and Optimal Scaling of Random Walk <span>Metropolis</span> Algorithms.”</span> <em>The Annals of Applied Probability</em> 7 (1): 110–20. <a href="https://doi.org/10.1214/aoap/1034625254">https://doi.org/10.1214/aoap/1034625254</a>.
+</div>
+<div id="ref-roberts_general_2004" class="csl-entry" role="listitem">
+Roberts, Gareth O., and Jeffrey S. Rosenthal. 2004. <span>“General State Space <span>Markov</span> Chains and <span>MCMC</span> Algorithms.”</span> <em>Probability Surveys</em> 1: 20–71. <a href="https://doi.org/10.1214/154957804100000024">https://doi.org/10.1214/154957804100000024</a>.
+</div>
+<div id="ref-roy_quasi-monte_2023" class="csl-entry" role="listitem">
+Roy, Pamphile T., Art B. Owen, Maximilian Balandat, and Matt Haberland. 2023. <span>“Quasi-<span>Monte</span> <span>Carlo</span> <span>Methods</span> in <span>Python</span>.”</span> <em>Journal of Open Source Software</em> 8 (84): 5309. <a href="https://doi.org/10.21105/joss.05309">https://doi.org/10.21105/joss.05309</a>.
+</div>
+<div id="ref-rubinstein_simulation_2016" class="csl-entry" role="listitem">
+Rubinstein, Reuven Y., and Dirk P. Kroese. 2016. <em>Simulation and the <span>Monte</span> <span>Carlo</span> <span>Method</span></em>. 3rd ed. Wiley <span>Series</span> in <span>Probability</span> and <span>Statistics</span>. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/9781118631980">https://doi.org/10.1002/9781118631980</a>.
+</div>
+<div id="ref-stein_large_1987" class="csl-entry" role="listitem">
+Stein, Michael. 1987. <span>“Large <span>Sample</span> <span>Properties</span> of <span>Simulations</span> <span>Using</span> <span>Latin</span> <span>Hypercube</span> <span>Sampling</span>.”</span> <em>Technometrics</em> 29 (2): 143–51. <a href="https://doi.org/10.1080/00401706.1987.10488205">https://doi.org/10.1080/00401706.1987.10488205</a>.
+</div>
+<div id="ref-tierney_markov_1994" class="csl-entry" role="listitem">
+Tierney, Luke. 1994. <span>“Markov <span>Chains</span> for <span>Exploring</span> <span>Posterior</span> <span>Distributions</span>.”</span> <em>The Annals of Statistics</em> 22 (4): 1701–28. <a href="https://doi.org/10.1214/aos/1176325750">https://doi.org/10.1214/aos/1176325750</a>.
+</div>
+<div id="ref-virtanen_scipy_2020" class="csl-entry" role="listitem">
+Virtanen, Pauli, Ralf Gommers, Travis E. Oliphant, Matt Haberland, Tyler Reddy, David Cournapeau, et al. 2020. <span>“<span>SciPy</span> 1.0: Fundamental Algorithms for Scientific Computing in <span>Python</span>.”</span> <em>Nature Methods</em> 17 (3): 261–72. <a href="https://doi.org/10.1038/s41592-019-0686-2">https://doi.org/10.1038/s41592-019-0686-2</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
