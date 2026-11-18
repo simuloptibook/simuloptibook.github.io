@@ -218,7 +218,7 @@ $$
 $$
 
 But because the noise terms cancel out over time, we have $\frac{1}{n}\sum \epsilon_i\rightarrow 0$
-as $n\rightarrow\infty$, and we end up in the limit with $\bar{X}_n \approx \mu$.
+as $n\rightarrow\infty$, and we end up in the limit with $\hat{X}_n \approx \mu$.
 
 Note that the independece assumption of the $X_i$ is *critical*, since otherwise the error
 terms would compound rather than cancel out. This is the reason why only high-quality PRNG 
@@ -232,7 +232,7 @@ mentioned above. By this theorem, we know that the distribution of the *sample m
 towards a **normal distribution** when the number of iterations becomes large [@durrett_probability_2019, Thm. 3.4.1]. Formally:
 
 $$
-\sqrt{n}(\bar{X}_n-\mu)\sim N(0,\sigma^2)
+\sqrt{n}(\bar{X}_n-\mu)\xrightarrow{d} N(0,\sigma^2)
 $$
 
 Where $\operatorname{Var}(X_i)=\sigma^2$. The consequence is that we can use $Z$-values of 
@@ -249,10 +249,10 @@ $$
 4. The confidence interval is then:
 
 $$ 
-CI=\bar{X}_n \pm \left(z_{\alpha/2}\times\frac{s}{\sqrt{n}}\right)
+CI=\bar{X}_n \pm \left(z_{1-\alpha/2}\times\frac{s}{\sqrt{n}}\right)
 $$
 
-where $z_{\alpha/2}$ represents the $\alpha/2$-level quantile of the standard normal distribution.
+where $z_{1-\alpha/2}$ represents the $(1-\alpha/2)$-level quantile of the standard normal distribution.
 This procedure is standard in the output analysis of simulation experiments [@law_simulation_2015; @asmussen_stochastic_2007, Ch. III].
 As an example, consider the following implementation for the estimate of $\pi$ using Python code:
 
@@ -316,7 +316,7 @@ sampling and stratified sampling. Comprehensive treatments of these techniques c
 
 ### Antithetic variates
 
-Imagine the draw a large value for a random variable $X_i$ during our simulation (large compared 
+Imagine we draw a large value for a random variable $X_i$ during our simulation (large compared 
 to the true mean $\mu$). Automatically, this value will increase the sample variance 
 significantly. One simple way of compensating for this large value is to generate a "mirror"
 value that makes the large value cancel out. This is the main idea of the **antithetic variates**
@@ -364,7 +364,7 @@ $$
 Plugging this value into @eq-var-cv to calculate the ratio between the new and the old variance, we get
 
 $$
-\frac{\operatorname{Var}(Y_{cv})}{\operatorname{Var}(Y)}=1-\rho_{xy}
+\frac{\operatorname{Var}(Y_{cv})}{\operatorname{Var}(Y)}=1-\rho_{xy}^2
 $$
 
 where $\rho_{xy}$ is the correlation coefficient between $X$ and $Y$. Since we want this ratio 
@@ -577,7 +577,7 @@ Let's assume we want to integrate a monotonic function (that is, a function that
 increases or *always* decreases). Think e.g. about $f(x)=e^x$ in $[0,1]$. If we start sampling
 random numbers, we might get trapped either in the low or the high region of the function. This might
 well happen because PRNG might accidentally "cluster" samples in a specific region. Alas, that would 
-be bad, because it would significantly bias our estimate. In this case, we need to make sure that 
+be bad, because it would significantly increase the variance. In this case, we need to make sure that 
 we sample equally well from all regions. This is the main idea of **stratified sampling**, a technique originating in survey sampling [@neyman_two_1934; @cochran_sampling_1977]. 
 
 The mathematical trick now is to divide the sampling space into disjoint **strata**, which represent
@@ -625,7 +625,7 @@ $$
 $$
 
 For the stratified MC estimator, we have the sample means of each stratum $\hat{\mu}_h$, and we 
-calculate $\hat{Y}_{SE} = \frac{1}{n} \sum p_h\hat{\mu}_h$. The variance then becomes the sum of 
+calculate $\hat{Y}_{SE} = \sum p_h\hat{\mu}_h$. The variance then becomes the sum of 
 the variances, since the covariance between strata is 0:
 
 $$
@@ -907,7 +907,7 @@ is about 100x more accurate than standard MC using the same number of samples. T
 Variance reduction techniques are essential in Monte Carlo simulations to improve the accuracy of estimates without requiring a significant increase in the number of samples. Below is a summary of the techniques discussed and when to use each:
 
 1. **Antithetic Variates**:
-    - **When to use**: Use when the random variables are symmetric, and you can generate negatively correlated pairs (e.g., sampling $U$ and $1-U$).
+    - **When to use**: Use when monotonic functions are involved, and you can generate negatively correlated pairs (e.g., sampling $U$ and $1-U$).
     - **Advantage**: Reduces variance by ensuring that large deviations in one direction are counterbalanced by deviations in the opposite direction.
 
 2. **Control Variates**:
@@ -1083,7 +1083,7 @@ The algorithm itself involves the following steps:
     - If $u\le \alpha$, **accept**: $x_{t+1}=x'$.
     - Otherwise, **reject**: $x_{t+1}=x_t$.
 
-**Why Metropolis-Hastings works**
+**Rationale for Metropolis-Hastings**
 
 Let's take a closer look at @eq-metropolis-hastings, and why it satisfies @eq-mcmc-equilibrium. We
 can divide the ratio into the following parts:
@@ -1123,8 +1123,7 @@ which is also satisfied.
 
 **Example**
 
-Let's sample from a bimodal distribution which is a mixture of two Gaussians. Without MCMC, classical 
-algorithms would frequently get stuck in one peak or the other. For instance, $\pi(x)=0.3 N(-2,1) + 
+Let's sample from a bimodal distribution which is a mixture of two Gaussians. Without MCMC, random walks would frequently get stuck in one peak or the other. For instance, $\pi(x)=0.3 N(-2,1) + 
 0.7 N(2,1)$.
 
 ```{python}
@@ -1134,7 +1133,7 @@ import scipy.stats as stats
 
 def target_pdf(x):
     return 0.3 * stats.norm.pdf(x, loc=-2, scale=1) + \
-           0.7 * stats.norm.pdf(x, loc=2, scale=0.5)
+           0.7 * stats.norm.pdf(x, loc=2, scale=1)
 
 def proposal_pdf(x, current_x, step_size):
     return stats.norm.pdf(x, loc=current_x, scale=step_size)
