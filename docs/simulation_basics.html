@@ -519,16 +519,16 @@ window.Quarto = {
 <li>explore “what‑if” scenarios and design alternatives,</li>
 <li>quantify uncertainty and sensitivity to inputs,</li>
 <li>validate hypotheses when experiments are impractical or expensive,</li>
-<li>and support optimization and decision making.</li>
+<li>and support optimization and decision making <span class="citation" data-cites="law_simulation_2015 banks_discrete-event_2010">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015</a>; <a href="references.html#ref-banks_discrete-event_2010" role="doc-biblioref">Banks et al. 2013</a>)</span>.</li>
 </ul>
 <p>A simulation study typically involves the following steps:</p>
 <ol type="1">
 <li>Construct a mathematical or computational model.</li>
 <li>Specify inputs and assumptions.</li>
 <li>Run experiments (often many replications with different parameters).</li>
-<li>Analyze outputs and comparing them with data or theoretical expectations.</li>
+<li>Analyze outputs and comparing them with data or theoretical expectations <span class="citation" data-cites="law_simulation_2015">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015, sec. 1.7</a>)</span>.</li>
 </ol>
-<p>Proper validation and uncertainty quantification are critical to ensure that simulation results are trustworthy and useful for engineering practice.</p>
+<p>Proper validation and uncertainty quantification are critical to ensure that simulation results are trustworthy and useful for engineering practice <span class="citation" data-cites="sargent_verification_2013 sullivan_introduction_2015">(<a href="references.html#ref-sargent_verification_2013" role="doc-biblioref">Sargent 2013</a>; <a href="references.html#ref-sullivan_introduction_2015" role="doc-biblioref">Sullivan 2015</a>)</span>.</p>
 <p>Simulation can be defined as the methods and procedures to define models of a system of interest and execute it to get raw data <span class="citation" data-cites="osais_computer_2017">(<a href="references.html#ref-osais_computer_2017" role="doc-biblioref">Osais 2017</a>)</span>. In normal simulation studies, we are not interested in the raw data by itself, but use it to calculate measures of interest regarding the system’s performance. For instance, in the example shown in <a href="intro.html" class="quarto-xref"><span>Chapter 1</span></a>, we saw that measures of interest include the average time that a customer has to way in the checkout queue. We sometimes also call these raw data <em>synthetic data</em>, since this is not the actual data that we would collect in the physical world. Synthetic data has by itself sparked interest in recent years due to its potential to enhance how we train and validate machine learning models, especially regarding data privacy and robustness, or when training data is expensive or scarce <span class="citation" data-cites="jordon_synthetic_2022 van_breugel_synthetic_2023">(<a href="references.html#ref-jordon_synthetic_2022" role="doc-biblioref">Jordon et al. 2022</a>; <a href="references.html#ref-van_breugel_synthetic_2023" role="doc-biblioref">Breugel, Qian, and Schaar 2023</a>)</span>.</p>
 <p>In the rest of this chapter, we will introduce the basic principles and notions needed to understand how simulation works. We start with a gentle reminder of random numbers and distributions, and introduce standard methods of random number generation. We then move on into stochastic processes and how discrete-event simulation works. After that, we present common statistical techniques to deal with the output data of simulations and conclude the chapter with considerations about verification and validation of simulation studies.</p>
 </section>
@@ -544,9 +544,9 @@ window.Quarto = {
 <p>In this book, we will mainly deal with parametric probability distributions, although everything applies to non-parametric distributions as well. We will hint at specific differences when appropriate.</p>
 <section id="pseudorandom-number-generators" class="level3" data-number="2.2.1">
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="pseudorandom-number-generators"><span class="header-section-number">2.2.1</span> Pseudorandom Number Generators</h3>
-<p>In general, any procedure to generate random numbers is called a <em>pseudorandom number generator</em> (PRNG). A PRNG can be defined as a deterministic algorithm that, given an initial seed, produces a long sequence of numbers that mimic the statistical properties of truly random samples. Although the sequence is fully determined by the seed (so it is not truly random, hence <em>pseudorandom</em>), a good PRNG yields values that are uniformly distributed, have minimal serial correlation, and pass standard statistical tests. Important PRNG properties include period length, equidistribution, independence, speed, and reproducibility (the same seed reproduces the same sequence). For simulation work we typically prefer generators with very long periods and strong statistical quality while cryptographic applications require cryptographically secure PRNGs. PRNGs are used to produce uniform variates that are then transformed into other distributions via methods such as inverse transform sampling, acceptance–rejection, or composition.</p>
+<p>In general, any procedure to generate random numbers is called a <em>pseudorandom number generator</em> (PRNG). A PRNG can be defined as a deterministic algorithm that, given an initial seed, produces a long sequence of numbers that mimic the statistical properties of truly random samples. Although the sequence is fully determined by the seed (so it is not truly random, hence <em>pseudorandom</em>), a good PRNG yields values that are uniformly distributed, have minimal serial correlation, and pass standard statistical tests <span class="citation" data-cites="knuth_art_1997 lecuyer_testu01_2007">(<a href="references.html#ref-knuth_art_1997" role="doc-biblioref">Knuth 1997</a>, Ch. 3; <a href="references.html#ref-lecuyer_testu01_2007" role="doc-biblioref">L’Ecuyer and Simard 2007</a>)</span>. Important PRNG properties include period length, equidistribution, independence, speed, and reproducibility (the same seed reproduces the same sequence). For simulation work we typically prefer generators with very long periods and strong statistical quality while cryptographic applications require cryptographically secure PRNGs <span class="citation" data-cites="barker_recommendation_2015">(<a href="references.html#ref-barker_recommendation_2015" role="doc-biblioref">Barker and Kelsey 2015</a>)</span>. PRNGs are used to produce uniform variates that are then transformed into other distributions via methods such as inverse transform sampling, acceptance–rejection, or composition <span class="citation" data-cites="devroye_non-uniform_1986">(<a href="references.html#ref-devroye_non-uniform_1986" role="doc-biblioref">Devroye 1986</a>)</span>. A historical overview of uniform PRNGs can be found in <span class="citation" data-cites="lecuyer_history_2017">L’Ecuyer (<a href="references.html#ref-lecuyer_history_2017" role="doc-biblioref">2017</a>)</span>.</p>
 <p>Let’s explore the properties of a specific PRNG, the Linear Congruential Generator (LCG) using the following Python code.</p>
-<div id="cbba5e66" class="cell" data-execution_count="1">
+<div id="141919cf" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> chisquare</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
@@ -585,13 +585,13 @@ window.Quarto = {
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>            </span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.array(sequence_int), np.array(sequence_float)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The LCG is one of the oldest and best known PRNG which are used to date. As can be seen in the code, it uses three integer parameters <span class="math inline">\(a\)</span>, <span class="math inline">\(c\)</span> and the modulo <span class="math inline">\(m\)</span> and computes the next random number using the recurrence:</p>
+<p>The LCG, proposed by <span class="citation" data-cites="lehmer_mathematical_1951">Lehmer (<a href="references.html#ref-lehmer_mathematical_1951" role="doc-biblioref">1951</a>)</span>, is one of the oldest and best known PRNG which are used to date <span class="citation" data-cites="knuth_art_1997">(<a href="references.html#ref-knuth_art_1997" role="doc-biblioref">Knuth 1997, sec. 3.2.1</a>)</span>. As can be seen in the code, it uses three integer parameters <span class="math inline">\(a\)</span>, <span class="math inline">\(c\)</span> and the modulo <span class="math inline">\(m\)</span> and computes the next random number using the recurrence:</p>
 <p><span id="eq-1"><span class="math display">\[
 X_{n+1} = (a X_n + c) \operatorname{mod} m
 \tag{2.1}\]</span></span></p>
 <p>Starting at <span class="math inline">\(n=0\)</span>, we initialize <span class="math inline">\(X_0\)</span> to the random seed provided.</p>
 <p>We can now use the generator as follows:</p>
-<div id="da3a0dd2" class="cell" data-execution_count="2">
+<div id="2155f661" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LCG Parameters (a 'poor' LCG to highlight the deterministic nature)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A small modulus (m) leads to a short period and visible patterns.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>SEED <span class="op">=</span> <span class="dv">42</span></span>
@@ -611,7 +611,7 @@ X_{n+1} = (a X_n + c) \operatorname{mod} m
 <p>We have now generated 100000 random numbers using LCG (only first 10 are shown). But how can we ensure if this PRNG works well in practice? We will look now at the <strong>period length</strong>, how to check for <strong>uniformity</strong> and how to assert if there is <strong>serial correlation</strong>.</p>
 <p><strong>Period length</strong></p>
 <p>The period length assesses the number of values generated before the sequence of states returns to the first value (the starting state) for the first time. Note that in general the longer, the better. Note that in this case, the maximum possible period is <span class="math inline">\(m\)</span>, the modulo of the generator. We can calculate this with a simple Python function as follows:</p>
-<div id="bec5f374" class="cell" data-execution_count="3">
+<div id="d8c0cd06" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_period(lcg_generator):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Calculates the period (cycle length) of the LCG.</span></span>
@@ -641,9 +641,9 @@ X_{n+1} = (a X_n + c) \operatorname{mod} m
 <pre><code>1024</code></pre>
 </div>
 </div>
-<p>So in this case, our generator reaches the maximum period (1024), which is the best we can do.</p>
+<p>So in this case, our generator reaches the maximum period (1024), which is the best we can do. This is no coincidence: with <span class="math inline">\(c\neq 0\)</span>, an LCG attains the full period <span class="math inline">\(m\)</span> if and only if <span class="math inline">\(c\)</span> and <span class="math inline">\(m\)</span> are coprime, <span class="math inline">\(a-1\)</span> is divisible by every prime factor of <span class="math inline">\(m\)</span>, and <span class="math inline">\(a-1\)</span> is divisible by 4 whenever <span class="math inline">\(m\)</span> is <span class="citation" data-cites="hull_random_1962">(<a href="references.html#ref-hull_random_1962" role="doc-biblioref">Hull and Dobell 1962</a>)</span>. Our parameters <span class="math inline">\(a=65\)</span>, <span class="math inline">\(c=1\)</span>, <span class="math inline">\(m=2^{10}\)</span> satisfy all three conditions.</p>
 <p><strong>Tests for uniformity</strong></p>
-<p>We want the generated random numbers to be uniformly generated (we will see later how generate numbers with different distributions started with uniformly generated random numbers). For this, we use the <span class="math inline">\(\chi^2\)</span> test for uniformity:</p>
+<p>We want the generated random numbers to be uniformly generated (we will see later how generate numbers with different distributions started with uniformly generated random numbers). For this, we use the <span class="math inline">\(\chi^2\)</span> test for uniformity <span class="citation" data-cites="pearson_criterion_1900 knuth_art_1997">(<a href="references.html#ref-pearson_criterion_1900" role="doc-biblioref">Pearson 1900</a>; <a href="references.html#ref-knuth_art_1997" role="doc-biblioref">Knuth 1997, sec. 3.3.1</a>)</span>:</p>
 <ul>
 <li>Null Hypothesis (<span class="math inline">\(H_0\)</span>): The generated numbers are uniformly distributed.</li>
 <li>Alternative Hypothesis (<span class="math inline">\(H_1\)</span>): The generated numbers are not uniformly distributed.</li>
@@ -653,7 +653,7 @@ X_{n+1} = (a X_n + c) \operatorname{mod} m
 \chi^2=\sum_{i=1}^k\frac{(O_i-E_i)^2}{E_i}
 \]</span></p>
 <p>We can use the following Python function:</p>
-<div id="e4a7b3c4" class="cell" data-execution_count="4">
+<div id="e0a3c2a5" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> chi_squared_uniformity_test(data_float, num_bins<span class="op">=</span><span class="dv">10</span>):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Statistical Test: Chi-Squared Goodness-of-Fit Test for Uniformity.</span></span>
@@ -683,7 +683,7 @@ X_{n+1} = (a X_n + c) \operatorname{mod} m
 </div>
 <p>In this case, the p-value is much higher than <span class="math inline">\(\alpha=0.05\)</span> and we <strong>cannot</strong> reject <span class="math inline">\(H_0\)</span>, so the numbers appear to be uniformly random.</p>
 <p><strong>Serial correlation</strong></p>
-<p>The next possible measure to check is the serial correlation between the numbers generated. The <strong>Serial Correlation Check</strong>, also known as <strong>Autocorrelation at Lag 1</strong>, is a diagnostic measure used to characterize and detect a fundamental weakness in simple Pseudorandom Number Generators (PRNGs), such as the Linear Congruential Generator (LCG). The main idea is that the correlation between immediately adjacent numbers (hence lag 1) should be zero.</p>
+<p>The next possible measure to check is the serial correlation between the numbers generated. The <strong>Serial Correlation Check</strong>, also known as <strong>Autocorrelation at Lag 1</strong>, is a diagnostic measure used to characterize and detect a fundamental weakness in simple Pseudorandom Number Generators (PRNGs), such as the Linear Congruential Generator (LCG). The main idea is that the correlation between immediately adjacent numbers (hence lag 1) should be zero <span class="citation" data-cites="knuth_art_1997">(<a href="references.html#ref-knuth_art_1997" role="doc-biblioref">Knuth 1997, sec. 3.3.2</a>)</span>.</p>
 <p>To calculate this, we form two sequences: the generated numbers and the same sequence moved by one place:</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -696,7 +696,7 @@ S_2 &amp; = \{X_2,X_3,X_4,\dots,X_n\}
 r=\frac{\sum (S_1-\bar{S_1})(S_2-\bar{S_2})}{\sqrt{\sum (S_1-\bar{S_1})^2(S_2-\bar{S_2})^2}}
 \]</span></p>
 <p>Our goal is that <span class="math inline">\(r\)</span> is as close to zero as possible (note that <span class="math inline">\(r\in[-1,1]\)</span>). Let’s use the following code:</p>
-<div id="a238e1ee" class="cell" data-execution_count="5">
+<div id="92d2a915" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> serial_correlation_check(data_float):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Characterization: Autocorrelation (Serial Correlation) Check.</span></span>
@@ -719,8 +719,8 @@ r=\frac{\sum (S_1-\bar{S_1})(S_2-\bar{S_2})}{\sqrt{\sum (S_1-\bar{S_1})^2(S_2-\b
 <pre><code>The lag 1 correlation coefficient is 0.008943629579226285</code></pre>
 </div>
 </div>
-<p>While the value is low, it’s not as close to zero as it should, which is a known weakness of the LCG (the generated numbers tend to fall onto a number of parallel hyperplanes). This is the reason why PRNGs like the LCG are not normally used in practice. The de-facto standard for pseudorandom number generation in practice is the algorithm known as the <strong>Mersenne Twister</strong>. This is the default generator used in Python or MATLAB, and the preferred one for simulation purposes (but <em>not</em> for cryptographic purposes). The basic idea is to use a highly non-linear twisted generalized feedback shift register. Apart from being much faster than LCG, it passes the serial correlation chek with flying colors:</p>
-<div id="991a3a9f" class="cell" data-execution_count="6">
+<p>While the value is low, it’s not as close to zero as it should, which is a known weakness of the LCG (the generated numbers tend to fall onto a number of parallel hyperplanes) <span class="citation" data-cites="marsaglia_random_1968">(<a href="references.html#ref-marsaglia_random_1968" role="doc-biblioref">Marsaglia 1968</a>)</span>. This is the reason why PRNGs like the LCG are not normally used in practice. The de-facto standard for pseudorandom number generation in practice is the algorithm known as the <strong>Mersenne Twister</strong>. This is the default generator used in Python or MATLAB <span class="citation" data-cites="matsumoto_mersenne_1998 python_random_2026">(<a href="references.html#ref-matsumoto_mersenne_1998" role="doc-biblioref">Matsumoto and Nishimura 1998</a>; <a href="references.html#ref-python_random_2026" role="doc-biblioref">Python Software Foundation 2026</a>)</span>, and the preferred one for simulation purposes (but <em>not</em> for cryptographic purposes). Newer libraries have started to adopt more recent generators; for instance, NumPy’s <code>default_rng</code> uses the PCG64 generator <span class="citation" data-cites="oneill_pcg_2014 harris_array_2020">(<a href="references.html#ref-oneill_pcg_2014" role="doc-biblioref">O’Neill 2014</a>; <a href="references.html#ref-harris_array_2020" role="doc-biblioref">Harris et al. 2020</a>)</span>. The basic idea is to use a highly non-linear twisted generalized feedback shift register <span class="citation" data-cites="matsumoto_twisted_1992 matsumoto_mersenne_1998">(<a href="references.html#ref-matsumoto_twisted_1992" role="doc-biblioref">Matsumoto and Kurita 1992</a>; <a href="references.html#ref-matsumoto_mersenne_1998" role="doc-biblioref">Matsumoto and Nishimura 1998</a>)</span>. Apart from being much faster than LCG, it passes the serial correlation chek with flying colors:</p>
+<div id="cd2a81cd" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>random.seed(SEED)</span>
@@ -740,7 +740,7 @@ r=\frac{\sum (S_1-\bar{S_1})(S_2-\bar{S_2})}{\sqrt{\sum (S_1-\bar{S_1})^2(S_2-\b
 </section>
 <section id="sampling-methods" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="sampling-methods"><span class="header-section-number">2.3</span> Sampling Methods</h2>
-<p>We have now a method for generating <em>uniformly distributed</em> random numbers. But what about other widely used distributions, like normal, exponential, Poisson, etc? In this section, we will review three popular methods for this purpose: the <strong>inversion method</strong>, the <strong>rejection sampling</strong> method, the <strong>Box-Muller transform</strong> and the <strong>mixture method</strong>. For all three methods, the general problem is as follows: we start with a random variable <span class="math inline">\(U \sim \text{ Uniform}(0,1)\)</span>. We want to convert <span class="math inline">\(U\)</span> into <span class="math inline">\(X \sim f(x)\)</span>, where <span class="math inline">\(f\)</span> is the target PDF of <span class="math inline">\(X\)</span>.</p>
+<p>We have now a method for generating <em>uniformly distributed</em> random numbers. But what about other widely used distributions, like normal, exponential, Poisson, etc? In this section, we will review three popular methods for this purpose: the <strong>inversion method</strong>, the <strong>rejection sampling</strong> method, the <strong>Box-Muller transform</strong> and the <strong>mixture method</strong>. For all three methods, the general problem is as follows: we start with a random variable <span class="math inline">\(U \sim \text{ Uniform}(0,1)\)</span>. We want to convert <span class="math inline">\(U\)</span> into <span class="math inline">\(X \sim f(x)\)</span>, where <span class="math inline">\(f\)</span> is the target PDF of <span class="math inline">\(X\)</span>. The standard reference on these methods is <span class="citation" data-cites="devroye_non-uniform_1986">Devroye (<a href="references.html#ref-devroye_non-uniform_1986" role="doc-biblioref">1986</a>)</span>.</p>
 <p><strong>Inversion method</strong></p>
 <p>Suppose that we know the CDF of the target distribution <span class="math inline">\(F(x)=P(X\le x)\)</span>, and assume that we can invert it to <span class="math inline">\(F^{-1}(u)\)</span>. With this function, we can simply obtain <span class="math inline">\(X\)</span> by</p>
 <p><span id="eq-inv"><span class="math display">\[
@@ -750,7 +750,7 @@ X=F^{-1}(U)
 <p><span id="eq-example-inv"><span class="math display">\[
 F^{-1}(u)=-\frac{1}{\lambda}\ln(1-u)
 \tag{2.3}\]</span></span></p>
-<p>Since <span class="math inline">\(U'=1-U\)</span> is also uniform in <span class="math inline">\([0,1]\)</span>, we can simply write <span class="math inline">\(X=-\frac{1}{\lambda}\ln(U')\)</span>.</p>
+<p>Since <span class="math inline">\(U'=1-U\)</span> is also uniform in <span class="math inline">\([0,1]\)</span>, we can simply write <span class="math inline">\(X=-\frac{1}{\lambda}\ln(U')\)</span> <span class="citation" data-cites="devroye_non-uniform_1986">(<a href="references.html#ref-devroye_non-uniform_1986" role="doc-biblioref">Devroye 1986, sec. II.2</a>)</span>.</p>
 <p><strong>Rejection-sampling method</strong></p>
 <p>But what if our CDF is not easily invertible, or worse, we don’t have any analytical expression for it? Suppose that, although we don’t have <span class="math inline">\(f\)</span>, we have a proposal distribution <span class="math inline">\(g(x)\)</span> so that it “envelopes” the target distribution in the sense that there is a constant <span class="math inline">\(c\)</span> so that <span class="math inline">\(f(x)\le c g(x)\)</span> (i.e., we <strong>do</strong> know the PDF). In this case, we can do the following:</p>
 <ol type="1">
@@ -759,9 +759,10 @@ F^{-1}(u)=-\frac{1}{\lambda}\ln(1-u)
 <li>If <span class="math inline">\(u &lt; \frac{f(x)}{c g(x)}\)</span>, the candidate number <span class="math inline">\(x\)</span> is accepted since it follows <span class="math inline">\(f(x)\)</span>.</li>
 <li>Otherwise, we repeat the procedure until we get a candidate accepted.</li>
 </ol>
+<p>This method goes back to <span class="citation" data-cites="von_neumann_various_1951">Neumann (<a href="references.html#ref-von_neumann_various_1951" role="doc-biblioref">1951</a>)</span>. On average, <span class="math inline">\(c\)</span> candidates are needed per accepted sample, so the envelope <span class="math inline">\(cg\)</span> should be as tight as possible <span class="citation" data-cites="devroye_non-uniform_1986 robert_monte_2004">(<a href="references.html#ref-devroye_non-uniform_1986" role="doc-biblioref">Devroye 1986, sec. II.3</a>; <a href="references.html#ref-robert_monte_2004" role="doc-biblioref">Robert and Casella 2004, sec. 2.3</a>)</span>.</p>
 <p>The trick now is to take a <em>bounded</em> uniform distribution as <span class="math inline">\(g\)</span> that contains our target distribution <span class="math inline">\(f\)</span>. Once we have this, we can generate samples from virtually any probability distribution without requiring its CDF or inverse.</p>
 <p><strong>Box-Muller transform</strong></p>
-<p>The next method is specialized towards generating values for the <strong>normal distribution</strong>, and is widely used in practice. We start by generating two uniform random numbers <span class="math inline">\(u_1, u_2 \sim U(0,1)\)</span>.</p>
+<p>The next method is specialized towards generating values for the <strong>normal distribution</strong>, and is widely used in practice <span class="citation" data-cites="box_note_1958">(<a href="references.html#ref-box_note_1958" role="doc-biblioref">Box and Muller 1958</a>)</span>. We start by generating two uniform random numbers <span class="math inline">\(u_1, u_2 \sim U(0,1)\)</span>.</p>
 <ul>
 <li>Calculate <span class="math inline">\(R=\sqrt{-2\ln(u_1)}\)</span>.</li>
 <li>Calculate <span class="math inline">\(\theta=2\pi u_2\)</span>.</li>
@@ -774,7 +775,7 @@ F^{-1}(u)=-\frac{1}{\lambda}\ln(1-u)
 <p><span id="eq-mixtures"><span class="math display">\[
 f(x)=\sum_{i=1}^k p_i f_i(x)\text{, with }p_i\ge 0\text{, and }\sum_{i=1}^k p_i = 1
 \tag{2.4}\]</span></span></p>
-<p>Then we can use the following methods to sample from <span class="math inline">\(f(x)\)</span>:</p>
+<p>Then we can use the following method, also known as the <em>composition method</em>, to sample from <span class="math inline">\(f(x)\)</span> <span class="citation" data-cites="devroye_non-uniform_1986">(<a href="references.html#ref-devroye_non-uniform_1986" role="doc-biblioref">Devroye 1986, sec. II.4</a>)</span>:</p>
 <ul>
 <li>Choose randomly an index <span class="math inline">\(i\in I\)</span> from the set of indices <span class="math inline">\(I=\{1,2,\dots,k\}\)</span>. This is done by generating a random number <span class="math inline">\(u \sim U(0,1)\)</span> and choosing the least index <span class="math inline">\(j\)</span> so that <span class="math inline">\(\sum_{i=1}^j p_i &lt; u\)</span>.</li>
 <li>Generate a random variable <span class="math inline">\(x\)</span> from <span class="math inline">\(f_i(x)\)</span> by using any of the aforementioned methods.</li>
@@ -783,7 +784,7 @@ f(x)=\sum_{i=1}^k p_i f_i(x)\text{, with }p_i\ge 0\text{, and }\sum_{i=1}^k p_i 
 </section>
 <section id="stochastic-processes" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="stochastic-processes"><span class="header-section-number">2.4</span> Stochastic Processes</h2>
-<p>Now that we know how to generate random numbers and sample from different distributions, we need to understand how they interact over time in a simulation study. This is the realm of <em>stochastic processes</em>.</p>
+<p>Now that we know how to generate random numbers and sample from different distributions, we need to understand how they interact over time in a simulation study. This is the realm of <em>stochastic processes</em> <span class="citation" data-cites="ross_introduction_2019 karlin_first_1975">(<a href="references.html#ref-ross_introduction_2019" role="doc-biblioref">Ross 2019</a>; <a href="references.html#ref-karlin_first_1975" role="doc-biblioref">Karlin and Taylor 1975</a>)</span>.</p>
 <p>A stochastic process <span class="math inline">\(\{X(t), t \in T\}\)</span> is a collection of random variables indexed by time. The set <span class="math inline">\(T\)</span> can be:</p>
 <ul>
 <li><strong>Discrete</strong>: <span class="math inline">\(T = \{0, 1, 2, ...\}\)</span> or <span class="math inline">\(T = \{t_0, t_1, t_2, ...\}\)</span></li>
@@ -796,7 +797,7 @@ f(x)=\sum_{i=1}^k p_i f_i(x)\text{, with }p_i\ge 0\text{, and }\sum_{i=1}^k p_i 
 </ul>
 <p>Understanding stochastic processes is crucial for simulation because they model how random events unfold over time, which is exactly what we need to simulate complex systems with uncertainty.</p>
 <p><strong>Stationary and non-stationary processes</strong></p>
-<p>A stochastic process <span class="math inline">\(\{X(t)\}\)</span> is said to be <strong>stationary</strong> if its statistical properties do not change over time. More formally:</p>
+<p>A stochastic process <span class="math inline">\(\{X(t)\}\)</span> is said to be <strong>stationary</strong> if its statistical properties do not change over time. More formally, a process is <em>weakly</em> (or second-order) stationary if <span class="citation" data-cites="brockwell_time_1991">(<a href="references.html#ref-brockwell_time_1991" role="doc-biblioref">Brockwell and Davis 1991, sec. 1.3</a>)</span>:</p>
 <ul>
 <li>The mean function is constant: <span class="math inline">\(E[X(t)] = \mu\)</span> for all <span class="math inline">\(t\in T\)</span>.</li>
 <li>The variance function is constant: <span class="math inline">\(Var[X(t)] = \sigma^2\)</span> for all <span class="math inline">\(t\in T\)</span>.</li>
@@ -804,7 +805,7 @@ f(x)=\sum_{i=1}^k p_i f_i(x)\text{, with }p_i\ge 0\text{, and }\sum_{i=1}^k p_i 
 </ul>
 <p>In contrast, a <strong>non-stationary</strong> process has statistical properties that vary with time. For example:</p>
 <ul>
-<li>A random walk is non-stationary because its variance increases with time.</li>
+<li>A random walk is non-stationary because its variance increases with time <span class="citation" data-cites="brockwell_time_1991">(<a href="references.html#ref-brockwell_time_1991" role="doc-biblioref">Brockwell and Davis 1991</a>)</span>.</li>
 <li>A seasonal time series with repeating patterns is non-stationary.</li>
 <li>A process with a trend component is non-stationary.</li>
 </ul>
@@ -817,7 +818,7 @@ f(x)=\sum_{i=1}^k p_i f_i(x)\text{, with }p_i\ge 0\text{, and }\sum_{i=1}^k p_i 
 <p>In the following we will see examples of different stochastic processes and how to simulate them efficiently.</p>
 <section id="bernoulli-and-binomial-processes" class="level3" data-number="2.4.1">
 <h3 data-number="2.4.1" class="anchored" data-anchor-id="bernoulli-and-binomial-processes"><span class="header-section-number">2.4.1</span> Bernoulli and Binomial Processes</h3>
-<p>We call a Bernoulli process a sequence of independent trials with two possible outcomes (“success/failure”). The classical example is flipping a coin independently for <span class="math inline">\(n\)</span> times.</p>
+<p>We call a Bernoulli process a sequence of independent trials with two possible outcomes (“success/failure”) <span class="citation" data-cites="ross_introduction_2019">(<a href="references.html#ref-ross_introduction_2019" role="doc-biblioref">Ross 2019</a>)</span>. The classical example is flipping a coin independently for <span class="math inline">\(n\)</span> times.</p>
 <div id="fig-bernoulli" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bernoulli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -851,7 +852,7 @@ N(t)=\sum_{i=1}^t X(i)
 P(N(t)=k)=\binom{t}{k}p^k(1-p)^{t-k}
 \tag{2.5}\]</span></span></p>
 <p>Let’s see how to simulate a Bernoulli process:</p>
-<div id="bf0e6fd8" class="cell" data-execution_count="7">
+<div id="c1be9882" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_bernoulli_process(num_trials, success_probability):</span>
@@ -869,7 +870,7 @@ P(N(t)=k)=\binom{t}{k}p^k(1-p)^{t-k}
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> bernoulli_outcomes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Here we are just using Python’s default random number generator (the Mersenne Twister) to check if the generated number is below or above the sucess probability, in the former case we count a success, otherwise a failure. We can now run the simulation for both Bernoulli and Bernoulli counting processes and visualize the results.</p>
-<div id="f2efd163" class="cell" data-execution_count="8">
+<div id="0ad99c1c" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>P_SUCCESS <span class="op">=</span> <span class="fl">0.3</span>  <span class="co"># Probability of success (p)</span></span>
@@ -879,7 +880,7 @@ P(N(t)=k)=\binom{t}{k}p^k(1-p)^{t-k}
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>counting_process <span class="op">=</span> np.cumsum(outcomes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In this case, the Bernoulli counting process is just the cumulative sum of the generated Bernoulli process.</p>
-<div id="557c2b99" class="cell" data-execution_count="9">
+<div id="c54edefc" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>trials <span class="op">=</span> np.arange(<span class="dv">1</span>, NUM_TRIALS <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Subplot 1: The Bernoulli Process (Outcomes)</span></span>
@@ -917,7 +918,7 @@ P(N(t)=k)=\binom{t}{k}p^k(1-p)^{t-k}
 </section>
 <section id="poisson-processes" class="level3" data-number="2.4.2">
 <h3 data-number="2.4.2" class="anchored" data-anchor-id="poisson-processes"><span class="header-section-number">2.4.2</span> Poisson Processes</h3>
-<p>We now switch from <em>discrete</em> to <em>continuous</em> time. The <strong>Poisson process</strong> is a canonical continous time counting process. It tracks the number of occurrences of a given event up to a certain time <span class="math inline">\(t\)</span>. Formally, let <span class="math inline">\(\lambda &gt; 0\)</span> be the rate of occurrences of the event in question. We define the Poisson process <span class="math inline">\(\{N(t),t\ge 0\}\)</span> as follows:</p>
+<p>We now switch from <em>discrete</em> to <em>continuous</em> time. The <strong>Poisson process</strong> is a canonical continous time counting process <span class="citation" data-cites="kingman_poisson_1993 ross_introduction_2019">(<a href="references.html#ref-kingman_poisson_1993" role="doc-biblioref">Kingman 1993</a>; <a href="references.html#ref-ross_introduction_2019" role="doc-biblioref">Ross 2019</a>, Ch. 5)</span>. It tracks the number of occurrences of a given event up to a certain time <span class="math inline">\(t\)</span>. Formally, let <span class="math inline">\(\lambda &gt; 0\)</span> be the rate of occurrences of the event in question. We define the Poisson process <span class="math inline">\(\{N(t),t\ge 0\}\)</span> as follows:</p>
 <ul>
 <li>As initial condition, we set <span class="math inline">\(N(0)=0\)</span>.</li>
 <li>If we consider two non-overlapping intervals <span class="math inline">\([s,t]\cap [u,v]=\emptyset\)</span>, then the increments on those intervals are <strong>independent</strong> of each other:</li>
@@ -934,10 +935,10 @@ N(t)-N(s) \sim \operatorname{Poisson}(\lambda\tau)
 <p><span id="eq-poisson-probability"><span class="math display">\[
 P(N(t)-N(s)=k)=e^{-\lambda\tau}\frac{(\lambda\tau)^k}{k!}
 \tag{2.8}\]</span></span></p>
-<p>The Poisson process is one of the most widely used stochastic models in science, engineering, and finance due to its ability to accurately model random, independent, and rare events occurring over time or space. Its practical relevance stems directly from the three conditions of its definition (independent, stationary increments, and the resulting Poisson distribution). For instance, the arrival of customer calls in a call center can be accurately modeled using Poisson processes. In engineernig, the number of defects found per area or volume (e.g.&nbsp;on a silicon wafer) can be also modeled this way (in this case, the rate is <em>spatial</em> rather than <em>temporal</em>, but the concept remains the same). In general, customer arrivals (at a hospital, a bank, a supermarket) can be also modeled using a Poisson process.</p>
-<p>One of the main properties that makes the Poisson process useful in practice is the fact that is <em>memoryless</em>: the time until the next event is independent of how long it has been since the previous event, which aligns well with phenomena found in practice. Another advantage is that since the process is based in the Poisson (for the number of events per time interval) and the exponential distributions (for the time between events), the process is mathematically well tractable and closed-form solutions exists for many situations of interest.</p>
+<p>The Poisson process is one of the most widely used stochastic models in science, engineering, and finance due to its ability to accurately model random, independent, and rare events occurring over time or space. Its practical relevance stems directly from the three conditions of its definition (independent, stationary increments, and the resulting Poisson distribution). For instance, the arrival of customer calls in a call center can be accurately modeled using Poisson processes <span class="citation" data-cites="brown_statistical_2005">(<a href="references.html#ref-brown_statistical_2005" role="doc-biblioref">Brown et al. 2005</a>)</span>. In engineernig, the number of defects found per area or volume (e.g.&nbsp;on a silicon wafer) can be also modeled this way (in this case, the rate is <em>spatial</em> rather than <em>temporal</em>, but the concept remains the same) <span class="citation" data-cites="stapper_integrated_1983">(<a href="references.html#ref-stapper_integrated_1983" role="doc-biblioref">Stapper, Armstrong, and Saji 1983</a>)</span>. In general, customer arrivals (at a hospital, a bank, a supermarket) can be also modeled using a Poisson process. In practice, arrival rates usually vary over the day, so a <em>nonhomogeneous</em> Poisson process with a time-dependent rate <span class="math inline">\(\lambda(t)\)</span> is often required <span class="citation" data-cites="brown_statistical_2005 kim_are_2014">(<a href="references.html#ref-brown_statistical_2005" role="doc-biblioref">Brown et al. 2005</a>; <a href="references.html#ref-kim_are_2014" role="doc-biblioref">Kim and Whitt 2014</a>)</span>.</p>
+<p>One of the main properties that makes the Poisson process useful in practice is the fact that is <em>memoryless</em>: the time until the next event is independent of how long it has been since the previous event, which aligns well with phenomena found in practice. Another advantage is that since the process is based in the Poisson (for the number of events per time interval) and the exponential distributions (for the time between events), the process is mathematically well tractable and closed-form solutions exists for many situations of interest <span class="citation" data-cites="ross_introduction_2019">(<a href="references.html#ref-ross_introduction_2019" role="doc-biblioref">Ross 2019</a>, Ch. 5)</span>.</p>
 <p>The next code snippet demonstrates how to simulate a Poisson process.</p>
-<div id="27551226" class="cell" data-execution_count="10">
+<div id="cd561ab2" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
@@ -968,7 +969,7 @@ P(N(t)-N(s)=k)=e^{-\lambda\tau}\frac{(\lambda\tau)^k}{k!}
 <span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> event_times, num_events_at_t</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In this code we exploit the fact that the interarrival times are exponentially distributed, so we sample a time and count it as a new event. We can now use the code to simulate the process:</p>
-<div id="a4bf0192" class="cell" data-execution_count="11">
+<div id="23b5592e" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>RATE_LAMBDA <span class="op">=</span> <span class="fl">2.0</span>  <span class="co"># Average rate of 2 events per unit of time</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>MAX_TIME <span class="op">=</span> <span class="fl">10.0</span>    <span class="co"># Simulate over 10 time units</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -984,7 +985,7 @@ P(N(t)-N(s)=k)=e^{-\lambda\tau}\frac{(\lambda\tau)^k}{k!}
 </div>
 </div>
 <p>Like in the previous case, we can perform some visualizations to help understand the evolution of the process.</p>
-<div id="5c5fa055" class="cell" data-execution_count="12">
+<div id="52e59866" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the step function of the counting process N(t)</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We use drawstyle='steps-post' to create the classic step-function look</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>plt.plot(event_times, cumulative_counts, drawstyle<span class="op">=</span><span class="st">'steps-post'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, marker<span class="op">=</span><span class="st">'o'</span>, markersize<span class="op">=</span><span class="dv">4</span>)</span>
@@ -1011,7 +1012,7 @@ P(N(t)-N(s)=k)=e^{-\lambda\tau}\frac{(\lambda\tau)^k}{k!}
 </section>
 <section id="markov-processes" class="level3" data-number="2.4.3">
 <h3 data-number="2.4.3" class="anchored" data-anchor-id="markov-processes"><span class="header-section-number">2.4.3</span> Markov Processes</h3>
-<p>The next type of process is fundamental for many practical applications and for simulation approaches that we will see in the rest of the book: <strong>Markov processes</strong>. A Markov process is a stochastic process that satisfies the Markov property, which states that the future state of the process depends only on the current state and not on the sequence of states that preceded it. Formally, a discrete-time Markov chain <span class="math inline">\(\{X_t, t \geq 0\}\)</span> satisfies:</p>
+<p>The next type of process is fundamental for many practical applications and for simulation approaches that we will see in the rest of the book: <strong>Markov processes</strong> <span class="citation" data-cites="norris_markov_1997 levin_markov_2017">(<a href="references.html#ref-norris_markov_1997" role="doc-biblioref">Norris 2012</a>; <a href="references.html#ref-levin_markov_2017" role="doc-biblioref">Levin and Peres 2017</a>)</span>. A Markov process is a stochastic process that satisfies the Markov property, which states that the future state of the process depends only on the current state and not on the sequence of states that preceded it. Formally, a discrete-time Markov chain <span class="math inline">\(\{X_t, t \geq 0\}\)</span> satisfies:</p>
 <p><span class="math display">\[
 P(X_{t+1} = j \mid X_t = i, X_{t-1} = i_{t-1}, \dots, X_0 = i_0) = P(X_{t+1} = j \mid X_t = i)
 \]</span></p>
@@ -1032,7 +1033,7 @@ P_{21} &amp; P_{22} &amp; \dots \\
 \]</span> <span class="math display">\[
 \sum_{j \in S} P_{ij} = 1, \quad \forall i \in S
 \]</span></p>
-<p>Phenomena that can be naturally modeled using Markov chains include those where the state of the system in a given moment only depends on the moment immediately before, not on those before. For instance, in genetics, the frequency of a given allele in a generation only depends on the frequencies recorded in the previous generation. Or in inventory management, where decisions about the inventory levels are solely based on the current stock level.</p>
+<p>Phenomena that can be naturally modeled using Markov chains include those where the state of the system in a given moment only depends on the moment immediately before, not on those before. For instance, in genetics, the frequency of a given allele in a generation only depends on the frequencies recorded in the previous generation, as in the classical Wright–Fisher model <span class="citation" data-cites="ewens_mathematical_2004">(<a href="references.html#ref-ewens_mathematical_2004" role="doc-biblioref">Ewens 2004</a>)</span>. Or in inventory management, where decisions about the inventory levels are solely based on the current stock level <span class="citation" data-cites="puterman_markov_1994">(<a href="references.html#ref-puterman_markov_1994" role="doc-biblioref">Puterman 1994</a>)</span>.</p>
 <p><strong>Simulation example</strong></p>
 <p>Let’s see how to simulate a simple Markov chain with a discrete state space. Assume we want to model a heavily simplified weather system with three states: sunny (1), cloudy (2) and rainy (3). For the state transition matrix, we have:</p>
 <p><span class="math display">\[
@@ -1044,7 +1045,7 @@ P_{21} &amp; P_{22} &amp; \dots \\
 \end{pmatrix}
 \]</span></p>
 <p>So for instance, the probability of a rainy day given that yesterday was cloudy is <span class="math inline">\(P_{23}=0.2\)</span>.</p>
-<div id="cb828214" class="cell" data-execution_count="13">
+<div id="8d3301c1" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
@@ -1075,7 +1076,7 @@ P_{21} &amp; P_{22} &amp; \dots \\
 <span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> state_history</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We now setup the simulation for our example:</p>
-<div id="895a3d15" class="cell" data-execution_count="14">
+<div id="0440781e" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the Transition Probability Matrix (P)</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> np.array([</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.80</span>, <span class="fl">0.15</span>, <span class="fl">0.05</span>],  <span class="co"># From Sunny (0)</span></span>
@@ -1108,7 +1109,7 @@ P_{21} &amp; P_{22} &amp; \dots \\
 </div>
 </div>
 <p>Now let’s plot the sequence of states against time:</p>
-<div id="0c17a6b9" class="cell" data-execution_count="15">
+<div id="53053d5e" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>time_steps <span class="op">=</span> np.arange(NUM_SIMULATION_STEPS <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>plt.plot(time_steps, simulated_states, marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, drawstyle<span class="op">=</span><span class="st">'steps-post'</span>, markersize<span class="op">=</span><span class="dv">4</span>)</span>
@@ -1132,9 +1133,9 @@ P_{21} &amp; P_{22} &amp; \dots \\
 \tau_i \sim \operatorname{Exponential}(q_i)
 \tag{2.9}\]</span></span></p>
 <p>where the parameter <span class="math inline">\(q_i\)</span> is called the <strong>total exit rate</strong> or intensity from state <span class="math inline">\(i\)</span>. The Markov property is now given by the fact that the exponential distribution is memoryless: the time remaining in state <span class="math inline">\(i\)</span> is independent on how long the system has been there already.</p>
-<p>So how do we decide where which state to jump next? For that, let <span class="math inline">\(q_{ij}\)</span> denote the <em>instantaneous rate of moving</em> from state <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span>. Our parameter <span class="math inline">\(q_i\)</span> becomes then <span class="math inline">\(q_i=\sum_{i\neq j} q_{ij}\)</span>. We can convert this into a transition probability <span class="math inline">\(P_{ij}\)</span> using <span class="math inline">\(P_{ij}=\frac{q_{ij}}{q_i}\)</span>. Instead of talking about a transition matrix <span class="math inline">\(\mathbf{P}\)</span>, we define a <strong>rate</strong> or <strong>Q-Matrix</strong> <span class="math inline">\(\mathbf{Q}\)</span> where <span class="math inline">\(Q_{ij}=q_{ij}\)</span> for <span class="math inline">\(i\neq j\)</span> and <span class="math inline">\(Q_{ii}=-q_i\)</span> (the diagonal elements are defined with a minus sign because we want the sum of each row -the sum of leaving and entering state <span class="math inline">\(i\)</span>- to be 0).</p>
-<p>We can simulate a continuous-time Markov chain in the following way:</p>
-<div id="c510f7fd" class="cell" data-execution_count="16">
+<p>This construction is described in detail in <span class="citation" data-cites="norris_markov_1997">Norris (<a href="references.html#ref-norris_markov_1997" role="doc-biblioref">2012</a>, Ch. 2)</span>. So how do we decide where which state to jump next? For that, let <span class="math inline">\(q_{ij}\)</span> denote the <em>instantaneous rate of moving</em> from state <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span>. Our parameter <span class="math inline">\(q_i\)</span> becomes then <span class="math inline">\(q_i=\sum_{i\neq j} q_{ij}\)</span>. We can convert this into a transition probability <span class="math inline">\(P_{ij}\)</span> using <span class="math inline">\(P_{ij}=\frac{q_{ij}}{q_i}\)</span>. Instead of talking about a transition matrix <span class="math inline">\(\mathbf{P}\)</span>, we define a <strong>rate</strong> or <strong>Q-Matrix</strong> <span class="math inline">\(\mathbf{Q}\)</span> where <span class="math inline">\(Q_{ij}=q_{ij}\)</span> for <span class="math inline">\(i\neq j\)</span> and <span class="math inline">\(Q_{ii}=-q_i\)</span> (the diagonal elements are defined with a minus sign because we want the sum of each row -the sum of leaving and entering state <span class="math inline">\(i\)</span>- to be 0).</p>
+<p>We can simulate a continuous-time Markov chain in the following way, which is essentially the <em>stochastic simulation algorithm</em> of <span class="citation" data-cites="gillespie_exact_1977">Gillespie (<a href="references.html#ref-gillespie_exact_1977" role="doc-biblioref">1977</a>)</span>:</p>
+<div id="9dd7dd64" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1178,8 +1179,8 @@ P_{21} &amp; P_{22} &amp; \dots \\
 <span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> times, states</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This function first enters a classical simulation loop where time advances until a stopping time has been reached. On each iteration, we first sample a time using the inverse of the exit rate (the minus diagonal element of the Q-matrix) as the parameter of an exponential distribution. Then we determine the state we are goint to jump to by calculating the jump probabilities. The next state is then chosen according to the jump probabilities.</p>
-<p>Let’s now simulate a scenario where we want to study machine reliability. We define the state space as Operational (1), Degraded (2) or Failed (3). In the operational state, the machine works as expected, however it transitions to degraded often, but rarely to failed. In the degraded state, the machine transitions to failed quickly, since it is already not working properly (and never transitions to operational). Finally, in the failed state, the machine is broken and it will only transition to operational if the machine is repaired.</p>
-<div id="23b4f9eb" class="cell" data-execution_count="17">
+<p>Let’s now simulate a scenario where we want to study machine reliability, a classical application of continuous-time Markov chains <span class="citation" data-cites="trivedi_probability_2016">(<a href="references.html#ref-trivedi_probability_2016" role="doc-biblioref">Trivedi 2016</a>)</span>. We define the state space as Operational (1), Degraded (2) or Failed (3). In the operational state, the machine works as expected, however it transitions to degraded often, but rarely to failed. In the degraded state, the machine transitions to failed quickly, since it is already not working properly (and never transitions to operational). Finally, in the failed state, the machine is broken and it will only transition to operational if the machine is repaired.</p>
+<div id="4d26142f" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the Generator Matrix (Q)</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Rows must sum to 0.</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Units: events per hour (rates)</span></span>
@@ -1199,7 +1200,7 @@ P_{21} &amp; P_{22} &amp; \dots \\
 <span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>sim_times, sim_states <span class="op">=</span> simulate_ctmc(Q, START_STATE, DURATION)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that the units of <span class="math inline">\(\mathbf{Q}\)</span> are <em>rates</em> or events per unit of time. Here the unit of time can be freely chosen, what is important is the fact that each number represents the number of events that happen, on average, in the unit of time, and that each row has to sum up to 0.</p>
-<div id="40d08b56" class="cell" data-execution_count="18">
+<div id="b7523587" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>plt.step(sim_times, sim_states, where<span class="op">=</span><span class="st">'post'</span>, color<span class="op">=</span><span class="st">'purple'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>plt.yticks([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>], [STATE_NAMES[<span class="dv">0</span>], STATE_NAMES[<span class="dv">1</span>], STATE_NAMES[<span class="dv">2</span>]])</span>
@@ -1227,24 +1228,24 @@ P_{21} &amp; P_{22} &amp; \dots \\
 </div>
 <p>In this visualization, an exemplary long holding time (the first longer than 2 hours in the operational state) is highlighted. As can be seen, the holding times are highly variable (compare to the discrete-time Markov chain previously). Note also that the system spends very little time in the degraded state. This is because the exit rate (the diagonal element) is very high, so the machine passes this state quickly on its way to the failed state. Since the exit rate is quite low in the operational state, the machine stays there for longer periods.</p>
 <p><strong>Continuous-State Markov Processes</strong></p>
-<p>The last important case we need to take a closer look at is when the state space <span class="math inline">\(S\)</span> is <strong>continuous</strong>. a continuous range of values, such as the position of a particle in space, the temperature of a system, or the level of a reservoir. In this case, the process is often described by a <strong>stochastic differential equation (SDE)</strong>, which governs the evolution of the state over time. The time parameter can be in this case either discrete or continuous, so the corresponding considerations apply. The main challenge is how to deal with state transition probabilities. For this purpose, the most general solution is to switch from transition matrices to <strong>transition probability density functions</strong> that we denote by <span class="math inline">\(f(x_t | x_{t-1})\)</span>.</p>
+<p>The last important case we need to take a closer look at is when the state space <span class="math inline">\(S\)</span> is <strong>continuous</strong>. a continuous range of values, such as the position of a particle in space, the temperature of a system, or the level of a reservoir. In this case, the process is often described by a <strong>stochastic differential equation (SDE)</strong>, which governs the evolution of the state over time <span class="citation" data-cites="oksendal_stochastic_2003">(<a href="references.html#ref-oksendal_stochastic_2003" role="doc-biblioref">Øksendal 2003</a>)</span>. The time parameter can be in this case either discrete or continuous, so the corresponding considerations apply. The main challenge is how to deal with state transition probabilities. For this purpose, the most general solution is to switch from transition matrices to <strong>transition probability density functions</strong> that we denote by <span class="math inline">\(f(x_t | x_{t-1})\)</span>.</p>
 <p>One particularly relevant example of Markov process is the <strong>random walk</strong>. The main idea is to let the process evolve from an initial state by applying random, independent perturbations:</p>
 <p><span id="eq-random-walk"><span class="math display">\[
 X_t=X_{t-1}+\epsilon_t\text{,   }\epsilon_t \sim N(0, \sigma^2)
 \tag{2.10}\]</span></span></p>
-<p>It is important to stress the fact that the noise terms <span class="math inline">\(\epsilon_t\)</span> and the process steps <span class="math inline">\(X_{t-1}\)</span> are independent. We can see that for random walks, the Markov property is fulfilled because <span class="math inline">\(X_t\)</span> only depends on <span class="math inline">\(X_{t-1}\)</span> and not on any values before. Random walks are used when modeling non-stationary time series, like stock prices without a drift.</p>
-<p>Another important example is the <strong>Brownian motion</strong> or <strong>Wiener process</strong>. The Brownian motion is a stochastic process commonly used for modeling random movements of particles. Let’s denote this process by <span class="math inline">\(W(t)\)</span>. The defining characteristic of a Brownian motion is that its increments are <strong>normally distributed</strong> and <strong>independent of the past</strong>.</p>
+<p>It is important to stress the fact that the noise terms <span class="math inline">\(\epsilon_t\)</span> and the process steps <span class="math inline">\(X_{t-1}\)</span> are independent. We can see that for random walks, the Markov property is fulfilled because <span class="math inline">\(X_t\)</span> only depends on <span class="math inline">\(X_{t-1}\)</span> and not on any values before. Random walks are used when modeling non-stationary time series, like stock prices without a drift <span class="citation" data-cites="fama_behavior_1965">(<a href="references.html#ref-fama_behavior_1965" role="doc-biblioref">Fama 1965</a>)</span>.</p>
+<p>Another important example is the <strong>Brownian motion</strong> or <strong>Wiener process</strong> <span class="citation" data-cites="einstein_uber_1905 wiener_differential-space_1923">(<a href="references.html#ref-einstein_uber_1905" role="doc-biblioref">Einstein 1905</a>; <a href="references.html#ref-wiener_differential-space_1923" role="doc-biblioref">Wiener 1923</a>)</span>. The Brownian motion is a stochastic process commonly used for modeling random movements of particles. Let’s denote this process by <span class="math inline">\(W(t)\)</span>. The defining characteristic of a Brownian motion is that its increments are <strong>normally distributed</strong> and <strong>independent of the past</strong>.</p>
 <p><span id="eq-brownian-motion"><span class="math display">\[
 W(t+s) - W(s) \sim N(0, t-s)
 \tag{2.11}\]</span></span></p>
-<p>There are many practical applications of this type of process. In finance, the Brownian motion is used to model option pricing (the <strong>Black-Scholes</strong> equation). In polymer physics, the random, wriggling moving of a long-chain polymer molecule in a solvent can be well modeled using the Brownian motion. In audio engineering and signal processing, it can be used for random noise generation (white and pink noise).</p>
+<p>There are many practical applications of this type of process. In finance, the Brownian motion is used to model option pricing (the <strong>Black-Scholes</strong> equation) <span class="citation" data-cites="black_pricing_1973">(<a href="references.html#ref-black_pricing_1973" role="doc-biblioref">Black and Scholes 1973</a>)</span>. In polymer physics, the random, wriggling moving of a long-chain polymer molecule in a solvent can be well modeled using the Brownian motion <span class="citation" data-cites="rouse_theory_1953">(<a href="references.html#ref-rouse_theory_1953" role="doc-biblioref">Rouse 1953</a>)</span>. In audio engineering and signal processing, it can be used for random noise generation (white and pink noise).</p>
 <p><strong>Simulation example</strong></p>
 <p>We will now see how to simulate a Brownian motion. In order to simulate this process (and like it, any continuous-time Markov process), we resort to the <strong>discrete approximation method</strong>. The main idea is to model a continuous path by adding small, independent, normally distributed random increments at small time steps (<span class="math inline">\(\Delta t\)</span>). We use the following equation:</p>
 <p><span id="eq-discrete-approx"><span class="math display">\[
 W(t_{i+1})=W(t_i)+\sqrt{\Delta t}\cdot Z_i
 \tag{2.12}\]</span></span></p>
-<p>The square root of the increment follows from the increments property of the Brownian motion: the variance of the increments has to be proportional to the difference between the time steps.</p>
-<div id="5da6a14a" class="cell" data-execution_count="19">
+<p>The square root of the increment follows from the increments property of the Brownian motion: the variance of the increments has to be proportional to the difference between the time steps. For Brownian motion this scheme is exact at the grid points; for general SDEs it corresponds to the Euler–Maruyama method <span class="citation" data-cites="higham_algorithmic_2001 kloeden_numerical_1992 glasserman_monte_2003">(<a href="references.html#ref-higham_algorithmic_2001" role="doc-biblioref">Higham 2001</a>; <a href="references.html#ref-kloeden_numerical_1992" role="doc-biblioref">Kloeden and Platen 1992</a>; <a href="references.html#ref-glasserman_monte_2003" role="doc-biblioref">Glasserman 2003</a>, Ch. 3)</span>.</p>
+<div id="630ec06b" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1266,7 +1267,7 @@ W(t_{i+1})=W(t_i)+\sqrt{\Delta t}\cdot Z_i
 </div>
 <p>In the code, we first discretize the time by dividing the total time by the number of simulation steps. Then we calculate the standard deviation as the square root of the increment and proceed to simulate the increments <span class="math inline">\(Z_i\)</span>. The final Brownian path is taken to be the cumulative sum of the increments.</p>
 <p>Let’s now perform a simulation a visualize the results:</p>
-<div id="8ea363a3" class="cell" data-execution_count="20">
+<div id="31099004" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>TOTAL_TIME <span class="op">=</span> <span class="fl">1.0</span>     <span class="co"># Simulate up to time T=1</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>NUM_STEPS <span class="op">=</span> <span class="dv">1000</span>     <span class="co"># Use 1000 steps for a smooth path</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1297,7 +1298,7 @@ W(t_{i+1})=W(t_i)+\sqrt{\Delta t}\cdot Z_i
 </div>
 </div>
 <p>In this visualization, we plot one realization of a Brownian motion bounded by its theoretical bounds (using a standard deviation of <span class="math inline">\(\sqrt{t}\)</span> up and down). The next visualization shows several realizations of the same Brownian motion:</p>
-<div id="9f29ae52" class="cell" data-execution_count="21">
+<div id="da3feebb" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>NUM_PATHS <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(NUM_PATHS):</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    np.random.seed(i) <span class="co"># Use a different seed for each path</span></span>
@@ -1338,14 +1339,143 @@ W(t_{i+1})=W(t_i)+\sqrt{\Delta t}\cdot Z_i
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-banks_discrete-event_2010" class="csl-entry" role="listitem">
+Banks, Jerry, John S. Carson, Barry L. Nelson, and David M. Nicol. 2013. <em>Discrete-<span>Event</span> <span>System</span> <span>Simulation</span></em>. 5th ed. Upper Saddle River, NJ: Pearson.
+</div>
+<div id="ref-barker_recommendation_2015" class="csl-entry" role="listitem">
+Barker, Elaine B., and John M. Kelsey. 2015. <span>“Recommendation for <span>Random</span> <span>Number</span> <span>Generation</span> <span>Using</span> <span>Deterministic</span> <span>Random</span> <span>Bit</span> <span>Generators</span>.”</span> {NIST} {Special} {Publication} 800-90A Rev. 1. Gaithersburg, MD: National Institute of Standards; Technology. <a href="https://doi.org/10.6028/NIST.SP.800-90Ar1">https://doi.org/10.6028/NIST.SP.800-90Ar1</a>.
+</div>
+<div id="ref-black_pricing_1973" class="csl-entry" role="listitem">
+Black, Fischer, and Myron Scholes. 1973. <span>“The <span>Pricing</span> of <span>Options</span> and <span>Corporate</span> <span>Liabilities</span>.”</span> <em>Journal of Political Economy</em> 81 (3): 637–54. <a href="https://doi.org/10.1086/260062">https://doi.org/10.1086/260062</a>.
+</div>
+<div id="ref-box_note_1958" class="csl-entry" role="listitem">
+Box, G. E. P., and Mervin E. Muller. 1958. <span>“A <span>Note</span> on the <span>Generation</span> of <span>Random</span> <span>Normal</span> <span>Deviates</span>.”</span> <em>The Annals of Mathematical Statistics</em> 29 (2): 610–11. <a href="https://doi.org/10.1214/aoms/1177706645">https://doi.org/10.1214/aoms/1177706645</a>.
+</div>
 <div id="ref-van_breugel_synthetic_2023" class="csl-entry" role="listitem">
 Breugel, Boris van, Zhaozhi Qian, and Mihaela van der Schaar. 2023. <span>“Synthetic Data, Real Errors: How (Not) to Publish and Use Synthetic Data.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2305.09235">https://doi.org/10.48550/arXiv.2305.09235</a>.
+</div>
+<div id="ref-brockwell_time_1991" class="csl-entry" role="listitem">
+Brockwell, Peter J., and Richard A. Davis. 1991. <em>Time <span>Series</span>: <span>Theory</span> and <span>Methods</span></em>. 2nd ed. Springer <span>Series</span> in <span>Statistics</span>. New York: Springer. <a href="https://doi.org/10.1007/978-1-4419-0320-4">https://doi.org/10.1007/978-1-4419-0320-4</a>.
+</div>
+<div id="ref-brown_statistical_2005" class="csl-entry" role="listitem">
+Brown, Lawrence, Noah Gans, Avishai Mandelbaum, Anat Sakov, Haipeng Shen, Sergey Zeltyn, and Linda Zhao. 2005. <span>“Statistical <span>Analysis</span> of a <span>Telephone</span> <span>Call</span> <span>Center</span>: <span>A</span> <span>Queueing</span>-<span>Science</span> <span>Perspective</span>.”</span> <em>Journal of the American Statistical Association</em> 100 (469): 36–50. <a href="https://doi.org/10.1198/016214504000001808">https://doi.org/10.1198/016214504000001808</a>.
+</div>
+<div id="ref-devroye_non-uniform_1986" class="csl-entry" role="listitem">
+Devroye, Luc. 1986. <em>Non-<span>Uniform</span> <span>Random</span> <span>Variate</span> <span>Generation</span></em>. New York: Springer. <a href="https://doi.org/10.1007/978-1-4613-8643-8">https://doi.org/10.1007/978-1-4613-8643-8</a>.
+</div>
+<div id="ref-einstein_uber_1905" class="csl-entry" role="listitem">
+Einstein, Albert. 1905. <span>“Über Die von Der Molekularkinetischen <span>Theorie</span> Der <span>Wärme</span> Geforderte <span>Bewegung</span> von in Ruhenden <span>Flüssigkeiten</span> Suspendierten <span>Teilchen</span>.”</span> <em>Annalen Der Physik</em> 322 (8): 549–60. <a href="https://doi.org/10.1002/andp.19053220806">https://doi.org/10.1002/andp.19053220806</a>.
+</div>
+<div id="ref-ewens_mathematical_2004" class="csl-entry" role="listitem">
+Ewens, Warren J. 2004. <em>Mathematical <span>Population</span> <span>Genetics</span> <span>I</span>: <span>Theoretical</span> <span>Introduction</span></em>. 2nd ed. Vol. 27. Interdisciplinary <span>Applied</span> <span>Mathematics</span>. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-21822-9">https://doi.org/10.1007/978-0-387-21822-9</a>.
+</div>
+<div id="ref-fama_behavior_1965" class="csl-entry" role="listitem">
+Fama, Eugene F. 1965. <span>“The <span>Behavior</span> of <span>Stock</span>-<span>Market</span> <span>Prices</span>.”</span> <em>The Journal of Business</em> 38 (1): 34–105. <a href="https://doi.org/10.1086/294743">https://doi.org/10.1086/294743</a>.
+</div>
+<div id="ref-gillespie_exact_1977" class="csl-entry" role="listitem">
+Gillespie, Daniel T. 1977. <span>“Exact Stochastic Simulation of Coupled Chemical Reactions.”</span> <em>The Journal of Physical Chemistry</em> 81 (25): 2340–61. <a href="https://doi.org/10.1021/j100540a008">https://doi.org/10.1021/j100540a008</a>.
+</div>
+<div id="ref-glasserman_monte_2003" class="csl-entry" role="listitem">
+Glasserman, Paul. 2003. <em>Monte <span>Carlo</span> <span>Methods</span> in <span>Financial</span> <span>Engineering</span></em>. Vol. 53. Stochastic <span>Modelling</span> and <span>Applied</span> <span>Probability</span>. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-21617-1">https://doi.org/10.1007/978-0-387-21617-1</a>.
+</div>
+<div id="ref-harris_array_2020" class="csl-entry" role="listitem">
+Harris, Charles R., K. Jarrod Millman, Stéfan J. van der Walt, Ralf Gommers, Pauli Virtanen, David Cournapeau, et al. 2020. <span>“Array Programming with <span>NumPy</span>.”</span> <em>Nature</em> 585 (7825): 357–62. <a href="https://doi.org/10.1038/s41586-020-2649-2">https://doi.org/10.1038/s41586-020-2649-2</a>.
+</div>
+<div id="ref-higham_algorithmic_2001" class="csl-entry" role="listitem">
+Higham, Desmond J. 2001. <span>“An <span>Algorithmic</span> <span>Introduction</span> to <span>Numerical</span> <span>Simulation</span> of <span>Stochastic</span> <span>Differential</span> <span>Equations</span>.”</span> <em>SIAM Review</em> 43 (3): 525–46. <a href="https://doi.org/10.1137/S0036144500378302">https://doi.org/10.1137/S0036144500378302</a>.
+</div>
+<div id="ref-hull_random_1962" class="csl-entry" role="listitem">
+Hull, T. E., and A. R. Dobell. 1962. <span>“Random <span>Number</span> <span>Generators</span>.”</span> <em>SIAM Review</em> 4 (3): 230–54. <a href="https://doi.org/10.1137/1004061">https://doi.org/10.1137/1004061</a>.
 </div>
 <div id="ref-jordon_synthetic_2022" class="csl-entry" role="listitem">
 Jordon, James, Lukasz Szpruch, Florimond Houssiau, Mirko Bottarelli, Giovanni Cherubin, Carsten Maple, Samuel N. Cohen, and Adrian Weller. 2022. <span>“Synthetic <span>Data</span> – What, Why and How?”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2205.03257">https://doi.org/10.48550/arXiv.2205.03257</a>.
 </div>
+<div id="ref-karlin_first_1975" class="csl-entry" role="listitem">
+Karlin, Samuel, and Howard M. Taylor. 1975. <em>A <span>First</span> <span>Course</span> in <span>Stochastic</span> <span>Processes</span></em>. 2nd ed. New York: Academic Press. <a href="https://doi.org/10.1016/C2009-1-28569-8">https://doi.org/10.1016/C2009-1-28569-8</a>.
+</div>
+<div id="ref-kim_are_2014" class="csl-entry" role="listitem">
+Kim, Song-Hee, and Ward Whitt. 2014. <span>“Are <span>Call</span> <span>Center</span> and <span>Hospital</span> <span>Arrivals</span> <span>Well</span> <span>Modeled</span> by <span>Nonhomogeneous</span> <span>Poisson</span> <span>Processes</span>?”</span> <em>Manufacturing &amp; Service Operations Management</em> 16 (3): 464–80. <a href="https://doi.org/10.1287/msom.2014.0490">https://doi.org/10.1287/msom.2014.0490</a>.
+</div>
+<div id="ref-kingman_poisson_1993" class="csl-entry" role="listitem">
+Kingman, J. F. C. 1993. <em>Poisson <span>Processes</span></em>. Vol. 3. Oxford <span>Studies</span> in <span>Probability</span>. Oxford: Clarendon Press. <a href="https://doi.org/10.1093/oso/9780198536932.001.0001">https://doi.org/10.1093/oso/9780198536932.001.0001</a>.
+</div>
+<div id="ref-kloeden_numerical_1992" class="csl-entry" role="listitem">
+Kloeden, Peter E., and Eckhard Platen. 1992. <em>Numerical <span>Solution</span> of <span>Stochastic</span> <span>Differential</span> <span>Equations</span></em>. Berlin, Heidelberg: Springer. <a href="https://doi.org/10.1007/978-3-662-12616-5">https://doi.org/10.1007/978-3-662-12616-5</a>.
+</div>
+<div id="ref-knuth_art_1997" class="csl-entry" role="listitem">
+Knuth, Donald E. 1997. <em>The <span>Art</span> of <span>Computer</span> <span>Programming</span>, <span>Volume</span> 2: <span>Seminumerical</span> <span>Algorithms</span></em>. 3rd ed. Reading, MA: Addison-Wesley.
+</div>
+<div id="ref-lecuyer_history_2017" class="csl-entry" role="listitem">
+L’Ecuyer, Pierre. 2017. <span>“History of Uniform Random Number Generation.”</span> In <em>Proceedings of the 2017 <span>Winter</span> <span>Simulation</span> <span>Conference</span></em>, 202–30. IEEE. <a href="https://doi.org/10.1109/WSC.2017.8247790">https://doi.org/10.1109/WSC.2017.8247790</a>.
+</div>
+<div id="ref-lecuyer_testu01_2007" class="csl-entry" role="listitem">
+L’Ecuyer, Pierre, and Richard Simard. 2007. <span>“<span>TestU01</span>: <span>A</span> <span>C</span> Library for Empirical Testing of Random Number Generators.”</span> <em>ACM Transactions on Mathematical Software</em> 33 (4): 22:1–40. <a href="https://doi.org/10.1145/1268776.1268777">https://doi.org/10.1145/1268776.1268777</a>.
+</div>
+<div id="ref-law_simulation_2015" class="csl-entry" role="listitem">
+Law, Averill M. 2015. <em>Simulation <span>Modeling</span> and <span>Analysis</span></em>. 5th ed. New York: McGraw-Hill Education.
+</div>
+<div id="ref-lehmer_mathematical_1951" class="csl-entry" role="listitem">
+Lehmer, Derrick H. 1951. <span>“Mathematical Methods in Large-Scale Computing Units.”</span> In <em>Proceedings of the <span>Second</span> <span>Symposium</span> on <span>Large</span>-<span>Scale</span> <span>Digital</span> <span>Calculating</span> <span>Machinery</span></em>, 141–46. Cambridge, MA: Harvard University Press.
+</div>
+<div id="ref-levin_markov_2017" class="csl-entry" role="listitem">
+Levin, David A., and Yuval Peres. 2017. <em>Markov <span>Chains</span> and <span>Mixing</span> <span>Times</span></em>. 2nd ed. Providence, RI: American Mathematical Society. <a href="https://doi.org/10.1090/mbk/107">https://doi.org/10.1090/mbk/107</a>.
+</div>
+<div id="ref-marsaglia_random_1968" class="csl-entry" role="listitem">
+Marsaglia, George. 1968. <span>“Random Numbers Fall Mainly in the Planes.”</span> <em>Proceedings of the National Academy of Sciences</em> 61 (1): 25–28. <a href="https://doi.org/10.1073/pnas.61.1.25">https://doi.org/10.1073/pnas.61.1.25</a>.
+</div>
+<div id="ref-matsumoto_twisted_1992" class="csl-entry" role="listitem">
+Matsumoto, Makoto, and Yoshiharu Kurita. 1992. <span>“Twisted <span>GFSR</span> Generators.”</span> <em>ACM Transactions on Modeling and Computer Simulation</em> 2 (3): 179–94. <a href="https://doi.org/10.1145/146382.146383">https://doi.org/10.1145/146382.146383</a>.
+</div>
+<div id="ref-matsumoto_mersenne_1998" class="csl-entry" role="listitem">
+Matsumoto, Makoto, and Takuji Nishimura. 1998. <span>“Mersenne Twister: A 623-Dimensionally Equidistributed Uniform Pseudo-Random Number Generator.”</span> <em>ACM Transactions on Modeling and Computer Simulation</em> 8 (1): 3–30. <a href="https://doi.org/10.1145/272991.272995">https://doi.org/10.1145/272991.272995</a>.
+</div>
+<div id="ref-von_neumann_various_1951" class="csl-entry" role="listitem">
+Neumann, John von. 1951. <span>“Various Techniques Used in Connection with Random Digits.”</span> <em>National Bureau of Standards Applied Mathematics Series</em> 12: 36–38.
+</div>
+<div id="ref-norris_markov_1997" class="csl-entry" role="listitem">
+Norris, J. R. 2012. <em>Markov <span>Chains</span></em>. Cambridge <span>Series</span> in <span>Statistical</span> and <span>Probabilistic</span> <span>Mathematics</span>. Cambridge: Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511810633">https://doi.org/10.1017/CBO9780511810633</a>.
+</div>
+<div id="ref-oneill_pcg_2014" class="csl-entry" role="listitem">
+O’Neill, Melissa E. 2014. <span>“<span>PCG</span>: <span>A</span> <span>Family</span> of <span>Simple</span> <span>Fast</span> <span>Space</span>-<span>Efficient</span> <span>Statistically</span> <span>Good</span> <span>Algorithms</span> for <span>Random</span> <span>Number</span> <span>Generation</span>.”</span> HMC-CS-2014-0905. Claremont, CA: Harvey Mudd College.
+</div>
+<div id="ref-oksendal_stochastic_2003" class="csl-entry" role="listitem">
+Øksendal, Bernt. 2003. <em>Stochastic <span>Differential</span> <span>Equations</span>: <span>An</span> <span>Introduction</span> with <span>Applications</span></em>. 6th ed. Universitext. Berlin, Heidelberg: Springer. <a href="https://doi.org/10.1007/978-3-642-14394-6">https://doi.org/10.1007/978-3-642-14394-6</a>.
+</div>
 <div id="ref-osais_computer_2017" class="csl-entry" role="listitem">
 Osais, Yahya Esmail. 2017. <em>Computer <span>Simulation</span>: <span>A</span> <span>Foundational</span> <span>Approach</span> <span>Using</span> <span>Python</span></em>. New York: Chapman; Hall/CRC. <a href="https://doi.org/10.1201/9781315120294">https://doi.org/10.1201/9781315120294</a>.
+</div>
+<div id="ref-pearson_criterion_1900" class="csl-entry" role="listitem">
+Pearson, Karl. 1900. <span>“On the Criterion That a Given System of Deviations from the Probable in the Case of a Correlated System of Variables Is Such That It Can Be Reasonably Supposed to Have Arisen from Random Sampling.”</span> <em>The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science</em> 50 (302): 157–75. <a href="https://doi.org/10.1080/14786440009463897">https://doi.org/10.1080/14786440009463897</a>.
+</div>
+<div id="ref-puterman_markov_1994" class="csl-entry" role="listitem">
+Puterman, Martin L. 1994. <em>Markov <span>Decision</span> <span>Processes</span>: <span>Discrete</span> <span>Stochastic</span> <span>Dynamic</span> <span>Programming</span></em>. Wiley <span>Series</span> in <span>Probability</span> and <span>Statistics</span>. New York: Wiley. <a href="https://doi.org/10.1002/9780470316887">https://doi.org/10.1002/9780470316887</a>.
+</div>
+<div id="ref-python_random_2026" class="csl-entry" role="listitem">
+Python Software Foundation. 2026. <span>“Random — <span>Generate</span> Pseudo-Random Numbers.”</span> <a href="https://docs.python.org/3/library/random.html">https://docs.python.org/3/library/random.html</a>.
+</div>
+<div id="ref-robert_monte_2004" class="csl-entry" role="listitem">
+Robert, Christian P., and George Casella. 2004. <em>Monte <span>Carlo</span> <span>Statistical</span> <span>Methods</span></em>. 2nd ed. Springer <span>Texts</span> in <span>Statistics</span>. New York: Springer. <a href="https://doi.org/10.1007/978-1-4757-4145-2">https://doi.org/10.1007/978-1-4757-4145-2</a>.
+</div>
+<div id="ref-ross_introduction_2019" class="csl-entry" role="listitem">
+Ross, Sheldon M. 2019. <em>Introduction to <span>Probability</span> <span>Models</span></em>. 12th ed. London: Academic Press. <a href="https://doi.org/10.1016/C2017-0-01324-1">https://doi.org/10.1016/C2017-0-01324-1</a>.
+</div>
+<div id="ref-rouse_theory_1953" class="csl-entry" role="listitem">
+Rouse, Prince E. 1953. <span>“A <span>Theory</span> of the <span>Linear</span> <span>Viscoelastic</span> <span>Properties</span> of <span>Dilute</span> <span>Solutions</span> of <span>Coiling</span> <span>Polymers</span>.”</span> <em>The Journal of Chemical Physics</em> 21 (7): 1272–80. <a href="https://doi.org/10.1063/1.1699180">https://doi.org/10.1063/1.1699180</a>.
+</div>
+<div id="ref-sargent_verification_2013" class="csl-entry" role="listitem">
+Sargent, Robert G. 2013. <span>“Verification and Validation of Simulation Models.”</span> <em>Journal of Simulation</em> 7 (1): 12–24. <a href="https://doi.org/10.1057/jos.2012.20">https://doi.org/10.1057/jos.2012.20</a>.
+</div>
+<div id="ref-stapper_integrated_1983" class="csl-entry" role="listitem">
+Stapper, C. H., F. M. Armstrong, and K. Saji. 1983. <span>“Integrated Circuit Yield Statistics.”</span> <em>Proceedings of the IEEE</em> 71 (4): 453–70. <a href="https://doi.org/10.1109/PROC.1983.12619">https://doi.org/10.1109/PROC.1983.12619</a>.
+</div>
+<div id="ref-sullivan_introduction_2015" class="csl-entry" role="listitem">
+Sullivan, T. J. 2015. <em>Introduction to <span>Uncertainty</span> <span>Quantification</span></em>. Vol. 63. Texts in <span>Applied</span> <span>Mathematics</span>. Cham: Springer. <a href="https://doi.org/10.1007/978-3-319-23395-6">https://doi.org/10.1007/978-3-319-23395-6</a>.
+</div>
+<div id="ref-trivedi_probability_2016" class="csl-entry" role="listitem">
+Trivedi, Kishor S. 2016. <em>Probability and <span>Statistics</span> with <span>Reliability</span>, <span>Queuing</span>, and <span>Computer</span> <span>Science</span> <span>Applications</span></em>. 2nd ed. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/9781119285441">https://doi.org/10.1002/9781119285441</a>.
+</div>
+<div id="ref-wiener_differential-space_1923" class="csl-entry" role="listitem">
+Wiener, Norbert. 1923. <span>“Differential-<span>Space</span>.”</span> <em>Journal of Mathematics and Physics</em> 2 (1–4): 131–74. <a href="https://doi.org/10.1002/sapm192321131">https://doi.org/10.1002/sapm192321131</a>.
 </div>
 </div>
 </section>

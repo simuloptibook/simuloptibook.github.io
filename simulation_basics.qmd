@@ -12,16 +12,16 @@ In science and engineering, it is of paramount importance to develop reliable qu
 - explore "what‑if" scenarios and design alternatives,
 - quantify uncertainty and sensitivity to inputs,
 - validate hypotheses when experiments are impractical or expensive,
-- and support optimization and decision making.
+- and support optimization and decision making [@law_simulation_2015; @banks_discrete-event_2010].
 
 A simulation study typically involves the following steps:
 
 1. Construct a mathematical or computational model.
 2. Specify inputs and assumptions. 
 3. Run experiments (often many replications with different parameters).
-4. Analyze outputs and comparing them with data or theoretical expectations. 
+4. Analyze outputs and comparing them with data or theoretical expectations [@law_simulation_2015, Sec. 1.7]. 
 
-Proper validation and uncertainty quantification are critical to ensure that simulation results are trustworthy and useful for engineering practice.
+Proper validation and uncertainty quantification are critical to ensure that simulation results are trustworthy and useful for engineering practice [@sargent_verification_2013; @sullivan_introduction_2015].
 
 Simulation can be defined as the methods and procedures to define models of a system of interest and execute it
 to get raw data [@osais_computer_2017]. In normal simulation studies, we are not interested in the raw data by itself, but use it to calculate measures of interest regarding the system's performance. For instance, in the example
@@ -55,7 +55,7 @@ to non-parametric distributions as well. We will hint at specific differences wh
 ### Pseudorandom Number Generators
 
 In general, any procedure to generate random numbers is called a *pseudorandom number generator* (PRNG).
-A PRNG can be defined as a deterministic algorithm that, given an initial seed, produces a long sequence of numbers that mimic the statistical properties of truly random samples. Although the sequence is fully determined by the seed (so it is not truly random, hence *pseudorandom*), a good PRNG yields values that are uniformly distributed, have minimal serial correlation, and pass standard statistical tests. Important PRNG properties include period length, equidistribution, independence, speed, and reproducibility (the same seed reproduces the same sequence). For simulation work we typically prefer generators with very long periods and strong statistical quality while cryptographic applications require cryptographically secure PRNGs. PRNGs are used to produce uniform variates that are then transformed into other distributions via methods such as inverse transform sampling, acceptance–rejection, or composition.
+A PRNG can be defined as a deterministic algorithm that, given an initial seed, produces a long sequence of numbers that mimic the statistical properties of truly random samples. Although the sequence is fully determined by the seed (so it is not truly random, hence *pseudorandom*), a good PRNG yields values that are uniformly distributed, have minimal serial correlation, and pass standard statistical tests [@knuth_art_1997, Ch. 3; @lecuyer_testu01_2007]. Important PRNG properties include period length, equidistribution, independence, speed, and reproducibility (the same seed reproduces the same sequence). For simulation work we typically prefer generators with very long periods and strong statistical quality while cryptographic applications require cryptographically secure PRNGs [@barker_recommendation_2015]. PRNGs are used to produce uniform variates that are then transformed into other distributions via methods such as inverse transform sampling, acceptance–rejection, or composition [@devroye_non-uniform_1986]. A historical overview of uniform PRNGs can be found in @lecuyer_history_2017.
 
 Let's explore the properties of a specific PRNG, the Linear Congruential Generator (LCG) using the following Python code.
 
@@ -100,7 +100,7 @@ class LCG:
 
 ```
 
-The LCG is one of the oldest and best known PRNG which are used to date. As can be seen in 
+The LCG, proposed by @lehmer_mathematical_1951, is one of the oldest and best known PRNG which are used to date [@knuth_art_1997, Sec. 3.2.1]. As can be seen in 
 the code, it uses three integer parameters $a$, $c$ and the modulo $m$ and computes the 
 next random number using the recurrence:
 
@@ -165,13 +165,13 @@ period = calculate_period(prng)
 period
 ```
 
-So in this case, our generator reaches the maximum period (1024), which is the best we can do.
+So in this case, our generator reaches the maximum period (1024), which is the best we can do. This is no coincidence: with $c\neq 0$, an LCG attains the full period $m$ if and only if $c$ and $m$ are coprime, $a-1$ is divisible by every prime factor of $m$, and $a-1$ is divisible by 4 whenever $m$ is [@hull_random_1962]. Our parameters $a=65$, $c=1$, $m=2^{10}$ satisfy all three conditions.
 
 **Tests for uniformity**
 
 We want the generated random numbers to be uniformly generated (we will see later how generate numbers with 
 different distributions started with uniformly generated random numbers). For this, we use the $\chi^2$ test
-for uniformity:
+for uniformity [@pearson_criterion_1900; @knuth_art_1997, Sec. 3.3.1]:
 
 - Null Hypothesis ($H_0$): The generated numbers are uniformly distributed.
 - Alternative Hypothesis ($H_1$): The generated numbers are not uniformly distributed.
@@ -220,7 +220,7 @@ the numbers appear to be uniformly random.
 The next possible measure to check is the serial correlation between the numbers generated. 
 The **Serial Correlation Check**, also known as **Autocorrelation at Lag 1**, is a diagnostic measure used to characterize 
 and detect a fundamental weakness in simple Pseudorandom Number Generators (PRNGs), such as the Linear Congruential Generator (LCG).
-The main idea is that the correlation between immediately adjacent numbers (hence lag 1) should be zero.
+The main idea is that the correlation between immediately adjacent numbers (hence lag 1) should be zero [@knuth_art_1997, Sec. 3.3.2].
 
 To calculate this, we form two sequences: the generated numbers and the same sequence moved by one place:
 
@@ -262,11 +262,11 @@ print(f'The lag 1 correlation coefficient is {lag_1_correlation}')
 ```
 While the value is low, it's not as close to zero as it should, which is a known 
 weakness of the LCG (the generated numbers tend to fall onto a number of parallel 
-hyperplanes). This is the reason why PRNGs like the LCG are not normally used in practice.
+hyperplanes) [@marsaglia_random_1968]. This is the reason why PRNGs like the LCG are not normally used in practice.
 The de-facto standard for pseudorandom number generation in practice is the algorithm
-known as the **Mersenne Twister**. This is the default generator used in Python or MATLAB, 
-and the preferred one for simulation purposes (but *not* for cryptographic purposes). The 
-basic idea is to use a highly non-linear twisted generalized feedback shift register. 
+known as the **Mersenne Twister**. This is the default generator used in Python or MATLAB [@matsumoto_mersenne_1998; @python_random_2026], 
+and the preferred one for simulation purposes (but *not* for cryptographic purposes). Newer libraries have started to adopt more recent generators; for instance, NumPy's `default_rng` uses the PCG64 generator [@oneill_pcg_2014; @harris_array_2020]. The 
+basic idea is to use a highly non-linear twisted generalized feedback shift register [@matsumoto_twisted_1992; @matsumoto_mersenne_1998]. 
 Apart from being much faster than LCG, it passes the serial correlation chek with flying colors:
 
 ```{python}
@@ -291,7 +291,7 @@ widely used distributions, like normal, exponential, Poisson, etc? In this secti
 three popular methods for this purpose: the **inversion method**, the **rejection sampling** method, the **Box-Muller transform** and 
 the **mixture method**. For all three methods, the general problem is as follows: we start 
 with a random variable $U \sim \text{ Uniform}(0,1)$. We want to convert $U$ into $X \sim f(x)$, 
-where $f$ is the target PDF of $X$.
+where $f$ is the target PDF of $X$. The standard reference on these methods is @devroye_non-uniform_1986.
 
 
 
@@ -312,7 +312,7 @@ $$
 F^{-1}(u)=-\frac{1}{\lambda}\ln(1-u)
 $$ {#eq-example-inv}
 
-Since $U'=1-U$ is also uniform in $[0,1]$, we can simply write $X=-\frac{1}{\lambda}\ln(U')$.
+Since $U'=1-U$ is also uniform in $[0,1]$, we can simply write $X=-\frac{1}{\lambda}\ln(U')$ [@devroye_non-uniform_1986, Sec. II.2].
 
 **Rejection-sampling method**
 
@@ -326,6 +326,8 @@ that $f(x)\le c g(x)$ (i.e., we **do** know the PDF). In this case, we can do th
 3. If $u < \frac{f(x)}{c g(x)}$, the candidate number $x$ is accepted since it follows $f(x)$.
 4. Otherwise, we repeat the procedure until we get a candidate accepted.
 
+This method goes back to @von_neumann_various_1951. On average, $c$ candidates are needed per accepted sample, so the envelope $cg$ should be as tight as possible [@devroye_non-uniform_1986, Sec. II.3; @robert_monte_2004, Sec. 2.3].
+
 The trick now is to take a *bounded* uniform distribution as $g$ that contains our target 
 distribution $f$. Once we have this, we can generate samples from virtually any 
 probability distribution without requiring its CDF or inverse.
@@ -333,7 +335,7 @@ probability distribution without requiring its CDF or inverse.
 **Box-Muller transform**
 
 The next method is specialized towards generating values for the **normal distribution**, and 
-is widely used in practice. We start by generating two uniform random numbers $u_1, u_2 \sim U(0,1)$.
+is widely used in practice [@box_note_1958]. We start by generating two uniform random numbers $u_1, u_2 \sim U(0,1)$.
 
 * Calculate $R=\sqrt{-2\ln(u_1)}$.
 * Calculate $\theta=2\pi u_2$.
@@ -353,7 +355,7 @@ $$
 f(x)=\sum_{i=1}^k p_i f_i(x)\text{, with }p_i\ge 0\text{, and }\sum_{i=1}^k p_i = 1
 $$ {#eq-mixtures}
 
-Then we can use the following methods to sample from $f(x)$:
+Then we can use the following method, also known as the *composition method*, to sample from $f(x)$ [@devroye_non-uniform_1986, Sec. II.4]:
 
 * Choose randomly an index $i\in I$ from the set of indices $I=\{1,2,\dots,k\}$. This is done by
 generating a random number $u \sim U(0,1)$ and choosing the least index $j$ so that 
@@ -367,7 +369,7 @@ random number according to the Box-Muller method, scaling accordingly if necessa
 ## Stochastic Processes
 
 Now that we know how to generate random numbers and sample from different distributions, we need
-to understand how they interact over time in a simulation study. This is the realm of *stochastic processes*.
+to understand how they interact over time in a simulation study. This is the realm of *stochastic processes* [@ross_introduction_2019; @karlin_first_1975].
 
 A stochastic process $\{X(t), t \in T\}$ is a collection of random variables indexed by time. The set $T$ can be:
 
@@ -386,7 +388,7 @@ over time, which is exactly what we need to simulate complex systems with uncert
 
 **Stationary and non-stationary processes**
 
-A stochastic process $\{X(t)\}$ is said to be **stationary** if its statistical properties do not change over time. More formally:
+A stochastic process $\{X(t)\}$ is said to be **stationary** if its statistical properties do not change over time. More formally, a process is *weakly* (or second-order) stationary if [@brockwell_time_1991, Sec. 1.3]:
 
 - The mean function is constant: $E[X(t)] = \mu$ for all $t\in T$.
 - The variance function is constant: $Var[X(t)] = \sigma^2$ for all $t\in T$.
@@ -394,7 +396,7 @@ A stochastic process $\{X(t)\}$ is said to be **stationary** if its statistical 
 
 In contrast, a **non-stationary** process has statistical properties that vary with time. For example:
 
-- A random walk is non-stationary because its variance increases with time.
+- A random walk is non-stationary because its variance increases with time [@brockwell_time_1991].
 - A seasonal time series with repeating patterns is non-stationary.
 - A process with a trend component is non-stationary.
 
@@ -408,7 +410,7 @@ In the following we will see examples of different stochastic processes and how 
 
 ### Bernoulli and Binomial Processes
 
-We call a Bernoulli process a sequence of independent trials with two possible outcomes ("success/failure").
+We call a Bernoulli process a sequence of independent trials with two possible outcomes ("success/failure") [@ross_introduction_2019].
 The classical example is flipping a coin independently for $n$ times.
 
 ![A typical Bernoulli process.](figures/chapter_2/fig_bernoulli){#fig-bernoulli}
@@ -516,7 +518,7 @@ of trials with the success probability, which results in 15 as the expected numb
 ### Poisson Processes
 
 We now switch from *discrete* to *continuous* time. The **Poisson process** is a canonical 
-continous time counting process. It tracks 
+continous time counting process [@kingman_poisson_1993; @ross_introduction_2019, Ch. 5]. It tracks 
 the number of occurrences of a given event up to a certain time $t$. Formally, let $\lambda > 0$ be the 
 rate of occurrences of the event in question. We define the Poisson process $\{N(t),t\ge 0\}$ as follows:
 
@@ -540,17 +542,17 @@ P(N(t)-N(s)=k)=e^{-\lambda\tau}\frac{(\lambda\tau)^k}{k!}
 $$ {#eq-poisson-probability}
 
 The Poisson process is one of the most widely used stochastic models in science, engineering, and finance due to its ability to accurately model random, independent, and rare events occurring over time or space. Its practical relevance stems directly from the three conditions of its definition (independent, stationary increments, and the resulting Poisson distribution). For instance, the arrival of customer calls in a
-call center can be accurately modeled using Poisson processes. In engineernig, the number of defects
+call center can be accurately modeled using Poisson processes [@brown_statistical_2005]. In engineernig, the number of defects
 found per area or volume (e.g. on a silicon wafer) can be also modeled this way (in this case, the rate 
-is *spatial* rather than *temporal*, but the concept remains the same). In general,
-customer arrivals (at a hospital, a bank, a supermarket) can be also modeled using a Poisson process.
+is *spatial* rather than *temporal*, but the concept remains the same) [@stapper_integrated_1983]. In general,
+customer arrivals (at a hospital, a bank, a supermarket) can be also modeled using a Poisson process. In practice, arrival rates usually vary over the day, so a *nonhomogeneous* Poisson process with a time-dependent rate $\lambda(t)$ is often required [@brown_statistical_2005; @kim_are_2014].
 
 One of the main properties that makes the Poisson process useful in practice is the fact that is 
 *memoryless*: the time until the next event is independent of how long it has been since the 
 previous event, which aligns well with phenomena found in practice. Another advantage is that since 
 the process is based in the Poisson (for the number of events per time interval) and the 
 exponential distributions (for the time between events), the process is mathematically well 
-tractable and closed-form solutions exists for many situations of interest.
+tractable and closed-form solutions exists for many situations of interest [@ross_introduction_2019, Ch. 5].
 
 The next code snippet demonstrates how to simulate a Poisson process.
 
@@ -622,7 +624,7 @@ plt.show()
 ### Markov Processes
 
 The next type of process is fundamental for many practical applications and for simulation 
-approaches that we will see in the rest of the book: **Markov processes**. A Markov process is a stochastic process that
+approaches that we will see in the rest of the book: **Markov processes** [@norris_markov_1997; @levin_markov_2017]. A Markov process is a stochastic process that
 satisfies the Markov property, which states that the future state of the process depends only on the current state and not on the sequence of states that preceded it. Formally, a discrete-time Markov chain $\{X_t, t \geq 0\}$ satisfies:
 
 $$
@@ -657,8 +659,8 @@ $$
 
 Phenomena that can be naturally modeled using Markov chains include those where the state of the system in a given
 moment only depends on the moment immediately before, not on those before. For instance, in genetics, the
-frequency of a given allele in a generation only depends on the frequencies recorded in the previous generation. Or 
-in inventory management, where decisions about the inventory levels are solely based on the current stock level.
+frequency of a given allele in a generation only depends on the frequencies recorded in the previous generation, as in the classical Wright–Fisher model [@ewens_mathematical_2004]. Or 
+in inventory management, where decisions about the inventory levels are solely based on the current stock level [@puterman_markov_1994].
 
 **Simulation example**
 
@@ -761,14 +763,14 @@ where the parameter $q_i$ is called the **total exit rate** or intensity from st
 property is now given by the fact that the exponential distribution is memoryless: the time remaining in
 state $i$ is independent on how long the system has been there already.
 
-So how do we decide where which state to jump next? For that, let $q_{ij}$ denote the *instantaneous 
+This construction is described in detail in @norris_markov_1997 [Ch. 2]. So how do we decide where which state to jump next? For that, let $q_{ij}$ denote the *instantaneous 
 rate of moving* from state $i$ to $j$. Our parameter $q_i$ becomes then $q_i=\sum_{i\neq j} q_{ij}$. We can
 convert this into a transition probability $P_{ij}$ using $P_{ij}=\frac{q_{ij}}{q_i}$. Instead of talking 
 about a transition matrix $\mathbf{P}$, we define a **rate** or **Q-Matrix** $\mathbf{Q}$ where 
 $Q_{ij}=q_{ij}$ for $i\neq j$ and $Q_{ii}=-q_i$ (the diagonal elements are defined with a minus
 sign because we want the sum of each row -the sum of leaving and entering state $i$- to be 0).
 
-We can simulate a continuous-time Markov chain in the following way:
+We can simulate a continuous-time Markov chain in the following way, which is essentially the *stochastic simulation algorithm* of @gillespie_exact_1977:
 
 ```{python}
 import numpy as np
@@ -820,7 +822,7 @@ diagonal element of the Q-matrix) as the parameter of an exponential distributio
 determine the state we are goint to jump to by calculating the jump probabilities. The next state 
 is then chosen according to the jump probabilities.
 
-Let's now simulate a scenario where we want to study machine reliability. We define the state space 
+Let's now simulate a scenario where we want to study machine reliability, a classical application of continuous-time Markov chains [@trivedi_probability_2016]. We define the state space 
 as Operational (1), Degraded (2) or Failed (3). In the operational state, the machine works as 
 expected, however it transitions to degraded often, but rarely to failed. In the degraded state, 
 the machine transitions to failed quickly, since it is already not working properly (and never
@@ -881,7 +883,7 @@ in the operational state, the machine stays there for longer periods.
 **Continuous-State Markov Processes**
 
 The last important case we need to take a closer look at is when the state space $S$ is **continuous**.
-a continuous range of values, such as the position of a particle in space, the temperature of a system, or the level of a reservoir. In this case, the process is often described by a **stochastic differential equation (SDE)**, which governs the evolution of the state over time. The time parameter can 
+a continuous range of values, such as the position of a particle in space, the temperature of a system, or the level of a reservoir. In this case, the process is often described by a **stochastic differential equation (SDE)**, which governs the evolution of the state over time [@oksendal_stochastic_2003]. The time parameter can 
 be in this case either discrete or continuous, so the corresponding considerations apply. The main
 challenge is how to deal with state transition probabilities. For this purpose, the most 
 general solution is to switch from transition matrices to **transition probability density 
@@ -897,9 +899,9 @@ $$ {#eq-random-walk}
 It is important to stress the fact that the noise terms $\epsilon_t$ and the process steps 
 $X_{t-1}$ are independent. We can see that for random walks, the Markov property is fulfilled
 because $X_t$ only depends on $X_{t-1}$ and not on any values before. Random walks are used
-when modeling non-stationary time series, like stock prices without a drift.
+when modeling non-stationary time series, like stock prices without a drift [@fama_behavior_1965].
 
-Another important example is the **Brownian motion** or **Wiener process**. The Brownian motion 
+Another important example is the **Brownian motion** or **Wiener process** [@einstein_uber_1905; @wiener_differential-space_1923]. The Brownian motion 
 is a stochastic process commonly used for modeling random movements of particles. Let's 
 denote this process by $W(t)$. The defining characteristic of a Brownian motion is that 
 its increments are **normally distributed** and **independent of the past**.
@@ -908,9 +910,9 @@ $$
 W(t+s) - W(s) \sim N(0, t-s)
 $$ {#eq-brownian-motion}
 
-There are many practical applications of this type of process. In finance, the Brownian motion is used to model option pricing (the **Black-Scholes** equation).
+There are many practical applications of this type of process. In finance, the Brownian motion is used to model option pricing (the **Black-Scholes** equation) [@black_pricing_1973].
 In polymer physics, the random, wriggling moving of a long-chain polymer molecule in a solvent 
-can be well modeled using the Brownian motion. In audio engineering and signal processing,
+can be well modeled using the Brownian motion [@rouse_theory_1953]. In audio engineering and signal processing,
 it can be used for random noise generation (white and pink noise).
 
 **Simulation example**
@@ -925,7 +927,7 @@ W(t_{i+1})=W(t_i)+\sqrt{\Delta t}\cdot Z_i
 $$ {#eq-discrete-approx}
 
 The square root of the increment follows from the increments property of the Brownian motion: the 
-variance of the increments has to be proportional to the difference between the time steps.
+variance of the increments has to be proportional to the difference between the time steps. For Brownian motion this scheme is exact at the grid points; for general SDEs it corresponds to the Euler–Maruyama method [@higham_algorithmic_2001; @kloeden_numerical_1992; @glasserman_monte_2003, Ch. 3].
 
 ```{python}
 import numpy as np
