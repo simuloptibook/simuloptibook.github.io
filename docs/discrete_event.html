@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -498,27 +518,27 @@ window.Quarto = {
 
 <section id="introduction" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">4.1</span> Introduction</h2>
-<p>In the previous chapters, we have considered mostly continuous simulation approaches. These approaches are well suited for situations where systems can be described using simple equations. However, there are situations that are either too complex to be modeled in such a way, or too expensive or dangerous to experiment with in the real world. Whether it is a hospital emergency room attempting to reduce patient wait times, a manufacturing plant trying to optimize throughput, or a computer network managing data packets, these systems share a common trait: they change state at specific, irregular points in time.</p>
-<p>Unlike other modeling approaches that view the world as a continuous flow or a static snapshot, <strong>Discrete Event Simulation (DES)</strong> views the world as a sequence of distinct events—arrivals, departures, breakdowns, and completions—that occur at specific instants, triggering changes in the system’s state. DES becomes necessary when a system exhibits the following properties:</p>
+<p>In the previous chapters, we have considered mostly continuous simulation approaches. These approaches are well suited for situations where systems can be described using simple equations. However, there are situations that are either too complex to be modeled in such a way, or too expensive or dangerous to experiment with in the real world. Whether it is a hospital emergency room attempting to reduce patient wait times, a manufacturing plant trying to optimize throughput, or a computer network managing data packets, these systems share a common trait: they change state at specific, irregular points in time <span class="citation" data-cites="gunal_discrete_2010 negahban_simulation_2014 riley_ns-3_2010">(<a href="references.html#ref-gunal_discrete_2010" role="doc-biblioref">Günal and Pidd 2010</a>; <a href="references.html#ref-negahban_simulation_2014" role="doc-biblioref">Negahban and Smith 2014</a>; <a href="references.html#ref-riley_ns-3_2010" role="doc-biblioref">Riley and Henderson 2010</a>)</span>.</p>
+<p>Unlike other modeling approaches that view the world as a continuous flow or a static snapshot, <strong>Discrete Event Simulation (DES)</strong> views the world as a sequence of distinct events—arrivals, departures, breakdowns, and completions—that occur at specific instants, triggering changes in the system’s state <span class="citation" data-cites="law_simulation_2015 banks_discrete-event_2010 fishman_discrete-event_2001">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015</a>; <a href="references.html#ref-banks_discrete-event_2010" role="doc-biblioref">Banks et al. 2013</a>; <a href="references.html#ref-fishman_discrete-event_2001" role="doc-biblioref">Fishman 2001</a>)</span>. DES becomes necessary when a system exhibits the following properties:</p>
 <ul>
 <li>The state of the system <strong>evolves over time</strong>. A decision made at time <span class="math inline">\(t\)</span> affects the resources available at time <span class="math inline">\(t+1\)</span>.</li>
 <li>Entities (like customers, parts, data) compete for <strong>limited resources</strong> (counters, machines, bandwidth) leading to the formation of <em>queues</em>.</li>
 <li>The system is driven by <strong>randomness</strong>. Customers do not arrive at fixed intervals; machines do not take the exact same amount of time to process every part.</li>
 </ul>
-<p>We utilize DES when analytical solutions are mathematically intractable. For example, calculating the average wait time in a bank with one line and one teller is a simple mathematical exercise. However, if that bank has varying arrival rates depending on the time of day, tellers who take lunch breaks, and customers who may leave (balk) if the line is too long, the mathematical formulas break down. DES allows us to mimic this complex reality inside a computer to answer “What if?” questions without disrupting actual operations.</p>
-<p>Note that Monte Carlo simulation can be considered in general as <strong>static</strong>. It evaluates a problem at a single point in time or across a timeless dimension. For instance, estimating the value of <span class="math inline">\(\pi\)</span> by dropping distinct pins on a grid is a Monte Carlo experiment. It provides a probabilistic outcome of a specific scenario but does not model how that scenario evolves. By contrast, DES is <strong>dynamic</strong>, creating a history of the system operation over a duration.</p>
-<p>The mathematical foundation that represents the basis for DES is called <strong>Queuing Theory</strong>. It underpins the computational engine used by DES to solve complex simulation problems. Queuing Theory provides the analytical framework for understanding waiting lines. It offers exact mathematical formulas to predict performance measures such as server utilization or and average waiting times under specific, idealized assumptions (e.g., purely random arrivals and service times).</p>
+<p>We utilize DES when analytical solutions are mathematically intractable. For example, calculating the average wait time in a bank with one line and one teller is a simple mathematical exercise. However, if that bank has varying arrival rates depending on the time of day, tellers who take lunch breaks, and customers who may leave (balk) if the line is too long, the mathematical formulas break down <span class="citation" data-cites="green_coping_2007 ancker_queuing_1963">(<a href="references.html#ref-green_coping_2007" role="doc-biblioref">Green, Kolesar, and Whitt 2007</a>; <a href="references.html#ref-ancker_queuing_1963" role="doc-biblioref">Ancker and Gafarian 1963</a>)</span>. DES allows us to mimic this complex reality inside a computer to answer “What if?” questions without disrupting actual operations.</p>
+<p>Note that Monte Carlo simulation can be considered in general as <strong>static</strong>. It evaluates a problem at a single point in time or across a timeless dimension. For instance, estimating the value of <span class="math inline">\(\pi\)</span> by dropping distinct pins on a grid is a Monte Carlo experiment. It provides a probabilistic outcome of a specific scenario but does not model how that scenario evolves. By contrast, DES is <strong>dynamic</strong>, creating a history of the system operation over a duration <span class="citation" data-cites="law_simulation_2015">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015, sec. 1.2</a>)</span>.</p>
+<p>The mathematical foundation that represents the basis for DES is called <strong>Queuing Theory</strong>. It underpins the computational engine used by DES to solve complex simulation problems. Queuing Theory provides the analytical framework for understanding waiting lines. It offers exact mathematical formulas to predict performance measures such as server utilization or and average waiting times under specific, idealized assumptions (e.g., purely random arrivals and service times) <span class="citation" data-cites="kleinrock_queueing_1975 shortle_fundamentals_2018">(<a href="references.html#ref-kleinrock_queueing_1975" role="doc-biblioref">Kleinrock 1975</a>; <a href="references.html#ref-shortle_fundamentals_2018" role="doc-biblioref">Shortle et al. 2018</a>)</span>. Its origins go back to the work of A. K. Erlang on telephone traffic <span class="citation" data-cites="erlang_solution_1917">(<a href="references.html#ref-erlang_solution_1917" role="doc-biblioref">Erlang 1917</a>)</span>.</p>
 <p>In this chapter, we will introduce the fundamentals of Queuing Theory that will serve as a framework to understand the principles of DES. While Queuing Theory provides the “laws of physics” for the system at hand, DES provides the laboratory in which we experiment with those laws under complex, realistic conditions.</p>
 </section>
 <section id="sec-queuing-theory" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="sec-queuing-theory"><span class="header-section-number">4.2</span> Queuing Theory</h2>
-<p>Before we can build a valid discrete simulation model, we must understand the mathematical logic that governs the flow of entities. Queuing Theory is the study of waiting lines. It provides a set of analytical techniques used to describe the behavior of systems where entities arrive, wait for a resource, receive service, and depart. While we often associate queues with negative experiences—standing in line at a grocery store or waiting on hold for customer support—queuing theory views the queue not as a nuisance, but as a buffer. It is a necessary component that manages the mismatch between the irregular demand for service and the limited capacity to provide it. The fundamental goal of queuing theory is to quantify the trade-off between the cost of providing service (adding more servers) and the cost of waiting (lost time or unhappy customers).</p>
+<p>Before we can build a valid discrete simulation model, we must understand the mathematical logic that governs the flow of entities. Queuing Theory is the study of waiting lines. It provides a set of analytical techniques used to describe the behavior of systems where entities arrive, wait for a resource, receive service, and depart. While we often associate queues with negative experiences—standing in line at a grocery store or waiting on hold for customer support—queuing theory views the queue not as a nuisance, but as a buffer. It is a necessary component that manages the mismatch between the irregular demand for service and the limited capacity to provide it. The fundamental goal of queuing theory is to quantify the trade-off between the cost of providing service (adding more servers) and the cost of waiting (lost time or unhappy customers) <span class="citation" data-cites="hillier_introduction_2021">(<a href="references.html#ref-hillier_introduction_2021" role="doc-biblioref">Hillier and Lieberman 2021</a>)</span>.</p>
 <section id="anatomy-of-a-queuing-system" class="level3" data-number="4.2.1">
 <h3 data-number="4.2.1" class="anchored" data-anchor-id="anatomy-of-a-queuing-system"><span class="header-section-number">4.2.1</span> Anatomy of a Queuing System</h3>
 <p>We now decompose a queueing system into its basic constituent processes: the arrival, the queue and the service mechanism.</p>
 <ul>
 <li>The <strong>arrival process</strong> defines how entities appear. In most queuing models, we assume that arrivals are random and measure them using the <em>interarrival time</em>, which is the time elapsed between two consecutive arrivals.</li>
-<li>The <strong>queuing mechanism</strong> defines how the holding area looks like where entities wait for service. This queue might have finite or infinite capacity, and function according to a specific principle or set of rules. The most common is a First-In, First-Out (FIFO) mechanism, where the first entity that arrived at the queue will get service first, and all other entities will advance by one place on the waiting line. However, other (less frequent) mechanisms might be used like LIFO (Last-In, Fist-Out), SIRO (Service In Random Order) or some other Priority schemes.</li>
+<li>The <strong>queuing mechanism</strong> defines how the holding area looks like where entities wait for service. This queue might have finite or infinite capacity, and function according to a specific principle or set of rules. The most common is a First-In, First-Out (FIFO) mechanism, where the first entity that arrived at the queue will get service first, and all other entities will advance by one place on the waiting line. However, other (less frequent) mechanisms might be used like LIFO (Last-In, Fist-Out), SIRO (Service In Random Order) or some other Priority schemes <span class="citation" data-cites="shortle_fundamentals_2018">(<a href="references.html#ref-shortle_fundamentals_2018" role="doc-biblioref">Shortle et al. 2018</a>, Ch. 1)</span>.</li>
 <li>The <strong>service mechanism</strong> defines how entities are processed, e.g.&nbsp;in a serial way (only one server) or with several concurrent servers. Additionally, this mechanism is characterized by a <em>service time</em>, which is usually stochastic as well.</li>
 </ul>
 <p><strong>Revisiting the Supermarket</strong></p>
@@ -532,7 +552,7 @@ window.Quarto = {
 </section>
 <section id="kendalls-notation" class="level3" data-number="4.2.2">
 <h3 data-number="4.2.2" class="anchored" data-anchor-id="kendalls-notation"><span class="header-section-number">4.2.2</span> Kendall’s Notation</h3>
-<p>Queuing systems can vary in some specific ways: for instance, different arrival patterns, number of servers, etc. In order to describe these different modalities, we will use a formal notation called <strong>Kendall’s Notation</strong>. This notation is based on three components in the format <strong><span class="math inline">\(A/B/c\)</span></strong>. Each of these components represent the following characteristics:</p>
+<p>Queuing systems can vary in some specific ways: for instance, different arrival patterns, number of servers, etc. In order to describe these different modalities, we will use a formal notation called <strong>Kendall’s Notation</strong> <span class="citation" data-cites="kendall_stochastic_1953">(<a href="references.html#ref-kendall_stochastic_1953" role="doc-biblioref">Kendall 1953</a>)</span>. This notation is based on three components in the format <strong><span class="math inline">\(A/B/c\)</span></strong>. Each of these components represent the following characteristics:</p>
 <ul>
 <li><strong><span class="math inline">\(A\)</span>:</strong> Denotes the probability distribution of the <em>arrival</em> times.</li>
 <li><strong><span class="math inline">\(B\)</span>:</strong> Denotes the probability distribution of the <em>service</em> times.</li>
@@ -544,7 +564,7 @@ window.Quarto = {
 <li><strong><span class="math inline">\(D\)</span>:</strong> Denotes a deterministic mechanism where times are constant (zero variance). For instance, the service time in an automated car wash could take always the same 5 minutes per car.</li>
 <li><strong><span class="math inline">\(G\)</span>:</strong> Denotes any general distribution like Gaussian, Gamma, etc.</li>
 </ul>
-<p>Some examples include the <span class="math inline">\(M/M/1\)</span> model (exponential arrivals, exponential service times, and 1 server), <span class="math inline">\(M/M/c\)</span> (same as before but with <span class="math inline">\(c\)</span> servers in parallel) and <span class="math inline">\(M/D/1\)</span> (exponential arrivals, fixed service times, and 1 server).</p>
+<p>Some examples include the <span class="math inline">\(M/M/1\)</span> model (exponential arrivals, exponential service times, and 1 server), <span class="math inline">\(M/M/c\)</span> (same as before but with <span class="math inline">\(c\)</span> servers in parallel) and <span class="math inline">\(M/D/1\)</span> (exponential arrivals, fixed service times, and 1 server). Extended versions of the notation add further fields, e.g.&nbsp;the system capacity and the queue discipline <span class="citation" data-cites="shortle_fundamentals_2018">(<a href="references.html#ref-shortle_fundamentals_2018" role="doc-biblioref">Shortle et al. 2018</a>, Ch. 1)</span>.</p>
 </section>
 <section id="key-performance-measures" class="level3" data-number="4.2.3">
 <h3 data-number="4.2.3" class="anchored" data-anchor-id="key-performance-measures"><span class="header-section-number">4.2.3</span> Key Performance Measures</h3>
@@ -555,7 +575,7 @@ window.Quarto = {
 <p><span class="math display">\[
 \rho=\frac{\lambda}{c\mu}
 \]</span></p>
-<p>Note that if the arrival rate exceeds the service rate, the queue size diverges to infinity (i.e.&nbsp;the condition <span class="math inline">\(\rho &lt; 1\)</span> is a sufficient condition for stability).</p>
+<p>Note that if the arrival rate exceeds the service rate, the queue size diverges to infinity (i.e.&nbsp;the condition <span class="math inline">\(\rho &lt; 1\)</span> is a sufficient condition for stability) <span class="citation" data-cites="loynes_stability_1962">(<a href="references.html#ref-loynes_stability_1962" role="doc-biblioref">Loynes 1962</a>)</span>.</p>
 <p><strong>State metrics</strong></p>
 <p>We now assume that the system is in a steady state, i.e.&nbsp;the system has been running for long enough so that the initial conditions no longer influence current state probabilities. The state of the system is modeled as a random variable. Let <span class="math inline">\(P_n\)</span> denote the steady state probability that there are exactly <span class="math inline">\(n\)</span> entities in the system. We seek to minimize the following state metrics for any queuing system:</p>
 <ul>
@@ -584,11 +604,11 @@ W_q = W - \frac{1}{\mu}
 \]</span></p>
 <p>or the time waiting until one of the servers becomes free.</p>
 <p><strong>Little’s Law</strong></p>
-<p>One of the best known results in queuing theory is known as <strong>Little’s law</strong>, which established a fundamental relationship between the number of items in the system <span class="math inline">\(L\)</span>, the arrival rate <span class="math inline">\(\lambda\)</span> and the average time spent in the system <span class="math inline">\(W\)</span>:</p>
+<p>One of the best known results in queuing theory is known as <strong>Little’s law</strong> <span class="citation" data-cites="little_proof_1961">(<a href="references.html#ref-little_proof_1961" role="doc-biblioref">Little 1961</a>)</span>, which established a fundamental relationship between the number of items in the system <span class="math inline">\(L\)</span>, the arrival rate <span class="math inline">\(\lambda\)</span> and the average time spent in the system <span class="math inline">\(W\)</span>:</p>
 <p><span id="eq-littles-law"><span class="math display">\[
 L=\lambda\times W
 \tag{4.1}\]</span></span></p>
-<p>This relation holds true regardless of the probability distributions involved. <a href="#fig-littles-law" class="quarto-xref">Figure&nbsp;<span>4.1</span></a> shows a geometric visualization of Little’s Law.</p>
+<p>This relation holds true regardless of the probability distributions involved <span class="citation" data-cites="little_littles_2011">(<a href="references.html#ref-little_littles_2011" role="doc-biblioref">Little 2011</a>)</span>. <a href="#fig-littles-law" class="quarto-xref">Figure&nbsp;<span>4.1</span></a> shows a geometric visualization of Little’s Law.</p>
 <div id="fig-littles-law" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-littles-law-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -608,11 +628,11 @@ N\times W = T\times L
 <p><span class="math display">\[
 L = \frac{N}{T}\times W
 \]</span></p>
-<p>where <span class="math inline">\(N/T\)</span> is exactly the arrival rate <span class="math inline">\(\lambda\)</span>, and we thus get <a href="#eq-littles-law" class="quarto-xref">Equation&nbsp;<span>4.1</span></a>.</p>
+<p>where <span class="math inline">\(N/T\)</span> is exactly the arrival rate <span class="math inline">\(\lambda\)</span>, and we thus get <a href="#eq-littles-law" class="quarto-xref">Equation&nbsp;<span>4.1</span></a>. This sample-path argument can be made rigorous, as shown by <span class="citation" data-cites="stidham_last_1974">Stidham (<a href="references.html#ref-stidham_last_1974" role="doc-biblioref">1974</a>)</span>.</p>
 </section>
 <section id="example-the-mm1-queue" class="level3" data-number="4.2.4">
 <h3 data-number="4.2.4" class="anchored" data-anchor-id="example-the-mm1-queue"><span class="header-section-number">4.2.4</span> Example: The M/M/1 Queue</h3>
-<p>As an example, we now calculate <span class="math inline">\(L\)</span>, <span class="math inline">\(L_q\)</span>, <span class="math inline">\(W\)</span> and <span class="math inline">\(W_q\)</span> explicitly for the case of an <span class="math inline">\(M/M/1\)</span> queue. For the arrivals, we assume a Poisson process with rate <span class="math inline">\(\lambda\)</span>, exponential service times with rate <span class="math inline">\(\mu\)</span> and 1 server. This results in an utilization of <span class="math inline">\(\rho=\lambda/\mu\)</span> and we assume <span class="math inline">\(\rho&lt;1\)</span> so that the queue remains stable.</p>
+<p>As an example, we now calculate <span class="math inline">\(L\)</span>, <span class="math inline">\(L_q\)</span>, <span class="math inline">\(W\)</span> and <span class="math inline">\(W_q\)</span> explicitly for the case of an <span class="math inline">\(M/M/1\)</span> queue. For the arrivals, we assume a Poisson process with rate <span class="math inline">\(\lambda\)</span>, exponential service times with rate <span class="math inline">\(\mu\)</span> and 1 server. This results in an utilization of <span class="math inline">\(\rho=\lambda/\mu\)</span> and we assume <span class="math inline">\(\rho&lt;1\)</span> so that the queue remains stable. The derivation below follows standard textbook treatments <span class="citation" data-cites="kleinrock_queueing_1975 shortle_fundamentals_2018">(<a href="references.html#ref-kleinrock_queueing_1975" role="doc-biblioref">Kleinrock 1975, sec. 3.2</a>; <a href="references.html#ref-shortle_fundamentals_2018" role="doc-biblioref">Shortle et al. 2018</a>)</span>.</p>
 <p>The steady state probability <span class="math inline">\(P_n\)</span> becomes then</p>
 <p><span class="math display">\[
 P_n=(1-\rho)\rho^n
@@ -646,10 +666,10 @@ L_q=\frac{\lambda^2}{\mu(\mu-\lambda)}
 <section id="discrete-event-simulation" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="discrete-event-simulation"><span class="header-section-number">4.3</span> Discrete Event Simulation</h2>
 <p>While Queuing Theory provides the laws of physics for waiting lines, it has a significant limitation: it requires the world to be well-behaved. The moment we introduce real-world messiness—dynamic arrival rates (e.g., the lunch rush), complex routing logic (e.g., a part returning to a machine for rework), or resource dependencies (e.g., a machine needs both an operator and a tool)—the analytical formulas of Queuing Theory become mathematically unsolvable.</p>
-<p>When the assumptions of Queuing Theory aren’t valid anymore, we turn to <strong>Discrete Event Simulation (DES)</strong>. Discrete Event Simulation is a computational technique used to model the operation of a system as a discrete sequence of events in time. The defining characteristic of DES is how it handles state changes. In a continuous system (like water flowing into a tank), the state changes continuously every millisecond. In a discrete system, the state is piecewise constant. The number of people in a line remains exactly the same for a period of time, then changes instantaneously when a person arrives or departs. Therefore, a DES model assumes that nothing interesting happens between events. This assumption allows the computer to skip over periods of inactivity, making the simulation highly efficient.</p>
+<p>When the assumptions of Queuing Theory aren’t valid anymore, we turn to <strong>Discrete Event Simulation (DES)</strong>. Discrete Event Simulation is a computational technique used to model the operation of a system as a discrete sequence of events in time. The defining characteristic of DES is how it handles state changes. In a continuous system (like water flowing into a tank), the state changes continuously every millisecond. In a discrete system, the state is piecewise constant. The number of people in a line remains exactly the same for a period of time, then changes instantaneously when a person arrives or departs. Therefore, a DES model assumes that nothing interesting happens between events. This assumption allows the computer to skip over periods of inactivity, making the simulation highly efficient <span class="citation" data-cites="nance_time_1981 law_simulation_2015">(<a href="references.html#ref-nance_time_1981" role="doc-biblioref">Nance 1981</a>; <a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015, sec. 1.3</a>)</span>.</p>
 <section id="components-of-a-des-model" class="level3" data-number="4.3.1">
 <h3 data-number="4.3.1" class="anchored" data-anchor-id="components-of-a-des-model"><span class="header-section-number">4.3.1</span> Components of a DES Model</h3>
-<p>In order to define a DES model, we need to map the physical elements of the system to simulation components.</p>
+<p>In order to define a DES model, we need to map the physical elements of the system to simulation components <span class="citation" data-cites="banks_discrete-event_2010 law_simulation_2015">(<a href="references.html#ref-banks_discrete-event_2010" role="doc-biblioref">Banks et al. 2013</a>, Ch. 3; <a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015, sec. 1.3</a>)</span>.</p>
 <ol type="1">
 <li><p><strong>Entities:</strong> The dynamic objects that flow through the system (e.g.&nbsp;customers of a bank, data packets in a computer network, etc.). Entities arrive, move through the system, queue for resources, and leave the system (depart).</p></li>
 <li><p><strong>Attributes:</strong> Local data tags that describe the unique characteristics of a specific entity (e.g.&nbsp;the arrival time of an entity, the severity of a patient, etc). With attributes, we can treat in the simulation different entitites differently.</p></li>
@@ -660,7 +680,7 @@ L_q=\frac{\lambda^2}{\mu(\mu-\lambda)}
 </section>
 <section id="the-des-worldview" class="level3" data-number="4.3.2">
 <h3 data-number="4.3.2" class="anchored" data-anchor-id="the-des-worldview"><span class="header-section-number">4.3.2</span> The DES Worldview</h3>
-<p>In a DES simulation, time is not considered to flow like a clock does. Between events, nothing interesting (from the point of view of the simulation) happens, so the next “tick” of the clock actually happens with the next event. In order to be able to manage these discrete jumps, it is usual for DES to maintain a <strong>Future Event List (FEL)</strong>. Intuitively, this is a sort of “To-Do List” where all known future events are sorted chronologically.</p>
+<p>In a DES simulation, time is not considered to flow like a clock does. Between events, nothing interesting (from the point of view of the simulation) happens, so the next “tick” of the clock actually happens with the next event. In order to be able to manage these discrete jumps, it is usual for DES to maintain a <strong>Future Event List (FEL)</strong>. Intuitively, this is a sort of “To-Do List” where all known future events are sorted chronologically <span class="citation" data-cites="banks_discrete-event_2010">(<a href="references.html#ref-banks_discrete-event_2010" role="doc-biblioref">Banks et al. 2013</a>)</span>. In practice, the FEL is implemented as a priority queue, such as a binary heap, so that the next event can be retrieved efficiently <span class="citation" data-cites="jones_empirical_1986 brown_calendar_1988">(<a href="references.html#ref-jones_empirical_1986" role="doc-biblioref">Jones 1986</a>; <a href="references.html#ref-brown_calendar_1988" role="doc-biblioref">R. Brown 1988</a>)</span>.</p>
 <p>The general simulation loop then becomes as follows:</p>
 <ol type="1">
 <li>Check the FEL to find the event with the smalles time stamp.</li>
@@ -669,26 +689,27 @@ L_q=\frac{\lambda^2}{\mu(\mu-\lambda)}
 <li>Generate possible new events and place them into the FEL.</li>
 <li>Repeat until simulation end is reached.</li>
 </ol>
+<p>This scheme is known as <strong>next-event time advance</strong> <span class="citation" data-cites="law_simulation_2015">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015, sec. 1.3</a>)</span>.</p>
 </section>
 <section id="building-a-simulation-study" class="level3" data-number="4.3.3">
 <h3 data-number="4.3.3" class="anchored" data-anchor-id="building-a-simulation-study"><span class="header-section-number">4.3.3</span> Building a Simulation Study</h3>
 <p>A widely held misconception about DES is that “simulation” is synonymous with “coding.” In reality, writing the code is often the shortest phase of a project. A simulation study is a structured systems engineering process. If the conceptualization is flawed or the data is inaccurate, the most sophisticated code in the world will yield useless results.</p>
-<p>To ensure reliability, a simulation study generally follows a standard five-step life cycle.</p>
+<p>To ensure reliability, a simulation study generally follows a standard life cycle, which we condense here into five steps <span class="citation" data-cites="law_simulation_2015 banks_discrete-event_2010 robinson_simulation_2014">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015, sec. 1.7</a>; <a href="references.html#ref-banks_discrete-event_2010" role="doc-biblioref">Banks et al. 2013, sec. 1.12</a>; <a href="references.html#ref-robinson_simulation_2014" role="doc-biblioref">Robinson 2014</a>)</span>.</p>
 <ol type="1">
 <li><p><strong>Problem formulation:</strong> Before we write a single line of code, we must define the objectives and scope of the simulation. What specific question are we trying to answer? (e.g.&nbsp;if we add a new machine, will that bring the total waiting time to under 5 seconds?). What is inside the model, and what is outside? (e.g.&nbsp;do we need to model that materials need some time for disposal, or is this done instantly?).</p></li>
-<li><p><strong>Data collection:</strong> This is typically the most time-consuming and difficult phase, where the goal is to gather real-world data to drive the model. This involves e.g.&nbsp;stopwatch studies, analyzing historical logs, and interviewing subject matter experts.</p></li>
-<li><p><strong>Model translation</strong> This is the phase where the conceptual model is translated into a computer representation (the “coding” phase). This involves defining the entities, resources, and event logic within the chosen simulation software (e.g., SimPy, Arena, AnyLogic, or C++).</p></li>
-<li><p><strong>Verification and validation:</strong> This is the quality control phase. Verification answers the question whether the code does what is intended to do. Comparing the model against Queuing Theory formulas is a primary method of verification. On the other hand, validation is concerned with accuracy, i.e.&nbsp;does the model behave like the real system?</p></li>
+<li><p><strong>Data collection:</strong> This is typically the most time-consuming and difficult phase, where the goal is to gather real-world data to drive the model. This involves e.g.&nbsp;stopwatch studies, analyzing historical logs, and interviewing subject matter experts <span class="citation" data-cites="skoogh_methodology_2008">(<a href="references.html#ref-skoogh_methodology_2008" role="doc-biblioref">Skoogh and Johansson 2008</a>)</span>.</p></li>
+<li><p><strong>Model translation</strong> This is the phase where the conceptual model is translated into a computer representation (the “coding” phase). This involves defining the entities, resources, and event logic within the chosen simulation software (e.g., SimPy <span class="citation" data-cites="simpy_2026">(<a href="references.html#ref-simpy_2026" role="doc-biblioref">Team SimPy 2026</a>)</span>, Arena, AnyLogic, or C++).</p></li>
+<li><p><strong>Verification and validation:</strong> This is the quality control phase. Verification answers the question whether the code does what is intended to do. Comparing the model against Queuing Theory formulas is a primary method of verification. On the other hand, validation is concerned with accuracy, i.e.&nbsp;does the model behave like the real system <span class="citation" data-cites="sargent_verification_2013 balci_verification_1998">(<a href="references.html#ref-sargent_verification_2013" role="doc-biblioref">Sargent 2013</a>; <a href="references.html#ref-balci_verification_1998" role="doc-biblioref">Balci 1998</a>)</span>?</p></li>
 <li><p><strong>Experimentation and analysis:</strong> Once the model is valid, it becomes a virtual laboratory. We run scenarios (e.g., “Increase arrival rate by 20%”) and analyze the resulting output statistics to make specific recommendations.</p></li>
 </ol>
 <p><strong>The Markovian Assumption</strong></p>
 <p>In <a href="#sec-queuing-theory" class="quarto-xref"><span>Section 4.2</span></a>, we relied heavily on the Exponential Distribution (Markovian) because it makes the mathematics solvable. However, in a simulation study, we are not bound by analytical convenience. Instead, we should and must use distributions that closer match reality.</p>
-<p>Specifically, while arrivals do mostly follow a Poisson process (exponential interarrivals), scheduled arrivals do not. Regarding service times, humans are rarely exponential. A highly skilled worker might be consistent with low variance (Normal distribution), while machine repair times often follow a Weibull or Lognormal distribution. In this case, the main recommendation is to fit historical data to a probability curve. If we simply guess the distribution (e.g., assuming a machine always takes exactly 5 minutes when it actually varies between 2 and 12), the simulation results will underestimate the congestion caused by variance.</p>
+<p>Specifically, while arrivals do mostly follow a Poisson process (exponential interarrivals), scheduled arrivals do not. Regarding service times, humans are rarely exponential. A highly skilled worker might be consistent with low variance (Normal distribution), while machine repair times often follow a Weibull or Lognormal distribution. In this case, the main recommendation is to fit historical data to a probability curve <span class="citation" data-cites="law_simulation_2015">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015</a>, Ch. 6)</span>. For instance, service times in call centers have been found to be well described by a lognormal distribution <span class="citation" data-cites="brown_statistical_2005">(<a href="references.html#ref-brown_statistical_2005" role="doc-biblioref">L. Brown et al. 2005</a>)</span>. If we simply guess the distribution (e.g., assuming a machine always takes exactly 5 minutes when it actually varies between 2 and 12), the simulation results will underestimate the congestion caused by variance. Queueing theory quantifies this effect: in heavy traffic, the mean waiting time grows with the sum of the squared coefficients of variation of interarrival and service times <span class="citation" data-cites="kingman_single_1961">(<a href="references.html#ref-kingman_single_1961" role="doc-biblioref">Kingman 1961</a>)</span>.</p>
 </section>
 <section id="analyzing-the-output" class="level3" data-number="4.3.4">
 <h3 data-number="4.3.4" class="anchored" data-anchor-id="analyzing-the-output"><span class="header-section-number">4.3.4</span> Analyzing the Output</h3>
-<p>Analyzing the output of a simulation is fundamentally different from reading a single number. Because DES is driven by random numbers, the output is also a random variable. Therfore, we need to express the results in the language of statistics and probability theory. Specifically, we need to use <strong>confidence intervals</strong>. E.g., instead of saying “The wait time is 10 minutes”, the simulation result should read something like: “We are 95% confident that the true average wait time lies between 9.2 and 10.8 minutes.” This requires running multiple replications (iterations) of the model to generate a statistically significant sample size, and using standard confidence interval tools to calculate the intervals.</p>
-<p>It is also important to define a <strong>Warm-Up Period</strong>. In a steady-state simulation, the model usually starts “empty and idle.” This creates of course an initial bias. If we simulate a busy factory but start with zero parts in the system, the first few simulated hours will show misleadingly low queue times while the factory fills up. To correct this, the Warm-up Period (or transient period) is used to run the simulation for a specific time (e.g., 24 hours) to let the queues build up, delete the statistics from this period, and only collect data once the system reaches a stable state.</p>
+<p>Analyzing the output of a simulation is fundamentally different from reading a single number. Because DES is driven by random numbers, the output is also a random variable. Therfore, we need to express the results in the language of statistics and probability theory. Specifically, we need to use <strong>confidence intervals</strong>. E.g., instead of saying “The wait time is 10 minutes”, the simulation result should read something like: “We are 95% confident that the true average wait time lies between 9.2 and 10.8 minutes.” This requires running multiple replications (iterations) of the model to generate a statistically significant sample size, and using standard confidence interval tools to calculate the intervals <span class="citation" data-cites="law_simulation_2015 alexopoulos_output_1998">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015</a>, Ch. 9; <a href="references.html#ref-alexopoulos_output_1998" role="doc-biblioref">Alexopoulos and Seila 1998</a>)</span>.</p>
+<p>It is also important to define a <strong>Warm-Up Period</strong>. In a steady-state simulation, the model usually starts “empty and idle.” This creates of course an initial bias. If we simulate a busy factory but start with zero parts in the system, the first few simulated hours will show misleadingly low queue times while the factory fills up. To correct this, the Warm-up Period (or transient period) is used to run the simulation for a specific time (e.g., 24 hours) to let the queues build up, delete the statistics from this period, and only collect data once the system reaches a stable state. A classical graphical method to choose the warm-up length is due to <span class="citation" data-cites="welch_statistical_1983">Welch (<a href="references.html#ref-welch_statistical_1983" role="doc-biblioref">1983</a>)</span>; more recent automated procedures and statistical tests for initialization bias are discussed by <span class="citation" data-cites="hoad_automating_2010">Hoad, Robinson, and Davies (<a href="references.html#ref-hoad_automating_2010" role="doc-biblioref">2010</a>)</span> and <span class="citation" data-cites="schruben_optimal_1983">Schruben, Singh, and Tierney (<a href="references.html#ref-schruben_optimal_1983" role="doc-biblioref">1983</a>)</span>.</p>
 </section>
 </section>
 <section id="comparative-study" class="level2" data-number="4.4">
@@ -707,7 +728,7 @@ W_q &amp;= \frac{\lambda}{\mu(\mu-\lambda)}=\frac{5}{6(6-5)}=\frac{5}{6}
 \end{aligned}
 \]</span></p>
 <p>The average number of tickets in the system is 5, and the average waiting time is <span class="math inline">\(5/6\)</span> hours or 50 minutes. Let’s now build an equivalent DES system to replicate these results computationally. We start by defining the system parameters and some helpers:</p>
-<div id="a9cf2064" class="cell" data-execution_count="1">
+<div id="5f44f559" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> heapq  </span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -734,7 +755,7 @@ W_q &amp;= \frac{\lambda}{\mu(\mu-\lambda)}=\frac{5}{6(6-5)}=\frac{5}{6}
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    heapq.heappush(fel, (time, event_type))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The main simulation loop can be implemented as follows:</p>
-<div id="b53ff8e1" class="cell" data-execution_count="2">
+<div id="e67e4167" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_simulation():</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> clock, server_busy, total_customers_served, area_q_t, last_event_time, warmup_cleared</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -794,9 +815,9 @@ W_q &amp;= \frac{\lambda}{\mu(\mu-\lambda)}=\frac{5}{6(6-5)}=\frac{5}{6}
 <span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Simulated L (Avg in System): </span><span class="sc">{</span>L_sim<span class="sc">:.4f}</span><span class="ss"> tickets"</span>)</span>
 <span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Simulated Wq (Avg Wait in Queue): </span><span class="sc">{</span>Wq_sim<span class="sc">:.4f}</span><span class="ss"> min"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The FEL is implemented using the <code>fel</code> variable. We start by scheduling the first arrival and entering the main loop. We then extract the first element from the FEL. If the server happens to be busy, we queue the element and schedule the next arrival. Otherwise, we serve the element and schedule its departure from the system. The departure event schedules the next departure if there are still elements waiting in the queue, otherwise it sets the state variable <code>server_busy</code> again to <code>False</code>. Note that we are calculating <code>L_sim</code> (the simulated length of the system) by just calculating the area under the curve that describes the current length of the system and dividing by the total time to get the average. The other quantities are given by Little’s Law.</p>
+<p>The FEL is implemented using the <code>fel</code> variable. We start by scheduling the first arrival and entering the main loop. We then extract the first element from the FEL. If the server happens to be busy, we queue the element and schedule the next arrival. Otherwise, we serve the element and schedule its departure from the system. The departure event schedules the next departure if there are still elements waiting in the queue, otherwise it sets the state variable <code>server_busy</code> again to <code>False</code>. Note that we are calculating <code>L_sim</code> (the simulated length of the system) by just calculating the area under the curve that describes the current length of the system and dividing by the total time to get the average <span class="citation" data-cites="law_simulation_2015">(<a href="references.html#ref-law_simulation_2015" role="doc-biblioref">Law 2015, sec. 1.4</a>)</span>. The other quantities are given by Little’s Law.</p>
 <p>We now run the simulation</p>
-<div id="bf3f4e5b" class="cell" data-execution_count="3">
+<div id="be15f54e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>run_simulation()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>--- Simulation Results (Steady State Only) ---
@@ -824,6 +845,101 @@ Simulated Wq (Avg Wait in Queue): 56.4742 min</code></pre>
 </ol>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-alexopoulos_output_1998" class="csl-entry" role="listitem">
+Alexopoulos, Christos, and Andrew F. Seila. 1998. <span>“Output <span>Data</span> <span>Analysis</span>.”</span> In <em>Handbook of <span>Simulation</span>: <span>Principles</span>, <span>Methodology</span>, <span>Advances</span>, <span>Applications</span>, and <span>Practice</span></em>, edited by Jerry Banks, 225–72. New York: Wiley. <a href="https://doi.org/10.1002/9780470172445.ch7">https://doi.org/10.1002/9780470172445.ch7</a>.
+</div>
+<div id="ref-ancker_queuing_1963" class="csl-entry" role="listitem">
+Ancker, C. J., and A. V. Gafarian. 1963. <span>“Some <span>Queuing</span> <span>Problems</span> with <span>Balking</span> and <span>Reneging</span>. <span>I</span>.”</span> <em>Operations Research</em> 11 (1): 88–100. <a href="https://doi.org/10.1287/opre.11.1.88">https://doi.org/10.1287/opre.11.1.88</a>.
+</div>
+<div id="ref-balci_verification_1998" class="csl-entry" role="listitem">
+Balci, Osman. 1998. <span>“Verification, <span>Validation</span>, and <span>Testing</span>.”</span> In <em>Handbook of <span>Simulation</span>: <span>Principles</span>, <span>Methodology</span>, <span>Advances</span>, <span>Applications</span>, and <span>Practice</span></em>, edited by Jerry Banks, 335–93. New York: Wiley. <a href="https://doi.org/10.1002/9780470172445.ch10">https://doi.org/10.1002/9780470172445.ch10</a>.
+</div>
+<div id="ref-banks_discrete-event_2010" class="csl-entry" role="listitem">
+Banks, Jerry, John S. Carson, Barry L. Nelson, and David M. Nicol. 2013. <em>Discrete-<span>Event</span> <span>System</span> <span>Simulation</span></em>. 5th ed. Upper Saddle River, NJ: Pearson.
+</div>
+<div id="ref-brown_statistical_2005" class="csl-entry" role="listitem">
+Brown, Lawrence, Noah Gans, Avishai Mandelbaum, Anat Sakov, Haipeng Shen, Sergey Zeltyn, and Linda Zhao. 2005. <span>“Statistical <span>Analysis</span> of a <span>Telephone</span> <span>Call</span> <span>Center</span>: <span>A</span> <span>Queueing</span>-<span>Science</span> <span>Perspective</span>.”</span> <em>Journal of the American Statistical Association</em> 100 (469): 36–50. <a href="https://doi.org/10.1198/016214504000001808">https://doi.org/10.1198/016214504000001808</a>.
+</div>
+<div id="ref-brown_calendar_1988" class="csl-entry" role="listitem">
+Brown, Randy. 1988. <span>“Calendar Queues: A Fast <span>O</span>(1) Priority Queue Implementation for the Simulation Event Set Problem.”</span> <em>Communications of the ACM</em> 31 (10): 1220–27. <a href="https://doi.org/10.1145/63039.63045">https://doi.org/10.1145/63039.63045</a>.
+</div>
+<div id="ref-erlang_solution_1917" class="csl-entry" role="listitem">
+Erlang, Agner Krarup. 1917. <span>“Løsning Af Nogle <span>Problemer</span> Fra <span>Sandsynlighedsregningen</span> Af <span>Betydning</span> for de Automatiske <span>Telefoncentraler</span>.”</span> <em>Elektroteknikeren</em> 13: 5–13.
+</div>
+<div id="ref-fishman_discrete-event_2001" class="csl-entry" role="listitem">
+Fishman, George S. 2001. <em>Discrete-<span>Event</span> <span>Simulation</span>: <span>Modeling</span>, <span>Programming</span>, and <span>Analysis</span></em>. Springer <span>Series</span> in <span>Operations</span> <span>Research</span>. New York: Springer. <a href="https://doi.org/10.1007/978-1-4757-3552-9">https://doi.org/10.1007/978-1-4757-3552-9</a>.
+</div>
+<div id="ref-green_coping_2007" class="csl-entry" role="listitem">
+Green, Linda V., Peter J. Kolesar, and Ward Whitt. 2007. <span>“Coping with <span>Time</span>-<span>Varying</span> <span>Demand</span> <span>When</span> <span>Setting</span> <span>Staffing</span> <span>Requirements</span> for a <span>Service</span> <span>System</span>.”</span> <em>Production and Operations Management</em> 16 (1): 13–39. <a href="https://doi.org/10.1111/j.1937-5956.2007.tb00164.x">https://doi.org/10.1111/j.1937-5956.2007.tb00164.x</a>.
+</div>
+<div id="ref-gunal_discrete_2010" class="csl-entry" role="listitem">
+Günal, Murat M., and Michael Pidd. 2010. <span>“Discrete Event Simulation for Performance Modelling in Health Care: A Review of the Literature.”</span> <em>Journal of Simulation</em> 4 (1): 42–51. <a href="https://doi.org/10.1057/jos.2009.25">https://doi.org/10.1057/jos.2009.25</a>.
+</div>
+<div id="ref-hillier_introduction_2021" class="csl-entry" role="listitem">
+Hillier, Frederick S., and Gerald J. Lieberman. 2021. <em>Introduction to <span>Operations</span> <span>Research</span></em>. 11th ed. New York: McGraw-Hill Education.
+</div>
+<div id="ref-hoad_automating_2010" class="csl-entry" role="listitem">
+Hoad, Kathryn, Stewart Robinson, and Ruth Davies. 2010. <span>“Automating Warm-up Length Estimation.”</span> <em>Journal of the Operational Research Society</em> 61 (9): 1389–1403. <a href="https://doi.org/10.1057/jors.2009.87">https://doi.org/10.1057/jors.2009.87</a>.
+</div>
+<div id="ref-jones_empirical_1986" class="csl-entry" role="listitem">
+Jones, Douglas W. 1986. <span>“An Empirical Comparison of Priority-Queue and Event-Set Implementations.”</span> <em>Communications of the ACM</em> 29 (4): 300–311. <a href="https://doi.org/10.1145/5684.5686">https://doi.org/10.1145/5684.5686</a>.
+</div>
+<div id="ref-kendall_stochastic_1953" class="csl-entry" role="listitem">
+Kendall, David G. 1953. <span>“Stochastic <span>Processes</span> <span>Occurring</span> in the <span>Theory</span> of <span>Queues</span> and Their <span>Analysis</span> by the <span>Method</span> of the <span>Imbedded</span> <span>Markov</span> <span>Chain</span>.”</span> <em>The Annals of Mathematical Statistics</em> 24 (3): 338–54. <a href="https://doi.org/10.1214/aoms/1177728975">https://doi.org/10.1214/aoms/1177728975</a>.
+</div>
+<div id="ref-kingman_single_1961" class="csl-entry" role="listitem">
+Kingman, J. F. C. 1961. <span>“The Single Server Queue in Heavy Traffic.”</span> <em>Mathematical Proceedings of the Cambridge Philosophical Society</em> 57 (4): 902–4. <a href="https://doi.org/10.1017/S0305004100036094">https://doi.org/10.1017/S0305004100036094</a>.
+</div>
+<div id="ref-kleinrock_queueing_1975" class="csl-entry" role="listitem">
+Kleinrock, Leonard. 1975. <em>Queueing <span>Systems</span>, <span>Volume</span> 1: <span>Theory</span></em>. New York: Wiley.
+</div>
+<div id="ref-law_simulation_2015" class="csl-entry" role="listitem">
+Law, Averill M. 2015. <em>Simulation <span>Modeling</span> and <span>Analysis</span></em>. 5th ed. New York: McGraw-Hill Education.
+</div>
+<div id="ref-little_proof_1961" class="csl-entry" role="listitem">
+Little, John D. C. 1961. <span>“A <span>Proof</span> for the <span>Queuing</span> <span>Formula</span>: <span>L</span> = λ<span>W</span>.”</span> <em>Operations Research</em> 9 (3): 383–87. <a href="https://doi.org/10.1287/opre.9.3.383">https://doi.org/10.1287/opre.9.3.383</a>.
+</div>
+<div id="ref-little_littles_2011" class="csl-entry" role="listitem">
+———. 2011. <span>“Little’s <span>Law</span> as <span>Viewed</span> on <span>Its</span> 50th <span>Anniversary</span>.”</span> <em>Operations Research</em> 59 (3): 536–49. <a href="https://doi.org/10.1287/opre.1110.0940">https://doi.org/10.1287/opre.1110.0940</a>.
+</div>
+<div id="ref-loynes_stability_1962" class="csl-entry" role="listitem">
+Loynes, R. M. 1962. <span>“The Stability of a Queue with Non-Independent Inter-Arrival and Service Times.”</span> <em>Mathematical Proceedings of the Cambridge Philosophical Society</em> 58 (3): 497–520. <a href="https://doi.org/10.1017/S0305004100036781">https://doi.org/10.1017/S0305004100036781</a>.
+</div>
+<div id="ref-nance_time_1981" class="csl-entry" role="listitem">
+Nance, Richard E. 1981. <span>“The Time and State Relationships in Simulation Modeling.”</span> <em>Communications of the ACM</em> 24 (4): 173–79. <a href="https://doi.org/10.1145/358598.358601">https://doi.org/10.1145/358598.358601</a>.
+</div>
+<div id="ref-negahban_simulation_2014" class="csl-entry" role="listitem">
+Negahban, Ashkan, and Jeffrey S. Smith. 2014. <span>“Simulation for Manufacturing System Design and Operation: <span>Literature</span> Review and Analysis.”</span> <em>Journal of Manufacturing Systems</em> 33 (2): 241–61. <a href="https://doi.org/10.1016/j.jmsy.2013.12.007">https://doi.org/10.1016/j.jmsy.2013.12.007</a>.
+</div>
+<div id="ref-riley_ns-3_2010" class="csl-entry" role="listitem">
+Riley, George F., and Thomas R. Henderson. 2010. <span>“The Ns-3 <span>Network</span> <span>Simulator</span>.”</span> In <em>Modeling and <span>Tools</span> for <span>Network</span> <span>Simulation</span></em>, edited by Klaus Wehrle, Mesut Güneş, and James Gross, 15–34. Berlin, Heidelberg: Springer. <a href="https://doi.org/10.1007/978-3-642-12331-3_2">https://doi.org/10.1007/978-3-642-12331-3_2</a>.
+</div>
+<div id="ref-robinson_simulation_2014" class="csl-entry" role="listitem">
+Robinson, Stewart. 2014. <em>Simulation: <span>The</span> <span>Practice</span> of <span>Model</span> <span>Development</span> and <span>Use</span></em>. 2nd ed. Basingstoke: Palgrave Macmillan.
+</div>
+<div id="ref-sargent_verification_2013" class="csl-entry" role="listitem">
+Sargent, Robert G. 2013. <span>“Verification and Validation of Simulation Models.”</span> <em>Journal of Simulation</em> 7 (1): 12–24. <a href="https://doi.org/10.1057/jos.2012.20">https://doi.org/10.1057/jos.2012.20</a>.
+</div>
+<div id="ref-schruben_optimal_1983" class="csl-entry" role="listitem">
+Schruben, Lee, Hari Singh, and Lynne Tierney. 1983. <span>“Optimal <span>Tests</span> for <span>Initialization</span> <span>Bias</span> in <span>Simulation</span> <span>Output</span>.”</span> <em>Operations Research</em> 31 (6): 1167–78. <a href="https://doi.org/10.1287/opre.31.6.1167">https://doi.org/10.1287/opre.31.6.1167</a>.
+</div>
+<div id="ref-shortle_fundamentals_2018" class="csl-entry" role="listitem">
+Shortle, John F., James M. Thompson, Donald Gross, and Carl M. Harris. 2018. <em>Fundamentals of <span>Queueing</span> <span>Theory</span></em>. 5th ed. Wiley <span>Series</span> in <span>Probability</span> and <span>Statistics</span>. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/9781119453765">https://doi.org/10.1002/9781119453765</a>.
+</div>
+<div id="ref-skoogh_methodology_2008" class="csl-entry" role="listitem">
+Skoogh, Anders, and Björn Johansson. 2008. <span>“A Methodology for Input Data Management in Discrete Event Simulation Projects.”</span> In <em>Proceedings of the 2008 <span>Winter</span> <span>Simulation</span> <span>Conference</span></em>, 1727–35. IEEE. <a href="https://doi.org/10.1109/WSC.2008.4736259">https://doi.org/10.1109/WSC.2008.4736259</a>.
+</div>
+<div id="ref-stidham_last_1974" class="csl-entry" role="listitem">
+Stidham, Shaler. 1974. <span>“A <span>Last</span> <span>Word</span> on <span>L</span> = λ<span>W</span>.”</span> <em>Operations Research</em> 22 (2): 417–21. <a href="https://doi.org/10.1287/opre.22.2.417">https://doi.org/10.1287/opre.22.2.417</a>.
+</div>
+<div id="ref-simpy_2026" class="csl-entry" role="listitem">
+Team SimPy. 2026. <span>“<span>SimPy</span>: <span>Discrete</span> Event Simulation for <span>Python</span>.”</span> <a href="https://simpy.readthedocs.io/">https://simpy.readthedocs.io/</a>.
+</div>
+<div id="ref-welch_statistical_1983" class="csl-entry" role="listitem">
+Welch, Peter D. 1983. <span>“The Statistical Analysis of Simulation Results.”</span> In <em>Computer <span>Performance</span> <span>Modeling</span> <span>Handbook</span></em>, edited by Stephen S. Lavenberg, 268–328. New York: Academic Press.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
