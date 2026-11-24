@@ -22,10 +22,10 @@ leading to the formation of *queues*.
 
 We utilize DES when analytical solutions are mathematically intractable. For example, calculating the average wait time in a bank with one line and one teller is a simple mathematical exercise. However, if that bank has varying arrival rates depending on the time of day, tellers who take lunch breaks, and customers who may leave (balk) if the line is too long, the mathematical formulas break down [@green_coping_2007; @ancker_queuing_1963]. DES allows us to mimic this complex reality inside a computer to answer "What if?" questions without disrupting actual operations.
 
-Note that Monte Carlo simulation can be considered in general as **static**. It evaluates a problem at a single point in time or across a timeless dimension. For instance, estimating the value of $\pi$ by dropping distinct pins on a grid is a Monte Carlo experiment. It provides a probabilistic outcome of a specific scenario but does not model how that scenario evolves. By contrast, DES is **dynamic**, creating a history of the system operation over a duration [@law_simulation_2015, Sec. 1.2].
+Note that Monte Carlo simulation can be considered in general as **static**. It evaluates a problem at a single point in time or across a timeless dimension. For instance, estimating the value of $\pi$ by throwing darts in a square is a Monte Carlo experiment. It provides a probabilistic outcome of a specific scenario but does not model how that scenario evolves. By contrast, DES is **dynamic**, creating a history of the system operation over a duration [@law_simulation_2015, Sec. 1.2].
 
 The mathematical foundation that represents the basis for DES is called **Queuing Theory**. It underpins the
-computational engine used by DES to solve complex simulation problems. Queuing Theory provides the analytical framework for understanding waiting lines. It offers exact mathematical formulas to predict performance measures such as server utilization or and average waiting times under specific, idealized assumptions (e.g., purely random arrivals and service times) [@kleinrock_queueing_1975; @shortle_fundamentals_2018]. Its origins go back to the work of A. K. Erlang on telephone traffic [@erlang_solution_1917].
+computational engine used by DES to solve complex simulation problems. Queuing Theory provides the analytical framework for understanding waiting lines. It offers exact mathematical formulas to predict performance measures such as server utilization or average waiting times under specific, idealized assumptions (e.g., purely random arrivals and service times) [@kleinrock_queueing_1975; @shortle_fundamentals_2018]. Its origins go back to the work of A. K. Erlang on telephone traffic [@erlang_solution_1917].
 
 In this chapter, we will introduce the fundamentals of Queuing Theory that will serve as a framework to 
 understand the principles of DES. While Queuing Theory provides the "laws of physics" for the system at hand,
@@ -69,7 +69,7 @@ Queuing systems can vary in some specific ways: for instance, different arrival 
 describe these different modalities, we will use a formal notation called **Kendall's Notation** [@kendall_stochastic_1953]. This notation is based
 on three components in the format **$A/B/c$**. Each of these components represent the following characteristics:
 
-- **$A$:** Denotes the probability distribution of the *arrival* times.
+- **$A$:** Denotes the probability distribution of the *interarrival* times.
 - **$B$:** Denotes the probability distribution of the *service* times.
 - **$c$:** Denotes the number of parallel channels available (e.g. number of servers).
 
@@ -100,8 +100,8 @@ $$
 \rho=\frac{\lambda}{c\mu}
 $$
 
-Note that if the arrival rate exceeds the service rate, the queue size diverges to infinity (i.e. the condition 
-$\rho < 1$ is a sufficient condition for stability) [@loynes_stability_1962].
+Note that if the arrival rate exceeds or equals the service rate, the queue size diverges to infinity (the condition 
+$\rho < 1$ is a necessary condition for stability) [@loynes_stability_1962].
 
 **State metrics**
 
@@ -289,7 +289,7 @@ materials need some time for disposal, or is this done instantly?).
 
 In @sec-queuing-theory, we relied heavily on the Exponential Distribution (Markovian) because it makes the mathematics solvable. However, in a simulation study, we are not bound by analytical convenience. Instead, we should and must use distributions that closer match reality.
 
-Specifically, while arrivals do mostly follow a Poisson process (exponential interarrivals), scheduled arrivals do not. Regarding service times, humans are rarely exponential. A highly skilled worker might be consistent with low variance (Normal distribution), while machine repair times often follow a Weibull or Lognormal distribution. In this case, the main recommendation is to fit historical data to a probability curve [@law_simulation_2015, Ch. 6]. For instance, service times in call centers have been found to be well described by a lognormal distribution [@brown_statistical_2005]. If we simply guess the distribution (e.g., assuming a machine always takes exactly 5 minutes when it actually varies between 2 and 12), the simulation results will underestimate the congestion caused by variance. Queueing theory quantifies this effect: in heavy traffic, the mean waiting time grows with the sum of the squared coefficients of variation of interarrival and service times [@kingman_single_1961].
+Specifically, while arrivals do mostly follow a Poisson process (exponential interarrivals), scheduled arrivals do not. Regarding service times, humans are rarely exponential. A highly skilled worker might be consistent with low variance (lognormal distribution), while machine repair times often follow a Weibull or Lognormal distribution. In this case, the main recommendation is to fit historical data to a probability curve [@law_simulation_2015, Ch. 6]. For instance, service times in call centers have been found to be well described by a lognormal distribution [@brown_statistical_2005]. If we simply guess the distribution (e.g., assuming a machine always takes exactly 5 minutes when it actually varies between 2 and 12), the simulation results will underestimate the congestion caused by variance. Queueing theory quantifies this effect: in heavy traffic, the mean waiting time grows with the sum of the squared coefficients of variation of interarrival and service times [@kingman_single_1961].
 
 ### Analyzing the Output
 
@@ -339,7 +339,6 @@ queue = []  # Stores arrival times of waiting customers
 server_busy = False
 fel = []  # Future Event List
 
-total_wait_time = 0.0
 total_customers_served = 0
 area_q_t = 0.0  # Area under Queue Length curve (for calculating Lq)
 last_event_time = 0.0
@@ -433,7 +432,7 @@ will the system get to the true analytical results. Note that we are discarding 
 `WARMUP_TIME` so that the system has enough time to leave the initial, empty state and reach a steady state.
 
 However, what is then the point of DES, if we can calculate everything analytically? The reason is that, in practice,
-very often we can't. For instance, imagine that additionally we have the rule that the technician takes a 10-minute break every 2 hours, but only if no high-priority tickets are waiting. Queuing Theory can't handle this problem, so we need to resort to DES instead. In the simulation code, it would be enough to add some additional logic to model this case accurately.
+very often we can't. For instance, imagine that additionally we have the rule that the technician takes a 10-minute break every 2 hours, but only if no high-priority tickets are waiting. Queuing Theory can't handle this problem in a practical way, so we need to resort to DES instead. In the simulation code, it would be enough to add some additional logic to model this case accurately.
 
 ## Summary
 
@@ -444,7 +443,7 @@ However, we also demonstrated that simulation is not a replacement for theory, b
 
 ## Exercises
 
-1. Consider a cloud computing server that processes requests (jobs). The arrivals follow a Poisson distribution with a mean rate of $\lambda$ jobs per minute, and the service times are exponentially distributed with a mean rate of $\mu$ jobs per minute. Assume $\lambda=4$ jobs/min and $\mu=5$ jobs/min. Calculate the utilization factor $\rho$, the 
+1. Consider a cloud computing server that processes requests (jobs). The arrivals follow a Poisson process with rate $\lambda$ jobs per minute, and the service times are exponentially distributed with a mean rate of $\mu$ jobs per minute. Assume $\lambda=4$ jobs/min and $\mu=5$ jobs/min. Calculate the utilization factor $\rho$, the 
 average waiting time in the queue $W_q$ and the average number of jobs in the system $L$.
 
 2. Due to a marketing campaign, the arrival rate increases slightly to $\lambda=4.8$ jobs/min. The server speeds remains at $\mu=5$. Calculate the new average waiting time in the queue $W_q$. By what percentage did the waiting time increase? Compare it to the traffic increase and explain the difference.
