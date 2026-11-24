@@ -234,7 +234,7 @@ $$
 And now we calculate the Pearson correlation coefficient between $S_1$ and $S_2$.
 
 $$
-r=\frac{\sum (S_1-\bar{S_1})(S_2-\bar{S_2})}{\sqrt{\sum (S_1-\bar{S_1})^2(S_2-\bar{S_2})^2}}
+r=\frac{\sum (S_1-\bar{S_1})(S_2-\bar{S_2})}{\sqrt{\sum (S_1-\bar{S_1})^2\sum (S_2-\bar{S_2})^2}}
 $$
 
 Our goal is that $r$ is as close to zero as possible (note that $r\in[-1,1]$). Let's use 
@@ -267,7 +267,6 @@ The de-facto standard for pseudorandom number generation in practice is the algo
 known as the **Mersenne Twister**. This is the default generator used in Python or MATLAB [@matsumoto_mersenne_1998; @python_random_2026], 
 and the preferred one for simulation purposes (but *not* for cryptographic purposes). Newer libraries have started to adopt more recent generators; for instance, NumPy's `default_rng` uses the PCG64 generator [@oneill_pcg_2014; @harris_array_2020]. The 
 basic idea is to use a highly non-linear twisted generalized feedback shift register [@matsumoto_twisted_1992; @matsumoto_mersenne_1998]. 
-Apart from being much faster than LCG, it passes the serial correlation chek with flying colors:
 
 ```{python}
 import random
@@ -289,7 +288,7 @@ which is an order of magnitude better than the LCG.
 We have now a method for generating *uniformly distributed* random numbers. But what about other 
 widely used distributions, like normal, exponential, Poisson, etc? In this section, we will review 
 three popular methods for this purpose: the **inversion method**, the **rejection sampling** method, the **Box-Muller transform** and 
-the **mixture method**. For all three methods, the general problem is as follows: we start 
+the **mixture method**. For all four methods, the general problem is as follows: we start 
 with a random variable $U \sim \text{ Uniform}(0,1)$. We want to convert $U$ into $X \sim f(x)$, 
 where $f$ is the target PDF of $X$. The standard reference on these methods is @devroye_non-uniform_1986.
 
@@ -305,7 +304,7 @@ X=F^{-1}(U)
 $$ {#eq-inv}
 
 For instance, imagine our target distribution is the exponential, with density function
-$f(x)=\lambda e^{-\lambda x}$. Elementary calculus tells us that $F(x)=1-e^{\lambda x}$. 
+$f(x)=\lambda e^{-\lambda x}$. Elementary calculus tells us that $F(x)=1-e^{-\lambda x}$. 
 It can be shown that the inverse is
 
 $$
@@ -330,7 +329,7 @@ This method goes back to @von_neumann_various_1951. On average, $c$ candidates a
 
 The trick now is to take a *bounded* uniform distribution as $g$ that contains our target 
 distribution $f$. Once we have this, we can generate samples from virtually any 
-probability distribution without requiring its CDF or inverse.
+probability distribution (with bounded support) without requiring its CDF or inverse.
 
 **Box-Muller transform**
 
@@ -359,7 +358,7 @@ Then we can use the following method, also known as the *composition method*, to
 
 * Choose randomly an index $i\in I$ from the set of indices $I=\{1,2,\dots,k\}$. This is done by
 generating a random number $u \sim U(0,1)$ and choosing the least index $j$ so that 
-$\sum_{i=1}^j p_i < u$.
+$\sum_{i=1}^j p_i \ge u$.
 * Generate a random variable $x$ from $f_i(x)$ by using any of the aforementioned methods.
 
 This is a suitable method, for instance, to generate random numbers that follow a 
@@ -611,7 +610,7 @@ plt.plot(event_times, cumulative_counts, drawstyle='steps-post', color='darkoran
 # Plot the expected count line
 plt.axhline(RATE_LAMBDA * MAX_TIME, color='gray', linestyle='--', alpha=0.6, label='Expected Final Count')
 
-plt.title(f'Poisson Counting Process $N(t)$ with $lambda = {RATE_LAMBDA}$')
+plt.title(f'Poisson Counting Process $N(t)$ with $\\lambda = {RATE_LAMBDA}$')
 plt.xlabel('Time (t)')
 plt.ylabel('Number of Events ($N(t)$)')
 plt.xlim(0, MAX_TIME)
@@ -768,7 +767,7 @@ rate of moving* from state $i$ to $j$. Our parameter $q_i$ becomes then $q_i=\su
 convert this into a transition probability $P_{ij}$ using $P_{ij}=\frac{q_{ij}}{q_i}$. Instead of talking 
 about a transition matrix $\mathbf{P}$, we define a **rate** or **Q-Matrix** $\mathbf{Q}$ where 
 $Q_{ij}=q_{ij}$ for $i\neq j$ and $Q_{ii}=-q_i$ (the diagonal elements are defined with a minus
-sign because we want the sum of each row -the sum of leaving and entering state $i$- to be 0).
+sign because we want the sum of each row to be 0).
 
 We can simulate a continuous-time Markov chain in the following way, which is essentially the *stochastic simulation algorithm* of @gillespie_exact_1977:
 
@@ -882,7 +881,7 @@ in the operational state, the machine stays there for longer periods.
 
 **Continuous-State Markov Processes**
 
-The last important case we need to take a closer look at is when the state space $S$ is **continuous**.
+The last important case we need to take a closer look at is when the state space $S$ is 
 a continuous range of values, such as the position of a particle in space, the temperature of a system, or the level of a reservoir. In this case, the process is often described by a **stochastic differential equation (SDE)**, which governs the evolution of the state over time [@oksendal_stochastic_2003]. The time parameter can 
 be in this case either discrete or continuous, so the corresponding considerations apply. The main
 challenge is how to deal with state transition probabilities. For this purpose, the most 
@@ -907,13 +906,13 @@ denote this process by $W(t)$. The defining characteristic of a Brownian motion 
 its increments are **normally distributed** and **independent of the past**.
 
 $$
-W(t+s) - W(s) \sim N(0, t-s)
+W(t+s) - W(s) \sim N(0, t)
 $$ {#eq-brownian-motion}
 
 There are many practical applications of this type of process. In finance, the Brownian motion is used to model option pricing (the **Black-Scholes** equation) [@black_pricing_1973].
 In polymer physics, the random, wriggling moving of a long-chain polymer molecule in a solvent 
 can be well modeled using the Brownian motion [@rouse_theory_1953]. In audio engineering and signal processing,
-it can be used for random noise generation (white and pink noise).
+it can be used for random noise generation.
 
 **Simulation example**
 

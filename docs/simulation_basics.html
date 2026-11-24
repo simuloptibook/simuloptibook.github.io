@@ -546,7 +546,7 @@ window.Quarto = {
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="pseudorandom-number-generators"><span class="header-section-number">2.2.1</span> Pseudorandom Number Generators</h3>
 <p>In general, any procedure to generate random numbers is called a <em>pseudorandom number generator</em> (PRNG). A PRNG can be defined as a deterministic algorithm that, given an initial seed, produces a long sequence of numbers that mimic the statistical properties of truly random samples. Although the sequence is fully determined by the seed (so it is not truly random, hence <em>pseudorandom</em>), a good PRNG yields values that are uniformly distributed, have minimal serial correlation, and pass standard statistical tests <span class="citation" data-cites="knuth_art_1997 lecuyer_testu01_2007">(<a href="references.html#ref-knuth_art_1997" role="doc-biblioref">Knuth 1997</a>, Ch. 3; <a href="references.html#ref-lecuyer_testu01_2007" role="doc-biblioref">L’Ecuyer and Simard 2007</a>)</span>. Important PRNG properties include period length, equidistribution, independence, speed, and reproducibility (the same seed reproduces the same sequence). For simulation work we typically prefer generators with very long periods and strong statistical quality while cryptographic applications require cryptographically secure PRNGs <span class="citation" data-cites="barker_recommendation_2015">(<a href="references.html#ref-barker_recommendation_2015" role="doc-biblioref">Barker and Kelsey 2015</a>)</span>. PRNGs are used to produce uniform variates that are then transformed into other distributions via methods such as inverse transform sampling, acceptance–rejection, or composition <span class="citation" data-cites="devroye_non-uniform_1986">(<a href="references.html#ref-devroye_non-uniform_1986" role="doc-biblioref">Devroye 1986</a>)</span>. A historical overview of uniform PRNGs can be found in <span class="citation" data-cites="lecuyer_history_2017">L’Ecuyer (<a href="references.html#ref-lecuyer_history_2017" role="doc-biblioref">2017</a>)</span>.</p>
 <p>Let’s explore the properties of a specific PRNG, the Linear Congruential Generator (LCG) using the following Python code.</p>
-<div id="141919cf" class="cell" data-execution_count="1">
+<div id="56ab02e4" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> chisquare</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
@@ -591,7 +591,7 @@ X_{n+1} = (a X_n + c) \operatorname{mod} m
 \tag{2.1}\]</span></span></p>
 <p>Starting at <span class="math inline">\(n=0\)</span>, we initialize <span class="math inline">\(X_0\)</span> to the random seed provided.</p>
 <p>We can now use the generator as follows:</p>
-<div id="2155f661" class="cell" data-execution_count="2">
+<div id="abc66653" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LCG Parameters (a 'poor' LCG to highlight the deterministic nature)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A small modulus (m) leads to a short period and visible patterns.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>SEED <span class="op">=</span> <span class="dv">42</span></span>
@@ -611,7 +611,7 @@ X_{n+1} = (a X_n + c) \operatorname{mod} m
 <p>We have now generated 100000 random numbers using LCG (only first 10 are shown). But how can we ensure if this PRNG works well in practice? We will look now at the <strong>period length</strong>, how to check for <strong>uniformity</strong> and how to assert if there is <strong>serial correlation</strong>.</p>
 <p><strong>Period length</strong></p>
 <p>The period length assesses the number of values generated before the sequence of states returns to the first value (the starting state) for the first time. Note that in general the longer, the better. Note that in this case, the maximum possible period is <span class="math inline">\(m\)</span>, the modulo of the generator. We can calculate this with a simple Python function as follows:</p>
-<div id="d8c0cd06" class="cell" data-execution_count="3">
+<div id="1000ec37" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_period(lcg_generator):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Calculates the period (cycle length) of the LCG.</span></span>
@@ -653,7 +653,7 @@ X_{n+1} = (a X_n + c) \operatorname{mod} m
 \chi^2=\sum_{i=1}^k\frac{(O_i-E_i)^2}{E_i}
 \]</span></p>
 <p>We can use the following Python function:</p>
-<div id="e0a3c2a5" class="cell" data-execution_count="4">
+<div id="6f60b45f" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> chi_squared_uniformity_test(data_float, num_bins<span class="op">=</span><span class="dv">10</span>):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Statistical Test: Chi-Squared Goodness-of-Fit Test for Uniformity.</span></span>
@@ -693,10 +693,10 @@ S_2 &amp; = \{X_2,X_3,X_4,\dots,X_n\}
 \]</span></p>
 <p>And now we calculate the Pearson correlation coefficient between <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span>.</p>
 <p><span class="math display">\[
-r=\frac{\sum (S_1-\bar{S_1})(S_2-\bar{S_2})}{\sqrt{\sum (S_1-\bar{S_1})^2(S_2-\bar{S_2})^2}}
+r=\frac{\sum (S_1-\bar{S_1})(S_2-\bar{S_2})}{\sqrt{\sum (S_1-\bar{S_1})^2\sum (S_2-\bar{S_2})^2}}
 \]</span></p>
 <p>Our goal is that <span class="math inline">\(r\)</span> is as close to zero as possible (note that <span class="math inline">\(r\in[-1,1]\)</span>). Let’s use the following code:</p>
-<div id="92d2a915" class="cell" data-execution_count="5">
+<div id="40afbf86" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> serial_correlation_check(data_float):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Characterization: Autocorrelation (Serial Correlation) Check.</span></span>
@@ -719,8 +719,8 @@ r=\frac{\sum (S_1-\bar{S_1})(S_2-\bar{S_2})}{\sqrt{\sum (S_1-\bar{S_1})^2(S_2-\b
 <pre><code>The lag 1 correlation coefficient is 0.008943629579226285</code></pre>
 </div>
 </div>
-<p>While the value is low, it’s not as close to zero as it should, which is a known weakness of the LCG (the generated numbers tend to fall onto a number of parallel hyperplanes) <span class="citation" data-cites="marsaglia_random_1968">(<a href="references.html#ref-marsaglia_random_1968" role="doc-biblioref">Marsaglia 1968</a>)</span>. This is the reason why PRNGs like the LCG are not normally used in practice. The de-facto standard for pseudorandom number generation in practice is the algorithm known as the <strong>Mersenne Twister</strong>. This is the default generator used in Python or MATLAB <span class="citation" data-cites="matsumoto_mersenne_1998 python_random_2026">(<a href="references.html#ref-matsumoto_mersenne_1998" role="doc-biblioref">Matsumoto and Nishimura 1998</a>; <a href="references.html#ref-python_random_2026" role="doc-biblioref">Python Software Foundation 2026</a>)</span>, and the preferred one for simulation purposes (but <em>not</em> for cryptographic purposes). Newer libraries have started to adopt more recent generators; for instance, NumPy’s <code>default_rng</code> uses the PCG64 generator <span class="citation" data-cites="oneill_pcg_2014 harris_array_2020">(<a href="references.html#ref-oneill_pcg_2014" role="doc-biblioref">O’Neill 2014</a>; <a href="references.html#ref-harris_array_2020" role="doc-biblioref">Harris et al. 2020</a>)</span>. The basic idea is to use a highly non-linear twisted generalized feedback shift register <span class="citation" data-cites="matsumoto_twisted_1992 matsumoto_mersenne_1998">(<a href="references.html#ref-matsumoto_twisted_1992" role="doc-biblioref">Matsumoto and Kurita 1992</a>; <a href="references.html#ref-matsumoto_mersenne_1998" role="doc-biblioref">Matsumoto and Nishimura 1998</a>)</span>. Apart from being much faster than LCG, it passes the serial correlation chek with flying colors:</p>
-<div id="cd2a81cd" class="cell" data-execution_count="6">
+<p>While the value is low, it’s not as close to zero as it should, which is a known weakness of the LCG (the generated numbers tend to fall onto a number of parallel hyperplanes) <span class="citation" data-cites="marsaglia_random_1968">(<a href="references.html#ref-marsaglia_random_1968" role="doc-biblioref">Marsaglia 1968</a>)</span>. This is the reason why PRNGs like the LCG are not normally used in practice. The de-facto standard for pseudorandom number generation in practice is the algorithm known as the <strong>Mersenne Twister</strong>. This is the default generator used in Python or MATLAB <span class="citation" data-cites="matsumoto_mersenne_1998 python_random_2026">(<a href="references.html#ref-matsumoto_mersenne_1998" role="doc-biblioref">Matsumoto and Nishimura 1998</a>; <a href="references.html#ref-python_random_2026" role="doc-biblioref">Python Software Foundation 2026</a>)</span>, and the preferred one for simulation purposes (but <em>not</em> for cryptographic purposes). Newer libraries have started to adopt more recent generators; for instance, NumPy’s <code>default_rng</code> uses the PCG64 generator <span class="citation" data-cites="oneill_pcg_2014 harris_array_2020">(<a href="references.html#ref-oneill_pcg_2014" role="doc-biblioref">O’Neill 2014</a>; <a href="references.html#ref-harris_array_2020" role="doc-biblioref">Harris et al. 2020</a>)</span>. The basic idea is to use a highly non-linear twisted generalized feedback shift register <span class="citation" data-cites="matsumoto_twisted_1992 matsumoto_mersenne_1998">(<a href="references.html#ref-matsumoto_twisted_1992" role="doc-biblioref">Matsumoto and Kurita 1992</a>; <a href="references.html#ref-matsumoto_mersenne_1998" role="doc-biblioref">Matsumoto and Nishimura 1998</a>)</span>.</p>
+<div id="35a2f2b4" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>random.seed(SEED)</span>
@@ -740,13 +740,13 @@ r=\frac{\sum (S_1-\bar{S_1})(S_2-\bar{S_2})}{\sqrt{\sum (S_1-\bar{S_1})^2(S_2-\b
 </section>
 <section id="sampling-methods" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="sampling-methods"><span class="header-section-number">2.3</span> Sampling Methods</h2>
-<p>We have now a method for generating <em>uniformly distributed</em> random numbers. But what about other widely used distributions, like normal, exponential, Poisson, etc? In this section, we will review three popular methods for this purpose: the <strong>inversion method</strong>, the <strong>rejection sampling</strong> method, the <strong>Box-Muller transform</strong> and the <strong>mixture method</strong>. For all three methods, the general problem is as follows: we start with a random variable <span class="math inline">\(U \sim \text{ Uniform}(0,1)\)</span>. We want to convert <span class="math inline">\(U\)</span> into <span class="math inline">\(X \sim f(x)\)</span>, where <span class="math inline">\(f\)</span> is the target PDF of <span class="math inline">\(X\)</span>. The standard reference on these methods is <span class="citation" data-cites="devroye_non-uniform_1986">Devroye (<a href="references.html#ref-devroye_non-uniform_1986" role="doc-biblioref">1986</a>)</span>.</p>
+<p>We have now a method for generating <em>uniformly distributed</em> random numbers. But what about other widely used distributions, like normal, exponential, Poisson, etc? In this section, we will review three popular methods for this purpose: the <strong>inversion method</strong>, the <strong>rejection sampling</strong> method, the <strong>Box-Muller transform</strong> and the <strong>mixture method</strong>. For all four methods, the general problem is as follows: we start with a random variable <span class="math inline">\(U \sim \text{ Uniform}(0,1)\)</span>. We want to convert <span class="math inline">\(U\)</span> into <span class="math inline">\(X \sim f(x)\)</span>, where <span class="math inline">\(f\)</span> is the target PDF of <span class="math inline">\(X\)</span>. The standard reference on these methods is <span class="citation" data-cites="devroye_non-uniform_1986">Devroye (<a href="references.html#ref-devroye_non-uniform_1986" role="doc-biblioref">1986</a>)</span>.</p>
 <p><strong>Inversion method</strong></p>
 <p>Suppose that we know the CDF of the target distribution <span class="math inline">\(F(x)=P(X\le x)\)</span>, and assume that we can invert it to <span class="math inline">\(F^{-1}(u)\)</span>. With this function, we can simply obtain <span class="math inline">\(X\)</span> by</p>
 <p><span id="eq-inv"><span class="math display">\[
 X=F^{-1}(U)
 \tag{2.2}\]</span></span></p>
-<p>For instance, imagine our target distribution is the exponential, with density function <span class="math inline">\(f(x)=\lambda e^{-\lambda x}\)</span>. Elementary calculus tells us that <span class="math inline">\(F(x)=1-e^{\lambda x}\)</span>. It can be shown that the inverse is</p>
+<p>For instance, imagine our target distribution is the exponential, with density function <span class="math inline">\(f(x)=\lambda e^{-\lambda x}\)</span>. Elementary calculus tells us that <span class="math inline">\(F(x)=1-e^{-\lambda x}\)</span>. It can be shown that the inverse is</p>
 <p><span id="eq-example-inv"><span class="math display">\[
 F^{-1}(u)=-\frac{1}{\lambda}\ln(1-u)
 \tag{2.3}\]</span></span></p>
@@ -760,7 +760,7 @@ F^{-1}(u)=-\frac{1}{\lambda}\ln(1-u)
 <li>Otherwise, we repeat the procedure until we get a candidate accepted.</li>
 </ol>
 <p>This method goes back to <span class="citation" data-cites="von_neumann_various_1951">Neumann (<a href="references.html#ref-von_neumann_various_1951" role="doc-biblioref">1951</a>)</span>. On average, <span class="math inline">\(c\)</span> candidates are needed per accepted sample, so the envelope <span class="math inline">\(cg\)</span> should be as tight as possible <span class="citation" data-cites="devroye_non-uniform_1986 robert_monte_2004">(<a href="references.html#ref-devroye_non-uniform_1986" role="doc-biblioref">Devroye 1986, sec. II.3</a>; <a href="references.html#ref-robert_monte_2004" role="doc-biblioref">Robert and Casella 2004, sec. 2.3</a>)</span>.</p>
-<p>The trick now is to take a <em>bounded</em> uniform distribution as <span class="math inline">\(g\)</span> that contains our target distribution <span class="math inline">\(f\)</span>. Once we have this, we can generate samples from virtually any probability distribution without requiring its CDF or inverse.</p>
+<p>The trick now is to take a <em>bounded</em> uniform distribution as <span class="math inline">\(g\)</span> that contains our target distribution <span class="math inline">\(f\)</span>. Once we have this, we can generate samples from virtually any probability distribution (with bounded support) without requiring its CDF or inverse.</p>
 <p><strong>Box-Muller transform</strong></p>
 <p>The next method is specialized towards generating values for the <strong>normal distribution</strong>, and is widely used in practice <span class="citation" data-cites="box_note_1958">(<a href="references.html#ref-box_note_1958" role="doc-biblioref">Box and Muller 1958</a>)</span>. We start by generating two uniform random numbers <span class="math inline">\(u_1, u_2 \sim U(0,1)\)</span>.</p>
 <ul>
@@ -777,7 +777,7 @@ f(x)=\sum_{i=1}^k p_i f_i(x)\text{, with }p_i\ge 0\text{, and }\sum_{i=1}^k p_i 
 \tag{2.4}\]</span></span></p>
 <p>Then we can use the following method, also known as the <em>composition method</em>, to sample from <span class="math inline">\(f(x)\)</span> <span class="citation" data-cites="devroye_non-uniform_1986">(<a href="references.html#ref-devroye_non-uniform_1986" role="doc-biblioref">Devroye 1986, sec. II.4</a>)</span>:</p>
 <ul>
-<li>Choose randomly an index <span class="math inline">\(i\in I\)</span> from the set of indices <span class="math inline">\(I=\{1,2,\dots,k\}\)</span>. This is done by generating a random number <span class="math inline">\(u \sim U(0,1)\)</span> and choosing the least index <span class="math inline">\(j\)</span> so that <span class="math inline">\(\sum_{i=1}^j p_i &lt; u\)</span>.</li>
+<li>Choose randomly an index <span class="math inline">\(i\in I\)</span> from the set of indices <span class="math inline">\(I=\{1,2,\dots,k\}\)</span>. This is done by generating a random number <span class="math inline">\(u \sim U(0,1)\)</span> and choosing the least index <span class="math inline">\(j\)</span> so that <span class="math inline">\(\sum_{i=1}^j p_i \ge u\)</span>.</li>
 <li>Generate a random variable <span class="math inline">\(x\)</span> from <span class="math inline">\(f_i(x)\)</span> by using any of the aforementioned methods.</li>
 </ul>
 <p>This is a suitable method, for instance, to generate random numbers that follow a <strong>Gaussian Mixture Model (GMM)</strong>. In this case, we just sample an index and generate a random number according to the Box-Muller method, scaling accordingly if necessary.</p>
@@ -852,7 +852,7 @@ N(t)=\sum_{i=1}^t X(i)
 P(N(t)=k)=\binom{t}{k}p^k(1-p)^{t-k}
 \tag{2.5}\]</span></span></p>
 <p>Let’s see how to simulate a Bernoulli process:</p>
-<div id="c1be9882" class="cell" data-execution_count="7">
+<div id="7cb8a61e" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_bernoulli_process(num_trials, success_probability):</span>
@@ -870,7 +870,7 @@ P(N(t)=k)=\binom{t}{k}p^k(1-p)^{t-k}
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> bernoulli_outcomes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Here we are just using Python’s default random number generator (the Mersenne Twister) to check if the generated number is below or above the sucess probability, in the former case we count a success, otherwise a failure. We can now run the simulation for both Bernoulli and Bernoulli counting processes and visualize the results.</p>
-<div id="0ad99c1c" class="cell" data-execution_count="8">
+<div id="4063df92" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>P_SUCCESS <span class="op">=</span> <span class="fl">0.3</span>  <span class="co"># Probability of success (p)</span></span>
@@ -880,7 +880,7 @@ P(N(t)=k)=\binom{t}{k}p^k(1-p)^{t-k}
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>counting_process <span class="op">=</span> np.cumsum(outcomes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In this case, the Bernoulli counting process is just the cumulative sum of the generated Bernoulli process.</p>
-<div id="c54edefc" class="cell" data-execution_count="9">
+<div id="0cd5c863" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>trials <span class="op">=</span> np.arange(<span class="dv">1</span>, NUM_TRIALS <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Subplot 1: The Bernoulli Process (Outcomes)</span></span>
@@ -938,7 +938,7 @@ P(N(t)-N(s)=k)=e^{-\lambda\tau}\frac{(\lambda\tau)^k}{k!}
 <p>The Poisson process is one of the most widely used stochastic models in science, engineering, and finance due to its ability to accurately model random, independent, and rare events occurring over time or space. Its practical relevance stems directly from the three conditions of its definition (independent, stationary increments, and the resulting Poisson distribution). For instance, the arrival of customer calls in a call center can be accurately modeled using Poisson processes <span class="citation" data-cites="brown_statistical_2005">(<a href="references.html#ref-brown_statistical_2005" role="doc-biblioref">Brown et al. 2005</a>)</span>. In engineernig, the number of defects found per area or volume (e.g.&nbsp;on a silicon wafer) can be also modeled this way (in this case, the rate is <em>spatial</em> rather than <em>temporal</em>, but the concept remains the same) <span class="citation" data-cites="stapper_integrated_1983">(<a href="references.html#ref-stapper_integrated_1983" role="doc-biblioref">Stapper, Armstrong, and Saji 1983</a>)</span>. In general, customer arrivals (at a hospital, a bank, a supermarket) can be also modeled using a Poisson process. In practice, arrival rates usually vary over the day, so a <em>nonhomogeneous</em> Poisson process with a time-dependent rate <span class="math inline">\(\lambda(t)\)</span> is often required <span class="citation" data-cites="brown_statistical_2005 kim_are_2014">(<a href="references.html#ref-brown_statistical_2005" role="doc-biblioref">Brown et al. 2005</a>; <a href="references.html#ref-kim_are_2014" role="doc-biblioref">Kim and Whitt 2014</a>)</span>.</p>
 <p>One of the main properties that makes the Poisson process useful in practice is the fact that is <em>memoryless</em>: the time until the next event is independent of how long it has been since the previous event, which aligns well with phenomena found in practice. Another advantage is that since the process is based in the Poisson (for the number of events per time interval) and the exponential distributions (for the time between events), the process is mathematically well tractable and closed-form solutions exists for many situations of interest <span class="citation" data-cites="ross_introduction_2019">(<a href="references.html#ref-ross_introduction_2019" role="doc-biblioref">Ross 2019</a>, Ch. 5)</span>.</p>
 <p>The next code snippet demonstrates how to simulate a Poisson process.</p>
-<div id="cd561ab2" class="cell" data-execution_count="10">
+<div id="f8bc8e0a" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
@@ -969,7 +969,7 @@ P(N(t)-N(s)=k)=e^{-\lambda\tau}\frac{(\lambda\tau)^k}{k!}
 <span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> event_times, num_events_at_t</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In this code we exploit the fact that the interarrival times are exponentially distributed, so we sample a time and count it as a new event. We can now use the code to simulate the process:</p>
-<div id="23b5592e" class="cell" data-execution_count="11">
+<div id="b02b7a75" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>RATE_LAMBDA <span class="op">=</span> <span class="fl">2.0</span>  <span class="co"># Average rate of 2 events per unit of time</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>MAX_TIME <span class="op">=</span> <span class="fl">10.0</span>    <span class="co"># Simulate over 10 time units</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -985,7 +985,7 @@ P(N(t)-N(s)=k)=e^{-\lambda\tau}\frac{(\lambda\tau)^k}{k!}
 </div>
 </div>
 <p>Like in the previous case, we can perform some visualizations to help understand the evolution of the process.</p>
-<div id="52e59866" class="cell" data-execution_count="12">
+<div id="7b336ac1" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the step function of the counting process N(t)</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We use drawstyle='steps-post' to create the classic step-function look</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>plt.plot(event_times, cumulative_counts, drawstyle<span class="op">=</span><span class="st">'steps-post'</span>, color<span class="op">=</span><span class="st">'darkorange'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, marker<span class="op">=</span><span class="st">'o'</span>, markersize<span class="op">=</span><span class="dv">4</span>)</span>
@@ -993,7 +993,7 @@ P(N(t)-N(s)=k)=e^{-\lambda\tau}\frac{(\lambda\tau)^k}{k!}
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the expected count line</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>plt.axhline(RATE_LAMBDA <span class="op">*</span> MAX_TIME, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">'Expected Final Count'</span>)</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Poisson Counting Process $N(t)$ with $lambda = </span><span class="sc">{</span>RATE_LAMBDA<span class="sc">}</span><span class="ss">$'</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Poisson Counting Process $N(t)$ with $</span><span class="ch">\\</span><span class="ss">lambda = </span><span class="sc">{</span>RATE_LAMBDA<span class="sc">}</span><span class="ss">$'</span>)</span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (t)'</span>)</span>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Events ($N(t)$)'</span>)</span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">0</span>, MAX_TIME)</span>
@@ -1045,7 +1045,7 @@ P_{21} &amp; P_{22} &amp; \dots \\
 \end{pmatrix}
 \]</span></p>
 <p>So for instance, the probability of a rainy day given that yesterday was cloudy is <span class="math inline">\(P_{23}=0.2\)</span>.</p>
-<div id="8d3301c1" class="cell" data-execution_count="13">
+<div id="7132a78f" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
@@ -1076,7 +1076,7 @@ P_{21} &amp; P_{22} &amp; \dots \\
 <span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> state_history</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We now setup the simulation for our example:</p>
-<div id="0440781e" class="cell" data-execution_count="14">
+<div id="7c8d353d" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the Transition Probability Matrix (P)</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> np.array([</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    [<span class="fl">0.80</span>, <span class="fl">0.15</span>, <span class="fl">0.05</span>],  <span class="co"># From Sunny (0)</span></span>
@@ -1109,7 +1109,7 @@ P_{21} &amp; P_{22} &amp; \dots \\
 </div>
 </div>
 <p>Now let’s plot the sequence of states against time:</p>
-<div id="53053d5e" class="cell" data-execution_count="15">
+<div id="de51e695" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>time_steps <span class="op">=</span> np.arange(NUM_SIMULATION_STEPS <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>plt.plot(time_steps, simulated_states, marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, drawstyle<span class="op">=</span><span class="st">'steps-post'</span>, markersize<span class="op">=</span><span class="dv">4</span>)</span>
@@ -1133,9 +1133,9 @@ P_{21} &amp; P_{22} &amp; \dots \\
 \tau_i \sim \operatorname{Exponential}(q_i)
 \tag{2.9}\]</span></span></p>
 <p>where the parameter <span class="math inline">\(q_i\)</span> is called the <strong>total exit rate</strong> or intensity from state <span class="math inline">\(i\)</span>. The Markov property is now given by the fact that the exponential distribution is memoryless: the time remaining in state <span class="math inline">\(i\)</span> is independent on how long the system has been there already.</p>
-<p>This construction is described in detail in <span class="citation" data-cites="norris_markov_1997">Norris (<a href="references.html#ref-norris_markov_1997" role="doc-biblioref">2012</a>, Ch. 2)</span>. So how do we decide where which state to jump next? For that, let <span class="math inline">\(q_{ij}\)</span> denote the <em>instantaneous rate of moving</em> from state <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span>. Our parameter <span class="math inline">\(q_i\)</span> becomes then <span class="math inline">\(q_i=\sum_{i\neq j} q_{ij}\)</span>. We can convert this into a transition probability <span class="math inline">\(P_{ij}\)</span> using <span class="math inline">\(P_{ij}=\frac{q_{ij}}{q_i}\)</span>. Instead of talking about a transition matrix <span class="math inline">\(\mathbf{P}\)</span>, we define a <strong>rate</strong> or <strong>Q-Matrix</strong> <span class="math inline">\(\mathbf{Q}\)</span> where <span class="math inline">\(Q_{ij}=q_{ij}\)</span> for <span class="math inline">\(i\neq j\)</span> and <span class="math inline">\(Q_{ii}=-q_i\)</span> (the diagonal elements are defined with a minus sign because we want the sum of each row -the sum of leaving and entering state <span class="math inline">\(i\)</span>- to be 0).</p>
+<p>This construction is described in detail in <span class="citation" data-cites="norris_markov_1997">Norris (<a href="references.html#ref-norris_markov_1997" role="doc-biblioref">2012</a>, Ch. 2)</span>. So how do we decide where which state to jump next? For that, let <span class="math inline">\(q_{ij}\)</span> denote the <em>instantaneous rate of moving</em> from state <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span>. Our parameter <span class="math inline">\(q_i\)</span> becomes then <span class="math inline">\(q_i=\sum_{i\neq j} q_{ij}\)</span>. We can convert this into a transition probability <span class="math inline">\(P_{ij}\)</span> using <span class="math inline">\(P_{ij}=\frac{q_{ij}}{q_i}\)</span>. Instead of talking about a transition matrix <span class="math inline">\(\mathbf{P}\)</span>, we define a <strong>rate</strong> or <strong>Q-Matrix</strong> <span class="math inline">\(\mathbf{Q}\)</span> where <span class="math inline">\(Q_{ij}=q_{ij}\)</span> for <span class="math inline">\(i\neq j\)</span> and <span class="math inline">\(Q_{ii}=-q_i\)</span> (the diagonal elements are defined with a minus sign because we want the sum of each row to be 0).</p>
 <p>We can simulate a continuous-time Markov chain in the following way, which is essentially the <em>stochastic simulation algorithm</em> of <span class="citation" data-cites="gillespie_exact_1977">Gillespie (<a href="references.html#ref-gillespie_exact_1977" role="doc-biblioref">1977</a>)</span>:</p>
-<div id="9dd7dd64" class="cell" data-execution_count="16">
+<div id="d9433e09" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1180,7 +1180,7 @@ P_{21} &amp; P_{22} &amp; \dots \\
 </div>
 <p>This function first enters a classical simulation loop where time advances until a stopping time has been reached. On each iteration, we first sample a time using the inverse of the exit rate (the minus diagonal element of the Q-matrix) as the parameter of an exponential distribution. Then we determine the state we are goint to jump to by calculating the jump probabilities. The next state is then chosen according to the jump probabilities.</p>
 <p>Let’s now simulate a scenario where we want to study machine reliability, a classical application of continuous-time Markov chains <span class="citation" data-cites="trivedi_probability_2016">(<a href="references.html#ref-trivedi_probability_2016" role="doc-biblioref">Trivedi 2016</a>)</span>. We define the state space as Operational (1), Degraded (2) or Failed (3). In the operational state, the machine works as expected, however it transitions to degraded often, but rarely to failed. In the degraded state, the machine transitions to failed quickly, since it is already not working properly (and never transitions to operational). Finally, in the failed state, the machine is broken and it will only transition to operational if the machine is repaired.</p>
-<div id="4d26142f" class="cell" data-execution_count="17">
+<div id="c62a8843" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the Generator Matrix (Q)</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Rows must sum to 0.</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Units: events per hour (rates)</span></span>
@@ -1200,7 +1200,7 @@ P_{21} &amp; P_{22} &amp; \dots \\
 <span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>sim_times, sim_states <span class="op">=</span> simulate_ctmc(Q, START_STATE, DURATION)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that the units of <span class="math inline">\(\mathbf{Q}\)</span> are <em>rates</em> or events per unit of time. Here the unit of time can be freely chosen, what is important is the fact that each number represents the number of events that happen, on average, in the unit of time, and that each row has to sum up to 0.</p>
-<div id="b7523587" class="cell" data-execution_count="18">
+<div id="acbbd0db" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>plt.step(sim_times, sim_states, where<span class="op">=</span><span class="st">'post'</span>, color<span class="op">=</span><span class="st">'purple'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>plt.yticks([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>], [STATE_NAMES[<span class="dv">0</span>], STATE_NAMES[<span class="dv">1</span>], STATE_NAMES[<span class="dv">2</span>]])</span>
@@ -1228,7 +1228,7 @@ P_{21} &amp; P_{22} &amp; \dots \\
 </div>
 <p>In this visualization, an exemplary long holding time (the first longer than 2 hours in the operational state) is highlighted. As can be seen, the holding times are highly variable (compare to the discrete-time Markov chain previously). Note also that the system spends very little time in the degraded state. This is because the exit rate (the diagonal element) is very high, so the machine passes this state quickly on its way to the failed state. Since the exit rate is quite low in the operational state, the machine stays there for longer periods.</p>
 <p><strong>Continuous-State Markov Processes</strong></p>
-<p>The last important case we need to take a closer look at is when the state space <span class="math inline">\(S\)</span> is <strong>continuous</strong>. a continuous range of values, such as the position of a particle in space, the temperature of a system, or the level of a reservoir. In this case, the process is often described by a <strong>stochastic differential equation (SDE)</strong>, which governs the evolution of the state over time <span class="citation" data-cites="oksendal_stochastic_2003">(<a href="references.html#ref-oksendal_stochastic_2003" role="doc-biblioref">Øksendal 2003</a>)</span>. The time parameter can be in this case either discrete or continuous, so the corresponding considerations apply. The main challenge is how to deal with state transition probabilities. For this purpose, the most general solution is to switch from transition matrices to <strong>transition probability density functions</strong> that we denote by <span class="math inline">\(f(x_t | x_{t-1})\)</span>.</p>
+<p>The last important case we need to take a closer look at is when the state space <span class="math inline">\(S\)</span> is a continuous range of values, such as the position of a particle in space, the temperature of a system, or the level of a reservoir. In this case, the process is often described by a <strong>stochastic differential equation (SDE)</strong>, which governs the evolution of the state over time <span class="citation" data-cites="oksendal_stochastic_2003">(<a href="references.html#ref-oksendal_stochastic_2003" role="doc-biblioref">Øksendal 2003</a>)</span>. The time parameter can be in this case either discrete or continuous, so the corresponding considerations apply. The main challenge is how to deal with state transition probabilities. For this purpose, the most general solution is to switch from transition matrices to <strong>transition probability density functions</strong> that we denote by <span class="math inline">\(f(x_t | x_{t-1})\)</span>.</p>
 <p>One particularly relevant example of Markov process is the <strong>random walk</strong>. The main idea is to let the process evolve from an initial state by applying random, independent perturbations:</p>
 <p><span id="eq-random-walk"><span class="math display">\[
 X_t=X_{t-1}+\epsilon_t\text{,   }\epsilon_t \sim N(0, \sigma^2)
@@ -1236,16 +1236,16 @@ X_t=X_{t-1}+\epsilon_t\text{,   }\epsilon_t \sim N(0, \sigma^2)
 <p>It is important to stress the fact that the noise terms <span class="math inline">\(\epsilon_t\)</span> and the process steps <span class="math inline">\(X_{t-1}\)</span> are independent. We can see that for random walks, the Markov property is fulfilled because <span class="math inline">\(X_t\)</span> only depends on <span class="math inline">\(X_{t-1}\)</span> and not on any values before. Random walks are used when modeling non-stationary time series, like stock prices without a drift <span class="citation" data-cites="fama_behavior_1965">(<a href="references.html#ref-fama_behavior_1965" role="doc-biblioref">Fama 1965</a>)</span>.</p>
 <p>Another important example is the <strong>Brownian motion</strong> or <strong>Wiener process</strong> <span class="citation" data-cites="einstein_uber_1905 wiener_differential-space_1923">(<a href="references.html#ref-einstein_uber_1905" role="doc-biblioref">Einstein 1905</a>; <a href="references.html#ref-wiener_differential-space_1923" role="doc-biblioref">Wiener 1923</a>)</span>. The Brownian motion is a stochastic process commonly used for modeling random movements of particles. Let’s denote this process by <span class="math inline">\(W(t)\)</span>. The defining characteristic of a Brownian motion is that its increments are <strong>normally distributed</strong> and <strong>independent of the past</strong>.</p>
 <p><span id="eq-brownian-motion"><span class="math display">\[
-W(t+s) - W(s) \sim N(0, t-s)
+W(t+s) - W(s) \sim N(0, t)
 \tag{2.11}\]</span></span></p>
-<p>There are many practical applications of this type of process. In finance, the Brownian motion is used to model option pricing (the <strong>Black-Scholes</strong> equation) <span class="citation" data-cites="black_pricing_1973">(<a href="references.html#ref-black_pricing_1973" role="doc-biblioref">Black and Scholes 1973</a>)</span>. In polymer physics, the random, wriggling moving of a long-chain polymer molecule in a solvent can be well modeled using the Brownian motion <span class="citation" data-cites="rouse_theory_1953">(<a href="references.html#ref-rouse_theory_1953" role="doc-biblioref">Rouse 1953</a>)</span>. In audio engineering and signal processing, it can be used for random noise generation (white and pink noise).</p>
+<p>There are many practical applications of this type of process. In finance, the Brownian motion is used to model option pricing (the <strong>Black-Scholes</strong> equation) <span class="citation" data-cites="black_pricing_1973">(<a href="references.html#ref-black_pricing_1973" role="doc-biblioref">Black and Scholes 1973</a>)</span>. In polymer physics, the random, wriggling moving of a long-chain polymer molecule in a solvent can be well modeled using the Brownian motion <span class="citation" data-cites="rouse_theory_1953">(<a href="references.html#ref-rouse_theory_1953" role="doc-biblioref">Rouse 1953</a>)</span>. In audio engineering and signal processing, it can be used for random noise generation.</p>
 <p><strong>Simulation example</strong></p>
 <p>We will now see how to simulate a Brownian motion. In order to simulate this process (and like it, any continuous-time Markov process), we resort to the <strong>discrete approximation method</strong>. The main idea is to model a continuous path by adding small, independent, normally distributed random increments at small time steps (<span class="math inline">\(\Delta t\)</span>). We use the following equation:</p>
 <p><span id="eq-discrete-approx"><span class="math display">\[
 W(t_{i+1})=W(t_i)+\sqrt{\Delta t}\cdot Z_i
 \tag{2.12}\]</span></span></p>
 <p>The square root of the increment follows from the increments property of the Brownian motion: the variance of the increments has to be proportional to the difference between the time steps. For Brownian motion this scheme is exact at the grid points; for general SDEs it corresponds to the Euler–Maruyama method <span class="citation" data-cites="higham_algorithmic_2001 kloeden_numerical_1992 glasserman_monte_2003">(<a href="references.html#ref-higham_algorithmic_2001" role="doc-biblioref">Higham 2001</a>; <a href="references.html#ref-kloeden_numerical_1992" role="doc-biblioref">Kloeden and Platen 1992</a>; <a href="references.html#ref-glasserman_monte_2003" role="doc-biblioref">Glasserman 2003</a>, Ch. 3)</span>.</p>
-<div id="630ec06b" class="cell" data-execution_count="19">
+<div id="371d53cf" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1267,7 +1267,7 @@ W(t_{i+1})=W(t_i)+\sqrt{\Delta t}\cdot Z_i
 </div>
 <p>In the code, we first discretize the time by dividing the total time by the number of simulation steps. Then we calculate the standard deviation as the square root of the increment and proceed to simulate the increments <span class="math inline">\(Z_i\)</span>. The final Brownian path is taken to be the cumulative sum of the increments.</p>
 <p>Let’s now perform a simulation a visualize the results:</p>
-<div id="31099004" class="cell" data-execution_count="20">
+<div id="0d62ac65" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>TOTAL_TIME <span class="op">=</span> <span class="fl">1.0</span>     <span class="co"># Simulate up to time T=1</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>NUM_STEPS <span class="op">=</span> <span class="dv">1000</span>     <span class="co"># Use 1000 steps for a smooth path</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1298,7 +1298,7 @@ W(t_{i+1})=W(t_i)+\sqrt{\Delta t}\cdot Z_i
 </div>
 </div>
 <p>In this visualization, we plot one realization of a Brownian motion bounded by its theoretical bounds (using a standard deviation of <span class="math inline">\(\sqrt{t}\)</span> up and down). The next visualization shows several realizations of the same Brownian motion:</p>
-<div id="da3feebb" class="cell" data-execution_count="21">
+<div id="098d0eb2" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>NUM_PATHS <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(NUM_PATHS):</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    np.random.seed(i) <span class="co"># Use a different seed for each path</span></span>
