@@ -294,7 +294,7 @@ where $f$ is the target PDF of $X$. The standard reference on these methods is @
 
 
 
-**Inversion method**
+### Inversion method
 
 Suppose that we know the CDF of the target distribution $F(x)=P(X\le x)$, and assume that 
 we can invert it to $F^{-1}(u)$. With this function, we can simply obtain $X$ by
@@ -313,7 +313,7 @@ $$ {#eq-example-inv}
 
 Since $U'=1-U$ is also uniform in $[0,1]$, we can simply write $X=-\frac{1}{\lambda}\ln(U')$ [@devroye_non-uniform_1986, Sec. II.2].
 
-**Rejection-sampling method**
+### Rejection-sampling method
 
 But what if our CDF is not easily invertible, or worse, we don't have any analytical expression
 for it? Suppose that, although we don't have $f$, we have a proposal distribution $g(x)$ so that 
@@ -331,7 +331,7 @@ The trick now is to take a *bounded* uniform distribution as $g$ that contains o
 distribution $f$. Once we have this, we can generate samples from virtually any 
 probability distribution (with bounded support) without requiring its CDF or inverse.
 
-**Box-Muller transform**
+### Box-Muller transform
 
 The next method is specialized towards generating values for the **normal distribution**, and 
 is widely used in practice [@box_note_1958]. We start by generating two uniform random numbers $u_1, u_2 \sim U(0,1)$.
@@ -346,7 +346,7 @@ are normally distributed with mean 0 and variance 1.
 The random numbers generated follow a standard normal distribution $N(0,1)$. For an arbitrary
 normal distribution $N(\mu,\sigma^2)$ we just scale using the standard transformation $X=\mu+\sigma Z$.
 
-**Mixture method**
+### Mixture method
 
 In the case that the target distribution can be expressed as a mixture of $k$ different PDFs
 
@@ -385,7 +385,7 @@ to different classifications:
 Understanding stochastic processes is crucial for simulation because they model how random events unfold
 over time, which is exactly what we need to simulate complex systems with uncertainty.
 
-**Stationary and non-stationary processes**
+### Stationary and non-stationary processes
 
 A stochastic process $\{X(t)\}$ is said to be **stationary** if its statistical properties do not change over time. More formally, a process is *weakly* (or second-order) stationary if [@brockwell_time_1991, Sec. 1.3]:
 
@@ -661,7 +661,7 @@ moment only depends on the moment immediately before, not on those before. For i
 frequency of a given allele in a generation only depends on the frequencies recorded in the previous generation, as in the classical Wright–Fisher model [@ewens_mathematical_2004]. Or 
 in inventory management, where decisions about the inventory levels are solely based on the current stock level [@puterman_markov_1994].
 
-**Simulation example**
+### Simulation example
 
 Let's see how to simulate a simple Markov chain with a discrete state space. Assume we want to model a 
 heavily simplified weather system with three states: sunny (1), cloudy (2) and rainy (3). For the state transition matrix,
@@ -746,7 +746,7 @@ plt.grid(True, axis='y', linestyle='--')
 plt.show()
 ```
 
-**Continuous-Time Markov Processes**
+### Continuous-Time Markov Processes
 
 In our previous example, we have assumed that the time index takes values in a discrete set. Let's now
 consider the situation where time is continuous: $\{X(t),t\ge 0\}$. In this case, the system might change 
@@ -879,7 +879,7 @@ in the degraded state. This is because the exit rate (the diagonal element) is v
 machine passes this state quickly on its way to the failed state. Since the exit rate is quite low 
 in the operational state, the machine stays there for longer periods. 
 
-**Continuous-State Markov Processes**
+### Continuous-State Markov Processes
 
 The last important case we need to take a closer look at is when the state space $S$ is 
 a continuous range of values, such as the position of a particle in space, the temperature of a system, or the level of a reservoir. In this case, the process is often described by a **stochastic differential equation (SDE)**, which governs the evolution of the state over time [@oksendal_stochastic_2003]. The time parameter can 
