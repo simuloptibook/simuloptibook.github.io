@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -472,21 +492,21 @@ window.Quarto = {
 
 <section id="introduction" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">5.1</span> Introduction</h2>
-<p>We now switch our focus to the theory and practice of optimization as one of the building blocks of modern AI. <em>Optimization</em> is the mathematical discipline concerned with finding the “best” solution from a set of available alternatives. It is the invisible utility that powers the modern world. When you type a query into a search engine, an optimization algorithm determines the most relevant ranking of results. When a packet travels across the internet, routing protocols solve shortest-path optimization problems to minimize latency. When a logistics company schedules thousands of deliveries, they are solving complex integer programming problems to minimize fuel consumption and time.</p>
-<p>Optimization is not only a new toolbox of solvers: it’s a fundamental language for modeling the world. Beyond the digital realm, optimization bridges software with the physical world. This is the domain of <strong>Operations Research</strong>, where mathematical models dictate the efficiency of e.g.</p>
+<p>We now switch our focus to the theory and practice of optimization as one of the building blocks of modern AI. <em>Optimization</em> is the mathematical discipline concerned with finding the “best” solution from a set of available alternatives <span class="citation" data-cites="boyd_convex_2004 nocedal_numerical_2006">(<a href="references.html#ref-boyd_convex_2004" role="doc-biblioref">Boyd and Vandenberghe 2004</a>; <a href="references.html#ref-nocedal_numerical_2006" role="doc-biblioref">Nocedal and Wright 2006</a>)</span>. It is the invisible utility that powers the modern world. When you type a query into a search engine, an optimization algorithm determines the most relevant ranking of results <span class="citation" data-cites="liu_learning_2009">(<a href="references.html#ref-liu_learning_2009" role="doc-biblioref">Liu 2009</a>)</span>. When a packet travels across the internet, routing protocols solve shortest-path optimization problems to minimize latency <span class="citation" data-cites="dijkstra_note_1959 moy_ospf_1998">(<a href="references.html#ref-dijkstra_note_1959" role="doc-biblioref">Dijkstra 1959</a>; <a href="references.html#ref-moy_ospf_1998" role="doc-biblioref">Moy 1998</a>)</span>. When a logistics company schedules thousands of deliveries, they are solving complex integer programming problems to minimize fuel consumption and time <span class="citation" data-cites="toth_vehicle_2014">(<a href="references.html#ref-toth_vehicle_2014" role="doc-biblioref">Toth and Vigo 2014</a>)</span>.</p>
+<p>Optimization is not only a new toolbox of solvers: it’s a fundamental language for modeling the world. Beyond the digital realm, optimization bridges software with the physical world. This is the domain of <strong>Operations Research</strong> <span class="citation" data-cites="hillier_introduction_2021">(<a href="references.html#ref-hillier_introduction_2021" role="doc-biblioref">Hillier and Lieberman 2021</a>)</span>, where mathematical models dictate the efficiency of e.g.</p>
 <ul>
-<li>Energy grids, where the goal is to balance electricity generation with demand in real-time to prevent blackouts while minimizing costs.</li>
-<li>Suppy chains, where the goal is to determine how many units of a product to ship from a specific set of warehouses to a set of retailers.</li>
-<li>Finance, where the goal is to construct investment portfolios that maximize returns for a specific level of risk.</li>
+<li>Energy grids, where the goal is to balance electricity generation with demand in real-time to prevent blackouts while minimizing costs <span class="citation" data-cites="padhy_unit_2004">(<a href="references.html#ref-padhy_unit_2004" role="doc-biblioref">Padhy 2004</a>)</span>.</li>
+<li>Suppy chains, where the goal is to determine how many units of a product to ship from a specific set of warehouses to a set of retailers <span class="citation" data-cites="hitchcock_distribution_1941 snyder_fundamentals_2019">(<a href="references.html#ref-hitchcock_distribution_1941" role="doc-biblioref">Hitchcock 1941</a>; <a href="references.html#ref-snyder_fundamentals_2019" role="doc-biblioref">Snyder and Shen 2019</a>)</span>.</li>
+<li>Finance, where the goal is to construct investment portfolios that maximize returns for a specific level of risk <span class="citation" data-cites="markowitz_portfolio_1952">(<a href="references.html#ref-markowitz_portfolio_1952" role="doc-biblioref">Markowitz 1952</a>)</span>.</li>
 </ul>
-<p>However, one of the most compelling reasons for a modern computer scientist to master optimization lies in the current revolution in Artificial Intelligence and Machine Learning (ML). It is no exaggeration to say that <strong>Machine Learning is optimization</strong>. While the architecture of a model (e.g., a Convolutional Neural Network or a Transformer) dictates how information flows, optimization dictates <em>what</em> the model actually learns. When we “train” a model, we are mathematically traversing a high-dimensional landscape, searching for a specific set of parameters (weights and biases) that minimizes a loss function. Whether it is a simple Linear Regression minimizing mean squared error or a Large Language Model (LLM) minimizing next-token prediction error, the mechanism is an optimization algorithm—typically a variant of Stochastic Gradient Descent (SGD). In Reinforcement Learning (RL), agents are explicitly designed to maximize a cumulative reward function over time, often requiring complex policy optimization techniques.</p>
-<p>As we proceed through this part of the book, you will learn that finding the true best solution is not always computationally feasible. In Linear Programming, we can often find the exact global optimum efficiently. In Integer Programming, the problem becomes NP-hard, forcing us to rely on clever search techniques like Branch and Bound. In the rugged, non-convex landscapes of Deep Learning, we often settle for local optima, relying on Heuristics to guide us.</p>
+<p>However, one of the most compelling reasons for a modern computer scientist to master optimization lies in the current revolution in Artificial Intelligence and Machine Learning (ML). It is no exaggeration to say that <strong>Machine Learning is optimization</strong> <span class="citation" data-cites="bottou_optimization_2018 goodfellow_deep_2016">(<a href="references.html#ref-bottou_optimization_2018" role="doc-biblioref">Bottou, Curtis, and Nocedal 2018</a>; <a href="references.html#ref-goodfellow_deep_2016" role="doc-biblioref">I. Goodfellow, Bengio, and Courville 2016</a>, Ch. 8)</span>. While the architecture of a model (e.g., a Convolutional Neural Network <span class="citation" data-cites="lecun_gradient-based_1998">(<a href="references.html#ref-lecun_gradient-based_1998" role="doc-biblioref">LeCun et al. 1998</a>)</span> or a Transformer <span class="citation" data-cites="vaswani_attention_2017">(<a href="references.html#ref-vaswani_attention_2017" role="doc-biblioref">Vaswani et al. 2017</a>)</span>) dictates how information flows, optimization dictates <em>what</em> the model actually learns. When we “train” a model, we are mathematically traversing a high-dimensional landscape, searching for a specific set of parameters (weights and biases) that minimizes a loss function. Whether it is a simple Linear Regression minimizing mean squared error or a Large Language Model (LLM) minimizing next-token prediction error <span class="citation" data-cites="brown_language_2020">(<a href="references.html#ref-brown_language_2020" role="doc-biblioref">Brown et al. 2020</a>)</span>, the mechanism is an optimization algorithm—typically a variant of Stochastic Gradient Descent (SGD) <span class="citation" data-cites="robbins_stochastic_1951 bottou_optimization_2018">(<a href="references.html#ref-robbins_stochastic_1951" role="doc-biblioref">Robbins and Monro 1951</a>; <a href="references.html#ref-bottou_optimization_2018" role="doc-biblioref">Bottou, Curtis, and Nocedal 2018</a>)</span>. In Reinforcement Learning (RL), agents are explicitly designed to maximize a cumulative reward function over time, often requiring complex policy optimization techniques <span class="citation" data-cites="sutton_reinforcement_2018 williams_simple_1992 schulman_proximal_2017">(<a href="references.html#ref-sutton_reinforcement_2018" role="doc-biblioref">Sutton and Barto 2018</a>; <a href="references.html#ref-williams_simple_1992" role="doc-biblioref">Williams 1992</a>; <a href="references.html#ref-schulman_proximal_2017" role="doc-biblioref">Schulman et al. 2017</a>)</span>.</p>
+<p>As we proceed through this part of the book, you will learn that finding the true best solution is not always computationally feasible. In Linear Programming, we can often find the exact global optimum efficiently <span class="citation" data-cites="dantzig_linear_1963 karmarkar_new_1984">(<a href="references.html#ref-dantzig_linear_1963" role="doc-biblioref">Dantzig 1963</a>; <a href="references.html#ref-karmarkar_new_1984" role="doc-biblioref">Karmarkar 1984</a>)</span>. In Integer Programming, the problem becomes NP-hard <span class="citation" data-cites="karp_reducibility_1972 garey_computers_1979">(<a href="references.html#ref-karp_reducibility_1972" role="doc-biblioref">Karp 1972</a>; <a href="references.html#ref-garey_computers_1979" role="doc-biblioref">Garey and Johnson 1979</a>)</span>, forcing us to rely on clever search techniques like Branch and Bound <span class="citation" data-cites="land_automatic_1960 wolsey_integer_2020">(<a href="references.html#ref-land_automatic_1960" role="doc-biblioref">Land and Doig 1960</a>; <a href="references.html#ref-wolsey_integer_2020" role="doc-biblioref">Wolsey 2020</a>)</span>. In the rugged, non-convex landscapes of Deep Learning, we often settle for local optima, relying on Heuristics to guide us.</p>
 <p>Understanding the mathematical foundations of optimization—convexity, gradients, duality, and complexity—allows you to distinguish between a problem that can be solved perfectly in milliseconds and one that requires an approximation to solve before the heat death of the universe. This chapter provides the roadmap for making those distinctions.</p>
 </section>
 <section id="general-problem-formulation" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="general-problem-formulation"><span class="header-section-number">5.2</span> General Problem Formulation</h2>
-<p>We will now start developing the mathematical machinery needed to understand this part of the book. To treat optimization as a computational discipline, we must abstract away the specific details of the application (whether it is protein folding or portfolio management) and map the problem into a standardized mathematical structure.</p>
-<p>Almost all optimization problems can be expressed in the following canonical form:</p>
+<p>We will now start developing the mathematical machinery needed to understand this part of the book. To treat optimization as a computational discipline, we must abstract away the specific details of the application (whether it is protein folding <span class="citation" data-cites="anfinsen_principles_1973">(<a href="references.html#ref-anfinsen_principles_1973" role="doc-biblioref">Anfinsen 1973</a>)</span> or portfolio management <span class="citation" data-cites="markowitz_portfolio_1952">(<a href="references.html#ref-markowitz_portfolio_1952" role="doc-biblioref">Markowitz 1952</a>)</span>) and map the problem into a standardized mathematical structure.</p>
+<p>Almost all optimization problems can be expressed in the following canonical form <span class="citation" data-cites="boyd_convex_2004">(<a href="references.html#ref-boyd_convex_2004" role="doc-biblioref">Boyd and Vandenberghe 2004, sec. 4.1</a>)</span>:</p>
 <p><span class="math display">\[
 \begin{aligned}
 \min_x &amp; f(x) \\
@@ -503,11 +523,11 @@ window.Quarto = {
 \Omega=\{ x\in\mathbb{R}^n \text{ }| \text{ } g_i(x)\le 0\text{, } \forall i\text{, }h_j(x)=0\text{, }\forall j  \}
 \tag{5.1}\]</span></span></p>
 <p>Our task is then to find a point <span class="math inline">\(x^*\in\Omega\)</span>, such that <span class="math inline">\(f(x^*)\le f(x)\)</span> for all <span class="math inline">\(x\in\Omega\)</span>. We then call <span class="math inline">\(x^*\)</span> a <strong>global optimum</strong> of <span class="math inline">\(f\)</span> to distinguish it from <strong>local optima</strong> where the point is merely better than its immediate neighbours.</p>
-<p>If <span class="math inline">\(f\)</span> and its constraints turn out to be <strong>convex</strong>, there are usually guarantees that any local minimum will be a global minimum as well, making the problem solvable efficiently. A function <span class="math inline">\(f\)</span> is said to be convex if it satisfies the following property: For any <span class="math inline">\(t\in[0,1]\)</span> and any two points <span class="math inline">\(x_1,x_2\)</span> in the domain of the function, we have:</p>
+<p>If <span class="math inline">\(f\)</span> and its constraints turn out to be <strong>convex</strong>, there are usually guarantees that any local minimum will be a global minimum as well, making the problem solvable efficiently. A function <span class="math inline">\(f\)</span> is said to be convex if it satisfies the following property <span class="citation" data-cites="boyd_convex_2004">(<a href="references.html#ref-boyd_convex_2004" role="doc-biblioref">Boyd and Vandenberghe 2004, sec. 3.1</a>)</span>: For any <span class="math inline">\(t\in[0,1]\)</span> and any two points <span class="math inline">\(x_1,x_2\)</span> in the domain of the function, we have:</p>
 <p><span id="eq-convexity"><span class="math display">\[
 f(tx_1+(1-t)x_2)\le tf(x_1)+(1-t)f(x_2)
 \tag{5.2}\]</span></span></p>
-<p>Prominent examples of convex functions include linear, quadratic and exponential functions. Intuitively, this means that if we draw a line segment between any points in the function’s curve <span class="math inline">\(f(x_1)\)</span> and <span class="math inline">\(f(x_2)\)</span>, this line will always be either above or on the curve itself. When the function to optimize or any of the constraints are non-convex (e.g.&nbsp;deep learning), finding the global optimum becomes NP-hard (although usually reasonable approximations are good enough in practice).</p>
+<p>Prominent examples of convex functions include linear, quadratic and exponential functions. Intuitively, this means that if we draw a line segment between any points in the function’s curve <span class="math inline">\(f(x_1)\)</span> and <span class="math inline">\(f(x_2)\)</span>, this line will always be either above or on the curve itself. When the function to optimize or any of the constraints are non-convex (e.g.&nbsp;deep learning), finding the global optimum becomes NP-hard in general <span class="citation" data-cites="murty_np-complete_1987 blum_training_1992">(<a href="references.html#ref-murty_np-complete_1987" role="doc-biblioref">Murty and Kabadi 1987</a>; <a href="references.html#ref-blum_training_1992" role="doc-biblioref">Blum and Rivest 1992</a>)</span> (although usually reasonable approximations are good enough in practice).</p>
 </section>
 <section id="classification-of-problems" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="classification-of-problems"><span class="header-section-number">5.3</span> Classification of Problems</h2>
@@ -516,26 +536,26 @@ f(tx_1+(1-t)x_2)\le tf(x_1)+(1-t)f(x_2)
 <h3 data-number="5.3.1" class="anchored" data-anchor-id="continuous-vs.-discrete"><span class="header-section-number">5.3.1</span> Continuous vs.&nbsp;Discrete</h3>
 <p>One of the most significant criteria is whether the decision variables are continuous or discrete.</p>
 <p>In <strong>continuous optimization</strong> problems, the decision variables live in a continuous space (usually <span class="math inline">\(\mathbb{R}^n\)</span>). If the objective function is smooth (i.e.&nbsp;differentiable), we can then calculate gradients and use a method like gradient descent to find an optimum of the function. For example, training a neural network under the usual circumstances is a continuous optimization problem.</p>
-<p>In <strong>discrete optimization</strong> problems, the decision variables belong to a discrete set like <span class="math inline">\(\mathbb{Z}\)</span> or <span class="math inline">\(\{0,1\}\)</span> and therefore combinatorial in nature. In this case, we can’t rely on gradients to optimize the function, and other (more computationally complex) are needed. For instance, the traveling salesman problem already presented in <a href="intro.html" class="quarto-xref"><span>Chapter 1</span></a> is a typical example of a discrete optimization problem. These problems often face <em>combinatorial explosion</em>. As the number of variables increases, the number of possible configurations grows exponentially. Consequently, many discrete problems are NP-Hard.</p>
-<p>In <strong>mixed-integer optimization</strong>, the decision variables contain both discrete and continuous variables. For instance, a power plant might optimize the continuous amount of power to generate (Megawatts) while making discrete decisions about which generators to turn on or off. Mixed-integer problems are therefore combinatorial in nature as well and face the same kind of problems than purely discrete optimization problems.</p>
+<p>In <strong>discrete optimization</strong> problems, the decision variables belong to a discrete set like <span class="math inline">\(\mathbb{Z}\)</span> or <span class="math inline">\(\{0,1\}\)</span> and therefore combinatorial in nature. In this case, we can’t rely on gradients to optimize the function, and other (more computationally complex) are needed. For instance, the traveling salesman problem already presented in <a href="intro.html" class="quarto-xref"><span>Chapter 1</span></a> is a typical example of a discrete optimization problem. These problems often face <em>combinatorial explosion</em> <span class="citation" data-cites="wolsey_integer_2020">(<a href="references.html#ref-wolsey_integer_2020" role="doc-biblioref">Wolsey 2020</a>)</span>. As the number of variables increases, the number of possible configurations grows exponentially. Consequently, many discrete problems are NP-Hard <span class="citation" data-cites="garey_computers_1979">(<a href="references.html#ref-garey_computers_1979" role="doc-biblioref">Garey and Johnson 1979</a>)</span>.</p>
+<p>In <strong>mixed-integer optimization</strong>, the decision variables contain both discrete and continuous variables. For instance, a power plant might optimize the continuous amount of power to generate (Megawatts) while making discrete decisions about which generators to turn on or off <span class="citation" data-cites="carrion_computationally_2006">(<a href="references.html#ref-carrion_computationally_2006" role="doc-biblioref">Carrión and Arroyo 2006</a>)</span>. Mixed-integer problems are therefore combinatorial in nature as well and face the same kind of problems than purely discrete optimization problems.</p>
 </section>
 <section id="unconstrained-vs.-constrained" class="level3" data-number="5.3.2">
 <h3 data-number="5.3.2" class="anchored" data-anchor-id="unconstrained-vs.-constrained"><span class="header-section-number">5.3.2</span> Unconstrained vs.&nbsp;Constrained</h3>
 <p>When the feasible region is equals to the domain of the objective function, we say that the problem is <strong>unconstrained</strong>. In this case, we just want to find the minimum of <span class="math inline">\(f\)</span> anywhere in the domain of the function. This is usually the case in neural network training, where our goal is to find network weights which are normally not constrained in any specific way.</p>
-<p>By contrast, <strong>constrained optimization</strong> problems place a special focus on finding optimal solutions that satisfy a specific set of conditions. For example, a self-driving car controller might minimize travel time (objective) subject to the strict constraint that the car must stay within the lane boundaries (constraints). Solving these requires specialized techniques like Lagrange Multipliers or projection methods.</p>
+<p>By contrast, <strong>constrained optimization</strong> problems place a special focus on finding optimal solutions that satisfy a specific set of conditions. For example, a self-driving car controller might minimize travel time (objective) subject to the strict constraint that the car must stay within the lane boundaries (constraints) <span class="citation" data-cites="paden_survey_2016">(<a href="references.html#ref-paden_survey_2016" role="doc-biblioref">Paden et al. 2016</a>)</span>. Solving these requires specialized techniques like Lagrange Multipliers or projection methods <span class="citation" data-cites="bertsekas_nonlinear_2016 nocedal_numerical_2006">(<a href="references.html#ref-bertsekas_nonlinear_2016" role="doc-biblioref">Bertsekas 2016</a>; <a href="references.html#ref-nocedal_numerical_2006" role="doc-biblioref">Nocedal and Wright 2006</a>)</span>.</p>
 </section>
 <section id="deterministic-vs.-stochastic" class="level3" data-number="5.3.3">
 <h3 data-number="5.3.3" class="anchored" data-anchor-id="deterministic-vs.-stochastic"><span class="header-section-number">5.3.3</span> Deterministic vs.&nbsp;Stochastic</h3>
 <p>In <strong>deterministic optimization</strong> problems, we assume that the objective function and constraints are known perfectly and do not change. There is no uncertainty when evaluating the objective function: any given input will deterministically produce the same output.</p>
-<p>In <strong>stochastic optimization</strong>, the objective function involves some random quantity, so we usually resort to minimizing expectations instead. This is the native language of ML. Since we cannot calculate the loss over the true data distribution (which is unknown), we estimate it using finite, noisy batches of data. Stochastic Gradient Descent (SGD) is named precisely because it treats the true gradient as a random variable to be estimated.</p>
+<p>In <strong>stochastic optimization</strong>, the objective function involves some random quantity, so we usually resort to minimizing expectations instead <span class="citation" data-cites="shapiro_lectures_2021 spall_introduction_2003">(<a href="references.html#ref-shapiro_lectures_2021" role="doc-biblioref">Shapiro, Dentcheva, and Ruszczyński 2021</a>; <a href="references.html#ref-spall_introduction_2003" role="doc-biblioref">Spall 2003</a>)</span>. This is the native language of ML. Since we cannot calculate the loss over the true data distribution (which is unknown), we estimate it using finite, noisy batches of data. Stochastic Gradient Descent (SGD) is named precisely because it treats the true gradient as a random variable to be estimated <span class="citation" data-cites="robbins_stochastic_1951">(<a href="references.html#ref-robbins_stochastic_1951" role="doc-biblioref">Robbins and Monro 1951</a>)</span>.</p>
 </section>
 <section id="linearity-and-convexity" class="level3" data-number="5.3.4">
 <h3 data-number="5.3.4" class="anchored" data-anchor-id="linearity-and-convexity"><span class="header-section-number">5.3.4</span> Linearity and Convexity</h3>
 <p>Finally, it is the <em>geometry</em> of the function and the constraints which largely determines the computational complexity of the problem. There are three cases that we might face:</p>
 <ul>
-<li>Both the objective and the constraints are <strong>linear</strong>: We call this <strong>linear programming (LP)</strong> and there are efficient methods for solving this type of problems.</li>
-<li>All functions are convex, but some are <strong>non-linear</strong>: The objective is curved, but has only one minimum. These are solvable in polynomial time.</li>
-<li>There is some <strong>non-convex</strong> function: The landscape has hills, valleys, and saddle points. Finding the global minimum is generally intractable. Most modern DL falls into this category, forcing us to rely on heuristics and accept “good enough” approximations or local optima.</li>
+<li>Both the objective and the constraints are <strong>linear</strong>: We call this <strong>linear programming (LP)</strong> and there are efficient methods for solving this type of problems <span class="citation" data-cites="dantzig_linear_1963 karmarkar_new_1984">(<a href="references.html#ref-dantzig_linear_1963" role="doc-biblioref">Dantzig 1963</a>; <a href="references.html#ref-karmarkar_new_1984" role="doc-biblioref">Karmarkar 1984</a>)</span>.</li>
+<li>All functions are convex, but some are <strong>non-linear</strong>: The objective is curved, but has only one minimum. These are solvable in polynomial time <span class="citation" data-cites="nesterov_interior-point_1994">(<a href="references.html#ref-nesterov_interior-point_1994" role="doc-biblioref">Nesterov and Nemirovskii 1994</a>)</span>.</li>
+<li>There is some <strong>non-convex</strong> function: The landscape has hills, valleys, and saddle points. Finding the global minimum is generally intractable <span class="citation" data-cites="murty_np-complete_1987">(<a href="references.html#ref-murty_np-complete_1987" role="doc-biblioref">Murty and Kabadi 1987</a>)</span>. Most modern DL falls into this category, forcing us to rely on heuristics and accept “good enough” approximations or local optima.</li>
 </ul>
 </section>
 </section>
@@ -545,7 +565,7 @@ f(tx_1+(1-t)x_2)\le tf(x_1)+(1-t)f(x_2)
 <p>In optimization, we treat data and parameters as vectors in space. We use norms to measure errors, gradients to find directions of improvement, and Hessians to understand the landscape’s terrain.</p>
 <section id="vector-spaces-and-norms" class="level3" data-number="5.4.1">
 <h3 data-number="5.4.1" class="anchored" data-anchor-id="vector-spaces-and-norms"><span class="header-section-number">5.4.1</span> Vector spaces and norms</h3>
-<p>Optimization algorithms operate in vector spaces like <span class="math inline">\(\mathbb{R}^n\)</span>. To determine if one solution is “better” or “closer” to the target than another, we need a rigorous way to measure size and distance. This is the role of the <strong>norm</strong>, which is a function <span class="math inline">\(\lVert \cdot \rVert:\mathbb{R}^n\rightarrow\mathbb{R}\)</span> that takes a vector and returns a non-negative value that indicates its “size”. Some typical examples of norms widely used in ML and optimization are the <span class="math inline">\(L_2\)</span>, <span class="math inline">\(L_1\)</span> and <span class="math inline">\(L_\infty\)</span> norms.</p>
+<p>Optimization algorithms operate in vector spaces like <span class="math inline">\(\mathbb{R}^n\)</span>. To determine if one solution is “better” or “closer” to the target than another, we need a rigorous way to measure size and distance. This is the role of the <strong>norm</strong>, which is a function <span class="math inline">\(\lVert \cdot \rVert:\mathbb{R}^n\rightarrow\mathbb{R}\)</span> that takes a vector and returns a non-negative value that indicates its “size”. Some typical examples of norms widely used in ML and optimization are the <span class="math inline">\(L_2\)</span>, <span class="math inline">\(L_1\)</span> and <span class="math inline">\(L_\infty\)</span> norms <span class="citation" data-cites="horn_matrix_2012 boyd_convex_2004">(<a href="references.html#ref-horn_matrix_2012" role="doc-biblioref">Horn and Johnson 2012</a>, Ch. 5; <a href="references.html#ref-boyd_convex_2004" role="doc-biblioref">Boyd and Vandenberghe 2004</a>, Appx. A.1)</span>.</p>
 <p>The <span class="math inline">\(L_2\)</span> norm is also known as <strong>Euclidean norm</strong> and is defined by:</p>
 <p><span class="math display">\[
 \lVert x \rVert _2 = \sqrt{\sum_{i=1}^n x_i^2} = \sqrt{x^Tx}
@@ -560,11 +580,11 @@ f(tx_1+(1-t)x_2)\le tf(x_1)+(1-t)f(x_2)
 <p><span class="math display">\[
 \lVert x \rVert _\infty = \max_i |x_i|
 \]</span></p>
-<p>which represents the magnitue of the largest single component of <span class="math inline">\(x\)</span>. It is frequently used in robust optimization and analyzing worst-case scenarios (e.g., adversarial attacks on neural networks).</p>
+<p>which represents the magnitue of the largest single component of <span class="math inline">\(x\)</span>. It is frequently used in robust optimization <span class="citation" data-cites="ben-tal_robust_2009">(<a href="references.html#ref-ben-tal_robust_2009" role="doc-biblioref">Ben-Tal, El Ghaoui, and Nemirovski 2009</a>)</span> and analyzing worst-case scenarios (e.g., adversarial attacks on neural networks <span class="citation" data-cites="goodfellow_explaining_2015 madry_towards_2018">(<a href="references.html#ref-goodfellow_explaining_2015" role="doc-biblioref">I. J. Goodfellow, Shlens, and Szegedy 2015</a>; <a href="references.html#ref-madry_towards_2018" role="doc-biblioref">Madry et al. 2018</a>)</span>).</p>
 </section>
 <section id="matrix-calculus" class="level3" data-number="5.4.2">
 <h3 data-number="5.4.2" class="anchored" data-anchor-id="matrix-calculus"><span class="header-section-number">5.4.2</span> Matrix Calculus</h3>
-<p>In general, in order to miminize a function <span class="math inline">\(f(x)\)</span>, we need to know how <span class="math inline">\(f\)</span> changes with slight perturbations of <span class="math inline">\(x\)</span>. In high dimensions, single-variable derivatives are replaced by vectors and matrices of derivatives.</p>
+<p>In general, in order to miminize a function <span class="math inline">\(f(x)\)</span>, we need to know how <span class="math inline">\(f\)</span> changes with slight perturbations of <span class="math inline">\(x\)</span>. In high dimensions, single-variable derivatives are replaced by vectors and matrices of derivatives <span class="citation" data-cites="magnus_matrix_2019">(<a href="references.html#ref-magnus_matrix_2019" role="doc-biblioref">Magnus and Neudecker 2019</a>)</span>.</p>
 <p>The <strong>gradient</strong> is the vector of first-order partial derivatives:</p>
 <p><span class="math display">\[
 \nabla f(x)=\left[\begin{array}{c}
@@ -574,7 +594,7 @@ f(tx_1+(1-t)x_2)\le tf(x_1)+(1-t)f(x_2)
 \dfrac{\partial f(x)}{\partial x_n}
 \end{array}\right]
 \]</span></p>
-<p>The gradient has a distinct geometric interpretation: it points in the direction of steepest ascent. Consequently, the direction of steepest descent, which is the path used by nearly all training algorithms in DL is <span class="math inline">\(-\nabla f(x)\)</span>.</p>
+<p>The gradient has a distinct geometric interpretation: it points in the direction of steepest ascent. Consequently, the direction of steepest descent, which is the path used by nearly all training algorithms in DL is <span class="math inline">\(-\nabla f(x)\)</span> <span class="citation" data-cites="nocedal_numerical_2006">(<a href="references.html#ref-nocedal_numerical_2006" role="doc-biblioref">Nocedal and Wright 2006</a>, Ch. 2)</span>.</p>
 <p>While the gradient tells us the slope, it tells us nothing about the curvature. This information is captured by the <strong>Hessian</strong>, the symmetric <span class="math inline">\(n\times n\)</span> matrix of second-order partial derivatives:</p>
 <p><span class="math display">\[
 \nabla^2 f(x)=
@@ -584,26 +604,26 @@ f(tx_1+(1-t)x_2)\le tf(x_1)+(1-t)f(x_2)
     \dfrac{\partial^2 f}{\partial x_n\partial x_1} &amp;        &amp; \dfrac{\partial^2 f}{\partial x_n^2}
 \end{bmatrix}
 \]</span></p>
-<p>Intuitively, ff the Hessian is “large” (high curvature), the gradient changes rapidly, and algorithms must take small steps to avoid overshooting. If the Hessian is “small” (flat curvature), algorithms can take larger steps.</p>
+<p>Intuitively, ff the Hessian is “large” (high curvature), the gradient changes rapidly, and algorithms must take small steps to avoid overshooting. If the Hessian is “small” (flat curvature), algorithms can take larger steps <span class="citation" data-cites="nocedal_numerical_2006">(<a href="references.html#ref-nocedal_numerical_2006" role="doc-biblioref">Nocedal and Wright 2006</a>, Ch. 3)</span>.</p>
 </section>
 <section id="eigenvalues-and-definiteness" class="level3" data-number="5.4.3">
 <h3 data-number="5.4.3" class="anchored" data-anchor-id="eigenvalues-and-definiteness"><span class="header-section-number">5.4.3</span> Eigenvalues and Definiteness</h3>
 <p>In optimization, it is usually important to know whether the Hessian is <em>positive definite</em>. This is the matrix analogue of a number (scalar) being positive. In a nutshell, (semi-)positive definiteness of the Hessian will indicate convexity (in general) and also if a local optimum is a maximum or a minimum.</p>
-<p>We say that a symmetric matrix <span class="math inline">\(A\)</span> is <strong>positive semidefinite (PSD)</strong> if and only if <span class="math inline">\(x^T A x \ge 0\)</span> for all <span class="math inline">\(x\)</span> different from zero. Alternatively, <span class="math inline">\(A\)</span> is PSD if and only if all eigenvalues are non-negative <span class="math inline">\(\lambda_i\ge 0\)</span>.</p>
+<p>We say that a symmetric matrix <span class="math inline">\(A\)</span> is <strong>positive semidefinite (PSD)</strong> if and only if <span class="math inline">\(x^T A x \ge 0\)</span> for all <span class="math inline">\(x\)</span> different from zero. Alternatively, <span class="math inline">\(A\)</span> is PSD if and only if all eigenvalues are non-negative <span class="math inline">\(\lambda_i\ge 0\)</span> <span class="citation" data-cites="horn_matrix_2012">(<a href="references.html#ref-horn_matrix_2012" role="doc-biblioref">Horn and Johnson 2012</a>, Ch. 7)</span>.</p>
 <p>For a square matrix <span class="math inline">\(A\)</span>, an eigenvector <span class="math inline">\(v\)</span> and eigenvalue <span class="math inline">\(\lambda\)</span> satisfy <span class="math inline">\(Av=\lambda v\)</span>. The eigenvalues represent the “scaling factors” of the matrix along its principal axes. In the context of a loss landscape, the eigenvalues of the Hessian describe the curvature in different directions: large <span class="math inline">\(\lambda\)</span> (in absolute value) indicates steep curvature, while small <span class="math inline">\(\lambda\)</span> (in absolute value) indicates flat curvature.</p>
-<p>Let <span class="math inline">\(x\)</span> be such that <span class="math inline">\(\nabla f(x)=0\)</span> (i.e.&nbsp;<span class="math inline">\(x\)</span> is a singular point). In order to check if <span class="math inline">\(x\)</span> is a maximum, minimum or a saddle point, we check the Hessian:</p>
+<p>Let <span class="math inline">\(x\)</span> be such that <span class="math inline">\(\nabla f(x)=0\)</span> (i.e.&nbsp;<span class="math inline">\(x\)</span> is a singular point). In order to check if <span class="math inline">\(x\)</span> is a maximum, minimum or a saddle point, we check the Hessian <span class="citation" data-cites="nocedal_numerical_2006">(<a href="references.html#ref-nocedal_numerical_2006" role="doc-biblioref">Nocedal and Wright 2006, sec. 2.1</a>)</span>:</p>
 <ul>
 <li>If <span class="math inline">\(\nabla^2f(x)\)</span> is positive definite, then <span class="math inline">\(x\)</span> is a <strong>local minimum</strong>.</li>
 <li>If <span class="math inline">\(\nabla^2f(x)\)</span> is positive negative, then <span class="math inline">\(x\)</span> is a <strong>local maximum</strong>.</li>
 <li>If <span class="math inline">\(\nabla^2f(x)\)</span> has mixed signs, then <span class="math inline">\(x\)</span> is a <strong>saddle point</strong>.</li>
 </ul>
-<p>Importantly, a function is convex if and only if <em>its Hessian is positive semidefinite everywhere</em>. This guarantees that any local minimum is <strong>global</strong>.</p>
+<p>Importantly, a twice-differentiable function is convex if and only if <em>its Hessian is positive semidefinite everywhere</em> <span class="citation" data-cites="boyd_convex_2004">(<a href="references.html#ref-boyd_convex_2004" role="doc-biblioref">Boyd and Vandenberghe 2004, sec. 3.1.4</a>)</span>. This guarantees that any local minimum is <strong>global</strong>.</p>
 </section>
 </section>
 <section id="why-convexity-is-good" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="why-convexity-is-good"><span class="header-section-number">5.5</span> Why Convexity Is Good?</h2>
-<p>In mathematics in general, the distinction between easy and hard problems is done based on whether the problems are linear (easy) or non-linear (hard). However, in optimization, this distinction would be misleading. The defining property for optimization problems to be easily solvable or not is actually <strong>convexity</strong>. If a problem is convex, we can generally solve it efficiently and guarantee that our solution is the global optimum. If it is non-convex, we are entering a world of NP-hardness, local traps, and heuristics.</p>
-<p>Optimization problems are constrained to a feasible region <span class="math inline">\(\Omega\)</span> (see <a href="#eq-feasible-region" class="quarto-xref">Equation&nbsp;<span>5.1</span></a>). The geometry of this region dictates how we can move through the search space. In general, a set <span class="math inline">\(C\subseteq\mathbb{R}^n\)</span> is said to be <strong>convex</strong> if and only if for any two points <span class="math inline">\(x,y\in C\)</span>, the line segment that joins those two points is entirely contained in <span class="math inline">\(C\)</span>. More formally:</p>
+<p>In mathematics in general, the distinction between easy and hard problems is done based on whether the problems are linear (easy) or non-linear (hard). However, in optimization, this distinction would be misleading. The defining property for optimization problems to be easily solvable or not is actually <strong>convexity</strong>. In the words of <span class="citation" data-cites="rockafellar_lagrange_1993">Rockafellar (<a href="references.html#ref-rockafellar_lagrange_1993" role="doc-biblioref">1993</a>)</span>, “the great watershed in optimization isn’t between linearity and nonlinearity, but convexity and nonconvexity”. If a problem is convex, we can generally solve it efficiently and guarantee that our solution is the global optimum. If it is non-convex, we are entering a world of NP-hardness, local traps, and heuristics.</p>
+<p>Optimization problems are constrained to a feasible region <span class="math inline">\(\Omega\)</span> (see <a href="#eq-feasible-region" class="quarto-xref">Equation&nbsp;<span>5.1</span></a>). The geometry of this region dictates how we can move through the search space. In general, a set <span class="math inline">\(C\subseteq\mathbb{R}^n\)</span> is said to be <strong>convex</strong> if and only if for any two points <span class="math inline">\(x,y\in C\)</span>, the line segment that joins those two points is entirely contained in <span class="math inline">\(C\)</span> <span class="citation" data-cites="boyd_convex_2004">(<a href="references.html#ref-boyd_convex_2004" role="doc-biblioref">Boyd and Vandenberghe 2004, sec. 2.1.4</a>)</span>. More formally:</p>
 <p><span class="math display">\[
 \theta x + (1-\theta)y \in C\text{,    for all }x,y\in C\text{, and }\theta \in [0,1]
 \]</span></p>
@@ -612,18 +632,18 @@ f(tx_1+(1-t)x_2)\le tf(x_1)+(1-t)f(x_2)
 <p><span class="math display">\[
 f(\theta x+(1-\theta)y) \le \theta f(x) + (1-\theta)f(y)\text{, }\forall \theta \in [0,1]
 \]</span></p>
-<p>To analyze algorithms, we rely on differential definitions of convexity. The <strong>first-order condition</strong> states that</p>
+<p>To analyze algorithms, we rely on differential definitions of convexity <span class="citation" data-cites="boyd_convex_2004">(<a href="references.html#ref-boyd_convex_2004" role="doc-biblioref">Boyd and Vandenberghe 2004, secs. 3.1.3–3.1.4</a>)</span>. The <strong>first-order condition</strong> states that</p>
 <p><span class="math display">\[
 f(y) \ge f(x) + \nabla f(x)^T(y-x)
 \]</span></p>
 <p>which means that the tangent plane (the first-order Taylor approximation of the function around any point <span class="math inline">\(x\)</span>) is always <em>below</em> the function everywhere (for all <span class="math inline">\(y\)</span>). So if we have that <span class="math inline">\(x\)</span> is a singular point (<span class="math inline">\(\nabla f(x)=0\)</span>), this automatically means that <span class="math inline">\(x\)</span> is a global minimum (since <span class="math inline">\(f(y)\ge f(x)\)</span>).</p>
 <p>The <strong>second-order condition</strong> states that the Hessian is positive semidefinite everywhere <span class="math inline">\(\nabla^2 f(x) \succeq 0\)</span>, which means that the curvature is always “upwards”. This implies that the function is convex everywhere.</p>
-<p>Now if the objective function <span class="math inline">\(f(x)\)</span> is convex <em>and</em> the feasible region <span class="math inline">\(\Omega\)</span> is a convex set, we have:</p>
+<p>Now if the objective function <span class="math inline">\(f(x)\)</span> is convex <em>and</em> the feasible region <span class="math inline">\(\Omega\)</span> is a convex set, we have <span class="citation" data-cites="boyd_convex_2004">(<a href="references.html#ref-boyd_convex_2004" role="doc-biblioref">Boyd and Vandenberghe 2004, sec. 4.2</a>)</span>:</p>
 <ol type="1">
 <li>Any local minimum is a <strong>global minimum</strong>.</li>
 <li>The set of global minima is itself a <strong>convex set</strong> (so any convex combination of global minima is itself a global minimum).</li>
 </ol>
-<p>This means that, in a convex optimization problem (e.g., linear regression, Support Vector Machines, Linear Programming), we do not need to worry about initialization. We can start the algorithm anywhere in the feasible region, follow the negative gradient, and we are mathematically guaranteed to converge to the best possible solution. However, in a non-convex optimization problem (e.g., DL), this guarantee vanishes. The loss landscape of a neural network is riddled with local minima, saddle points, and flat plateaus. A gradient descent algorithm might get stuck in a suboptimal valley, which is why training deep networks requires “tricks” like random restarts, momentum, and stochastic noise to escape local traps.</p>
+<p>This means that, in a convex optimization problem (e.g., linear regression, Support Vector Machines <span class="citation" data-cites="cortes_support-vector_1995">(<a href="references.html#ref-cortes_support-vector_1995" role="doc-biblioref">Cortes and Vapnik 1995</a>)</span>, Linear Programming), we do not need to worry about initialization. We can start the algorithm anywhere in the feasible region, follow the negative gradient, and we are mathematically guaranteed to converge to the best possible solution. However, in a non-convex optimization problem (e.g., DL), this guarantee vanishes. The loss landscape of a neural network is riddled with local minima, saddle points, and flat plateaus <span class="citation" data-cites="choromanska_loss_2015 goodfellow_deep_2016">(<a href="references.html#ref-choromanska_loss_2015" role="doc-biblioref">Choromanska et al. 2015</a>; <a href="references.html#ref-goodfellow_deep_2016" role="doc-biblioref">I. Goodfellow, Bengio, and Courville 2016, sec. 8.2</a>)</span>. A gradient descent algorithm might get stuck in a suboptimal valley, which is why training deep networks requires “tricks” like random restarts, momentum <span class="citation" data-cites="polyak_methods_1964">(<a href="references.html#ref-polyak_methods_1964" role="doc-biblioref">Polyak 1964</a>)</span>, and stochastic noise to escape local traps.</p>
 </section>
 <section id="optimality-conditions" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="optimality-conditions"><span class="header-section-number">5.6</span> Optimality Conditions</h2>
@@ -631,17 +651,17 @@ f(y) \ge f(x) + \nabla f(x)^T(y-x)
 <section id="unconstrained-optimization" class="level3" data-number="5.6.1">
 <h3 data-number="5.6.1" class="anchored" data-anchor-id="unconstrained-optimization"><span class="header-section-number">5.6.1</span> Unconstrained optimization</h3>
 <p>In the case where we have no boundaries (constraints), we rely on calculus to identify “flat” spots in the landscape. The first condition is a necessary condition related to stationarity. If a candidate point <span class="math inline">\(x*\)</span> is a local minimizer and <span class="math inline">\(f\)</span> is continuously differentiable, then the gradient must vanish: <span class="math inline">\(\nabla f(x^*)=0\)</span>. However, this condition is not enough, since <span class="math inline">\(x^*\)</span> could now be a maximum, a minimum or a saddle point.</p>
-<p>The sufficient condition is the previously mentioned second-order condition for positive semidefiniteness of the Hessian: if <span class="math inline">\(\nabla f(x^*)=0\)</span> <em>and</em> <span class="math inline">\(\nabla^2 f(x^*)\)</span> is positive definite (i.e.&nbsp;all eigenvalues are positive), then <span class="math inline">\(x^*\)</span> is a <strong>strict local</strong> minimizer.</p>
-<p>In high-dimensional non-convex optimization (like DL), the Hessian often has both positive and negative eigenvalues. These are saddle points. In high dimensions, local minima are actually rare, and the vast majority of critical points are saddle points. Standard Gradient Descent can get “stuck” near saddle points because the gradient is zero, but the Hessian reveals there is still a direction to escape (which is the eigenvector corresponding to the negative eigenvalue).</p>
+<p>The sufficient condition is the previously mentioned second-order condition for positive semidefiniteness of the Hessian: if <span class="math inline">\(\nabla f(x^*)=0\)</span> <em>and</em> <span class="math inline">\(\nabla^2 f(x^*)\)</span> is positive definite (i.e.&nbsp;all eigenvalues are positive), then <span class="math inline">\(x^*\)</span> is a <strong>strict local</strong> minimizer <span class="citation" data-cites="nocedal_numerical_2006">(<a href="references.html#ref-nocedal_numerical_2006" role="doc-biblioref">Nocedal and Wright 2006</a>, Thm. 2.4)</span>.</p>
+<p>In high-dimensional non-convex optimization (like DL), the Hessian often has both positive and negative eigenvalues. These are saddle points. In high dimensions, local minima are actually rare, and the vast majority of critical points are saddle points <span class="citation" data-cites="dauphin_identifying_2014">(<a href="references.html#ref-dauphin_identifying_2014" role="doc-biblioref">Dauphin et al. 2014</a>)</span>. Standard Gradient Descent can get “stuck” near saddle points because the gradient is zero, but the Hessian reveals there is still a direction to escape (which is the eigenvector corresponding to the negative eigenvalue) <span class="citation" data-cites="jin_how_2017">(<a href="references.html#ref-jin_how_2017" role="doc-biblioref">Jin et al. 2017</a>)</span>.</p>
 </section>
 <section id="constrained-optimization-the-kkt-conditions" class="level3" data-number="5.6.2">
 <h3 data-number="5.6.2" class="anchored" data-anchor-id="constrained-optimization-the-kkt-conditions"><span class="header-section-number">5.6.2</span> Constrained Optimization: The KKT Conditions</h3>
-<p>When we add constraints, the gradient does not have to be zero. Imagine a ball rolling down a hill but hitting a fence. The ball stops at the fence, even though the hill continues downward on the other side. At this optimal point, the “force” of gravity (the objective gradient) is perfectly balanced by the “force” of the fence (the constraint gradient). To solve this problem, we use the method of <strong>Lagrange Multipliers</strong>.</p>
+<p>When we add constraints, the gradient does not have to be zero. Imagine a ball rolling down a hill but hitting a fence. The ball stops at the fence, even though the hill continues downward on the other side. At this optimal point, the “force” of gravity (the objective gradient) is perfectly balanced by the “force” of the fence (the constraint gradient). To solve this problem, we use the method of <strong>Lagrange Multipliers</strong> <span class="citation" data-cites="bertsekas_nonlinear_2016 boyd_convex_2004">(<a href="references.html#ref-bertsekas_nonlinear_2016" role="doc-biblioref">Bertsekas 2016</a>; <a href="references.html#ref-boyd_convex_2004" role="doc-biblioref">Boyd and Vandenberghe 2004</a>, Ch. 5)</span>.</p>
 <p>The basic idea is to convert the constrained problem into an unconstrained one by means of a new objective function, the Lagrangian:</p>
 <p><span class="math display">\[
 \mathcal{L}(x, \lambda, \nu)=f(x)+\sum_{i=1}^m \lambda_i g_i(x)+\sum_{j=1}^p \nu_j h_j(x)
 \]</span></p>
-<p>We call the <span class="math inline">\(\lambda_i\)</span> and <span class="math inline">\(\nu_j\)</span> the <strong>dual variables</strong>. They represent the cost or penalty of violating a constraint. Using these dual variables, we can state the general <strong>Karush-Kuhn-Tucker (KKT)</strong> conditions, which are fundamental conditions for a point <span class="math inline">\((x^*, \lambda^*, \nu^*)\)</span> to be optimal in any general optimization problem:</p>
+<p>We call the <span class="math inline">\(\lambda_i\)</span> and <span class="math inline">\(\nu_j\)</span> the <strong>dual variables</strong>. They represent the cost or penalty of violating a constraint. Using these dual variables, we can state the general <strong>Karush-Kuhn-Tucker (KKT)</strong> conditions <span class="citation" data-cites="karush_minima_1939 kuhn_nonlinear_1951 nocedal_numerical_2006">(<a href="references.html#ref-karush_minima_1939" role="doc-biblioref">Karush 1939</a>; <a href="references.html#ref-kuhn_nonlinear_1951" role="doc-biblioref">Kuhn and Tucker 1951</a>; <a href="references.html#ref-nocedal_numerical_2006" role="doc-biblioref">Nocedal and Wright 2006, sec. 12.3</a>)</span>, which are fundamental conditions for a point <span class="math inline">\((x^*, \lambda^*, \nu^*)\)</span> to be optimal in any general optimization problem:</p>
 <ol type="1">
 <li><strong>Stationarity:</strong> The gradient of the Lagrangian with respect to <span class="math inline">\(x\)</span> is 0 <span class="math inline">\(\nabla_x \mathcal{L}=0\)</span>.</li>
 </ol>
@@ -668,22 +688,22 @@ g_i(x^*)\le 0\text{, for all }i\text{, }h_j(x^*)=0\text{, for all }j
 \]</span></p>
 <p>This last condition is the cornerstone of understanding how constraints interact with the objective function at an optimum. It’s often the most counter-intuitive part of the KKT conditions, but it holds the key to why optimization algorithms work and how they identify the most critical elements of a problem. The core idea is that at an optimal solution <span class="math inline">\(x^*\)</span>, an inequality constraint can behave in one of two possible ways:</p>
 <ul>
-<li>The constraint is <strong>active</strong>: this is the case when <span class="math inline">\(g_i(x^*)=0\)</span>, which means that <span class="math inline">\(x^*\)</span> lies <em>exactly on the boundary</em> defined by the constraint, like the ball hitting the fence. This makes automatically the product <span class="math inline">\(\lambda_i^* g_i(x^*)=0\)</span>, so <span class="math inline">\(\lambda_i^*\)</span> can take any non-negative value. Any non-zero value for <span class="math inline">\(\lambda_i^*\)</span> indicates that the constraint is actively influencing the optimum. We can think of this multiplier as the <em>marginal cost</em> of the constraint. If we would relax the constraint by a small amount <span class="math inline">\(\epsilon\)</span> (<span class="math inline">\(g_i(x^*)\le \epsilon\)</span>), the optimal value would improve by about <span class="math inline">\(\lambda_i^*\epsilon\)</span>. The constraint is “pushing back” so that <span class="math inline">\(x^*\)</span> cannot move further.</li>
+<li>The constraint is <strong>active</strong>: this is the case when <span class="math inline">\(g_i(x^*)=0\)</span>, which means that <span class="math inline">\(x^*\)</span> lies <em>exactly on the boundary</em> defined by the constraint, like the ball hitting the fence. This makes automatically the product <span class="math inline">\(\lambda_i^* g_i(x^*)=0\)</span>, so <span class="math inline">\(\lambda_i^*\)</span> can take any non-negative value. Any non-zero value for <span class="math inline">\(\lambda_i^*\)</span> indicates that the constraint is actively influencing the optimum. We can think of this multiplier as the <em>marginal cost</em> of the constraint. If we would relax the constraint by a small amount <span class="math inline">\(\epsilon\)</span> (<span class="math inline">\(g_i(x^*)\le \epsilon\)</span>), the optimal value would improve by about <span class="math inline">\(\lambda_i^*\epsilon\)</span> <span class="citation" data-cites="boyd_convex_2004">(<a href="references.html#ref-boyd_convex_2004" role="doc-biblioref">Boyd and Vandenberghe 2004, sec. 5.6</a>)</span>. The constraint is “pushing back” so that <span class="math inline">\(x^*\)</span> cannot move further.</li>
 <li>The constraint is <strong>inactive</strong>: this is the case when <span class="math inline">\(g_i(x^*)&lt;0\)</span>, which means that <span class="math inline">\(x^*\)</span> lies <em>inside the feasible region</em> specified by the constraint, like the ball away from the fence (but inside). In this case, for the product <span class="math inline">\(\lambda_i^* g_i(x^*)\)</span> to be zero, then <span class="math inline">\(\lambda_i^*\)</span> must be zero as well. This means that the constraint is not actively influencing the optimal solution. The constraint is effectively irrelevant for finding the optimum.</li>
 </ul>
 </section>
 </section>
 <section id="optimization-in-ai-and-ml" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="optimization-in-ai-and-ml"><span class="header-section-number">5.7</span> Optimization in AI and ML</h2>
-<p>For many decades, the field of AI was dominated by logic, search, and symbolic reasoning. However, most current AI systems are data-driven, and the engine that drives learning from data is mathematical optimization. In this paradigm, “learning” is simply a synonym for “minimizing a loss function”. Every time a ML model is trained, whether it is a simple linear regressor or a trillion-parameter Large Language Model (LLM), we are solving an optimization problem. The translation from a learning task to an optimization problem follows a standard recipe:</p>
+<p>For many decades, the field of AI was dominated by logic, search, and symbolic reasoning <span class="citation" data-cites="russell_artificial_2021">(<a href="references.html#ref-russell_artificial_2021" role="doc-biblioref">Russell and Norvig 2021</a>)</span>. However, most current AI systems are data-driven, and the engine that drives learning from data is mathematical optimization. In this paradigm, “learning” is simply a synonym for “minimizing a loss function”. Every time a ML model is trained, whether it is a simple linear regressor or a trillion-parameter Large Language Model (LLM), we are solving an optimization problem. The translation from a learning task to an optimization problem follows a standard recipe, known as <em>empirical risk minimization</em> <span class="citation" data-cites="shalev-shwartz_understanding_2014 hastie_elements_2009">(<a href="references.html#ref-shalev-shwartz_understanding_2014" role="doc-biblioref">Shalev-Shwartz and Ben-David 2014</a>; <a href="references.html#ref-hastie_elements_2009" role="doc-biblioref">Hastie, Tibshirani, and Friedman 2009</a>)</span>:</p>
 <ol type="1">
 <li><p><strong>The Hypothesis Space:</strong> We define a model <span class="math inline">\(f(x;\theta)\)</span> parametrized by a vector <span class="math inline">\(\theta\)</span> which represents the decision variables of the corresponding optimization problem. For instance, in a neural network, <span class="math inline">\(\theta\)</span> represents all the weights and biases of the network.</p></li>
-<li><p><strong>The Loss Function:</strong> We define a scalar function <span class="math inline">\(L(\theta)\)</span> that measures the discrepancy between the model’s predictions and the ground truth. In regression problems, this function takes often the form of the mean squared error (MSE). In classification problems, we use other functions like the cross-entropy loss.</p></li>
+<li><p><strong>The Loss Function:</strong> We define a scalar function <span class="math inline">\(L(\theta)\)</span> that measures the discrepancy between the model’s predictions and the ground truth. In regression problems, this function takes often the form of the mean squared error (MSE). In classification problems, we use other functions like the cross-entropy loss <span class="citation" data-cites="goodfellow_deep_2016">(<a href="references.html#ref-goodfellow_deep_2016" role="doc-biblioref">I. Goodfellow, Bengio, and Courville 2016, sec. 6.2</a>)</span>.</p></li>
 </ol>
 <p>The goal is then to find <span class="math inline">\(\theta^* = \arg \min_\theta L(\theta)\)</span>.</p>
 <section id="gradient-descent" class="level3" data-number="5.7.1">
 <h3 data-number="5.7.1" class="anchored" data-anchor-id="gradient-descent"><span class="header-section-number">5.7.1</span> Gradient descent</h3>
-<p>Since solving analytically (e.g.&nbsp;by setting <span class="math inline">\(\nabla L(\theta)=0\)</span> and solving for <span class="math inline">\(\theta\)</span>) is most commonly not feasible, we rely on iterative algorithms like <strong>Gradient Descent</strong>. The most basic (and computationally efficient) variant is to move in the direction of steepest descent by following the negative gradient:</p>
+<p>Since solving analytically (e.g.&nbsp;by setting <span class="math inline">\(\nabla L(\theta)=0\)</span> and solving for <span class="math inline">\(\theta\)</span>) is most commonly not feasible, we rely on iterative algorithms like <strong>Gradient Descent</strong>, which goes back to <span class="citation" data-cites="cauchy_methode_1847">Cauchy (<a href="references.html#ref-cauchy_methode_1847" role="doc-biblioref">1847</a>)</span>. The most basic (and computationally efficient) variant is to move in the direction of steepest descent by following the negative gradient:</p>
 <p><span class="math display">\[
 \theta_{t+1} = \theta_t - \eta \nabla L(\theta_t)
 \]</span></p>
@@ -692,19 +712,19 @@ g_i(x^*)\le 0\text{, for all }i\text{, }h_j(x^*)=0\text{, for all }j
 <p><span class="math display">\[
 \theta_{t+1} = \theta_t - \eta \hat{g}_t
 \]</span></p>
-<p>where <span class="math inline">\(E[\hat{g}_t]=\nabla L(\theta)\)</span>. This is called <strong>Stochastic Gradient Descent (SGD)</strong> and is a cornerstone of modern ML training procedures. Because the gradient is noisy, SGD does not settle at a single point but “bounces around” the minimum. This noise can actually be beneficial, helping the algorithm escape shallow local minima and saddle points.</p>
+<p>where <span class="math inline">\(E[\hat{g}_t]=\nabla L(\theta)\)</span>. This is called <strong>Stochastic Gradient Descent (SGD)</strong> <span class="citation" data-cites="robbins_stochastic_1951">(<a href="references.html#ref-robbins_stochastic_1951" role="doc-biblioref">Robbins and Monro 1951</a>)</span> and is a cornerstone of modern ML training procedures <span class="citation" data-cites="bottou_optimization_2018">(<a href="references.html#ref-bottou_optimization_2018" role="doc-biblioref">Bottou, Curtis, and Nocedal 2018</a>)</span>. Because the gradient is noisy, SGD does not settle at a single point but “bounces around” the minimum. This noise can actually be beneficial, helping the algorithm escape shallow local minima and saddle points <span class="citation" data-cites="jin_how_2017 keskar_large-batch_2017">(<a href="references.html#ref-jin_how_2017" role="doc-biblioref">Jin et al. 2017</a>; <a href="references.html#ref-keskar_large-batch_2017" role="doc-biblioref">Keskar et al. 2017</a>)</span>.</p>
 </section>
 <section id="regularization" class="level3" data-number="5.7.2">
 <h3 data-number="5.7.2" class="anchored" data-anchor-id="regularization"><span class="header-section-number">5.7.2</span> Regularization</h3>
-<p>One of the biggest challenges in ML is overfitting: memorizing the training data rather than learning general patterns. We combat this using <strong>regularization</strong>, which is mathematically equivalent to constrained optimization. Consider for instance Ridge Regression, which involves adding a penalty term to the loss function:</p>
+<p>One of the biggest challenges in ML is overfitting: memorizing the training data rather than learning general patterns. We combat this using <strong>regularization</strong>, which is mathematically equivalent to constrained optimization. Consider for instance Ridge Regression <span class="citation" data-cites="hoerl_ridge_1970">(<a href="references.html#ref-hoerl_ridge_1970" role="doc-biblioref">Hoerl and Kennard 1970</a>)</span>, which involves adding a penalty term to the loss function:</p>
 <p><span class="math display">\[
 \min_\theta L(\theta) + \lambda \lVert \theta \rVert_2^2
 \]</span></p>
-<p>Does this ring a bell? This is, in fact, equivalent to using Lagrange multipliers to solve the equivalent constrained optimization problem:</p>
+<p>Does this ring a bell? This is, in fact, equivalent to using Lagrange multipliers to solve the equivalent constrained optimization problem <span class="citation" data-cites="hastie_elements_2009">(<a href="references.html#ref-hastie_elements_2009" role="doc-biblioref">Hastie, Tibshirani, and Friedman 2009, sec. 3.4</a>)</span>:</p>
 <p><span class="math display">\[
 \min_\theta L(\theta)\text{ subject to } \lVert \theta \rVert_2^2 \le C
 \]</span></p>
-<p>By constraining the Euclidean norm of the weights, we force the model to be smooth and more simple. Similarly, Lasso regression uses the <span class="math inline">\(L_1\)</span> norm instead. As discussed in Section 2.1, the geometry of the <span class="math inline">\(L_1\)</span> ball (a diamond) tends to touch the loss contours at the axes, forcing many weights to become exactly zero. This performs automatic feature selection, identifying the most important variables in the dataset.</p>
+<p>By constraining the Euclidean norm of the weights, we force the model to be smooth and more simple. Similarly, Lasso regression uses the <span class="math inline">\(L_1\)</span> norm instead <span class="citation" data-cites="tibshirani_regression_1996">(<a href="references.html#ref-tibshirani_regression_1996" role="doc-biblioref">Tibshirani 1996</a>)</span>. As discussed in Section 2.1, the geometry of the <span class="math inline">\(L_1\)</span> ball (a diamond) tends to touch the loss contours at the axes, forcing many weights to become exactly zero. This performs automatic feature selection, identifying the most important variables in the dataset.</p>
 </section>
 </section>
 <section id="summary" class="level2" data-number="5.8">
@@ -735,6 +755,173 @@ w^*=(X^TX+\lambda I)^{-1}X^Ty
 </ol>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-anfinsen_principles_1973" class="csl-entry" role="listitem">
+Anfinsen, Christian B. 1973. <span>“Principles That <span>Govern</span> the <span>Folding</span> of <span>Protein</span> <span>Chains</span>.”</span> <em>Science</em> 181 (4096): 223–30. <a href="https://doi.org/10.1126/science.181.4096.223">https://doi.org/10.1126/science.181.4096.223</a>.
+</div>
+<div id="ref-ben-tal_robust_2009" class="csl-entry" role="listitem">
+Ben-Tal, Aharon, Laurent El Ghaoui, and Arkadi Nemirovski. 2009. <em>Robust <span>Optimization</span></em>. Princeton, NJ: Princeton University Press. <a href="https://doi.org/10.1515/9781400831050">https://doi.org/10.1515/9781400831050</a>.
+</div>
+<div id="ref-bertsekas_nonlinear_2016" class="csl-entry" role="listitem">
+Bertsekas, Dimitri P. 2016. <em>Nonlinear <span>Programming</span></em>. 3rd ed. Belmont, MA: Athena Scientific.
+</div>
+<div id="ref-blum_training_1992" class="csl-entry" role="listitem">
+Blum, Avrim L., and Ronald L. Rivest. 1992. <span>“Training a 3-Node Neural Network Is <span>NP</span>-Complete.”</span> <em>Neural Networks</em> 5 (1): 117–27. <a href="https://doi.org/10.1016/S0893-6080(05)80010-3">https://doi.org/10.1016/S0893-6080(05)80010-3</a>.
+</div>
+<div id="ref-bottou_optimization_2018" class="csl-entry" role="listitem">
+Bottou, Léon, Frank E. Curtis, and Jorge Nocedal. 2018. <span>“Optimization <span>Methods</span> for <span>Large</span>-<span>Scale</span> <span>Machine</span> <span>Learning</span>.”</span> <em>SIAM Review</em> 60 (2): 223–311. <a href="https://doi.org/10.1137/16M1080173">https://doi.org/10.1137/16M1080173</a>.
+</div>
+<div id="ref-boyd_convex_2004" class="csl-entry" role="listitem">
+Boyd, Stephen, and Lieven Vandenberghe. 2004. <em>Convex <span>Optimization</span></em>. Cambridge: Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511804441">https://doi.org/10.1017/CBO9780511804441</a>.
+</div>
+<div id="ref-brown_language_2020" class="csl-entry" role="listitem">
+Brown, Tom B., Benjamin Mann, Nick Ryder, Melanie Subbiah, et al. 2020. <span>“Language <span>Models</span> Are <span>Few</span>-<span>Shot</span> <span>Learners</span>.”</span> In <em>Advances in <span>Neural</span> <span>Information</span> <span>Processing</span> <span>Systems</span></em>, 33:1877–1901. <a href="https://arxiv.org/abs/2005.14165">https://arxiv.org/abs/2005.14165</a>.
+</div>
+<div id="ref-carrion_computationally_2006" class="csl-entry" role="listitem">
+Carrión, Miguel, and José M. Arroyo. 2006. <span>“A <span>Computationally</span> <span>Efficient</span> <span>Mixed</span>-<span>Integer</span> <span>Linear</span> <span>Formulation</span> for the <span>Thermal</span> <span>Unit</span> <span>Commitment</span> <span>Problem</span>.”</span> <em>IEEE Transactions on Power Systems</em> 21 (3): 1371–78. <a href="https://doi.org/10.1109/TPWRS.2006.876672">https://doi.org/10.1109/TPWRS.2006.876672</a>.
+</div>
+<div id="ref-cauchy_methode_1847" class="csl-entry" role="listitem">
+Cauchy, Augustin-Louis. 1847. <span>“Méthode Générale Pour La Résolution Des Systèmes d’équations Simultanées.”</span> <em>Comptes Rendus de l’Académie Des Sciences</em> 25: 536–38.
+</div>
+<div id="ref-choromanska_loss_2015" class="csl-entry" role="listitem">
+Choromanska, Anna, Mikael Henaff, Michael Mathieu, Gérard Ben Arous, and Yann LeCun. 2015. <span>“The <span>Loss</span> <span>Surfaces</span> of <span>Multilayer</span> <span>Networks</span>.”</span> In <em>Proceedings of the 18th <span>International</span> <span>Conference</span> on <span>Artificial</span> <span>Intelligence</span> and <span>Statistics</span></em>, 38:192–204. Proceedings of <span>Machine</span> <span>Learning</span> <span>Research</span>. <a href="https://arxiv.org/abs/1412.0233">https://arxiv.org/abs/1412.0233</a>.
+</div>
+<div id="ref-cortes_support-vector_1995" class="csl-entry" role="listitem">
+Cortes, Corinna, and Vladimir Vapnik. 1995. <span>“Support-Vector Networks.”</span> <em>Machine Learning</em> 20 (3): 273–97. <a href="https://doi.org/10.1007/BF00994018">https://doi.org/10.1007/BF00994018</a>.
+</div>
+<div id="ref-dantzig_linear_1963" class="csl-entry" role="listitem">
+Dantzig, George B. 1963. <em>Linear <span>Programming</span> and <span>Extensions</span></em>. Princeton, NJ: Princeton University Press. <a href="https://doi.org/10.1515/9781400884179">https://doi.org/10.1515/9781400884179</a>.
+</div>
+<div id="ref-dauphin_identifying_2014" class="csl-entry" role="listitem">
+Dauphin, Yann N., Razvan Pascanu, Caglar Gulcehre, Kyunghyun Cho, Surya Ganguli, and Yoshua Bengio. 2014. <span>“Identifying and Attacking the Saddle Point Problem in High-Dimensional Non-Convex Optimization.”</span> In <em>Advances in <span>Neural</span> <span>Information</span> <span>Processing</span> <span>Systems</span></em>, 27:2933–41. <a href="https://arxiv.org/abs/1406.2572">https://arxiv.org/abs/1406.2572</a>.
+</div>
+<div id="ref-dijkstra_note_1959" class="csl-entry" role="listitem">
+Dijkstra, Edsger W. 1959. <span>“A Note on Two Problems in Connexion with Graphs.”</span> <em>Numerische Mathematik</em> 1 (1): 269–71. <a href="https://doi.org/10.1007/BF01386390">https://doi.org/10.1007/BF01386390</a>.
+</div>
+<div id="ref-garey_computers_1979" class="csl-entry" role="listitem">
+Garey, Michael R., and David S. Johnson. 1979. <em>Computers and <span>Intractability</span>: <span>A</span> <span>Guide</span> to the <span>Theory</span> of <span>NP</span>-<span>Completeness</span></em>. San Francisco: W. H. Freeman.
+</div>
+<div id="ref-goodfellow_explaining_2015" class="csl-entry" role="listitem">
+Goodfellow, Ian J., Jonathon Shlens, and Christian Szegedy. 2015. <span>“Explaining and <span>Harnessing</span> <span>Adversarial</span> <span>Examples</span>.”</span> In <em>International <span>Conference</span> on <span>Learning</span> <span>Representations</span> (<span>ICLR</span>)</em>. <a href="https://arxiv.org/abs/1412.6572">https://arxiv.org/abs/1412.6572</a>.
+</div>
+<div id="ref-goodfellow_deep_2016" class="csl-entry" role="listitem">
+Goodfellow, Ian, Yoshua Bengio, and Aaron Courville. 2016. <em>Deep <span>Learning</span></em>. Cambridge, MA: MIT Press. <a href="https://www.deeplearningbook.org">https://www.deeplearningbook.org</a>.
+</div>
+<div id="ref-hastie_elements_2009" class="csl-entry" role="listitem">
+Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2009. <em>The <span>Elements</span> of <span>Statistical</span> <span>Learning</span>: <span>Data</span> <span>Mining</span>, <span>Inference</span>, and <span>Prediction</span></em>. 2nd ed. Springer <span>Series</span> in <span>Statistics</span>. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-84858-7">https://doi.org/10.1007/978-0-387-84858-7</a>.
+</div>
+<div id="ref-hillier_introduction_2021" class="csl-entry" role="listitem">
+Hillier, Frederick S., and Gerald J. Lieberman. 2021. <em>Introduction to <span>Operations</span> <span>Research</span></em>. 11th ed. New York: McGraw-Hill Education.
+</div>
+<div id="ref-hitchcock_distribution_1941" class="csl-entry" role="listitem">
+Hitchcock, Frank L. 1941. <span>“The <span>Distribution</span> of a <span>Product</span> from <span>Several</span> <span>Sources</span> to <span>Numerous</span> <span>Localities</span>.”</span> <em>Journal of Mathematics and Physics</em> 20 (1–4): 224–30. <a href="https://doi.org/10.1002/sapm1941201224">https://doi.org/10.1002/sapm1941201224</a>.
+</div>
+<div id="ref-hoerl_ridge_1970" class="csl-entry" role="listitem">
+Hoerl, Arthur E., and Robert W. Kennard. 1970. <span>“Ridge <span>Regression</span>: <span>Biased</span> <span>Estimation</span> for <span>Nonorthogonal</span> <span>Problems</span>.”</span> <em>Technometrics</em> 12 (1): 55–67. <a href="https://doi.org/10.1080/00401706.1970.10488634">https://doi.org/10.1080/00401706.1970.10488634</a>.
+</div>
+<div id="ref-horn_matrix_2012" class="csl-entry" role="listitem">
+Horn, Roger A., and Charles R. Johnson. 2012. <em>Matrix <span>Analysis</span></em>. 2nd ed. Cambridge: Cambridge University Press. <a href="https://doi.org/10.1017/CBO9781139020411">https://doi.org/10.1017/CBO9781139020411</a>.
+</div>
+<div id="ref-jin_how_2017" class="csl-entry" role="listitem">
+Jin, Chi, Rong Ge, Praneeth Netrapalli, Sham M. Kakade, and Michael I. Jordan. 2017. <span>“How to <span>Escape</span> <span>Saddle</span> <span>Points</span> <span>Efficiently</span>.”</span> In <em>Proceedings of the 34th <span>International</span> <span>Conference</span> on <span>Machine</span> <span>Learning</span></em>, 70:1724–32. Proceedings of <span>Machine</span> <span>Learning</span> <span>Research</span>. <a href="https://arxiv.org/abs/1703.00887">https://arxiv.org/abs/1703.00887</a>.
+</div>
+<div id="ref-karmarkar_new_1984" class="csl-entry" role="listitem">
+Karmarkar, N. 1984. <span>“A New Polynomial-Time Algorithm for Linear Programming.”</span> <em>Combinatorica</em> 4 (4): 373–95. <a href="https://doi.org/10.1007/BF02579150">https://doi.org/10.1007/BF02579150</a>.
+</div>
+<div id="ref-karp_reducibility_1972" class="csl-entry" role="listitem">
+Karp, Richard M. 1972. <span>“Reducibility Among <span>Combinatorial</span> <span>Problems</span>.”</span> In <em>Complexity of <span>Computer</span> <span>Computations</span></em>, edited by Raymond E. Miller and James W. Thatcher, 85–103. Boston, MA: Springer US. <a href="https://doi.org/10.1007/978-1-4684-2001-2_9">https://doi.org/10.1007/978-1-4684-2001-2_9</a>.
+</div>
+<div id="ref-karush_minima_1939" class="csl-entry" role="listitem">
+Karush, William. 1939. <span>“Minima of <span>Functions</span> of <span>Several</span> <span>Variables</span> with <span>Inequalities</span> as <span>Side</span> <span>Constraints</span>.”</span> Master’s thesis, Chicago, IL: Department of Mathematics, University of Chicago.
+</div>
+<div id="ref-keskar_large-batch_2017" class="csl-entry" role="listitem">
+Keskar, Nitish Shirish, Dheevatsa Mudigere, Jorge Nocedal, Mikhail Smelyanskiy, and Ping Tak Peter Tang. 2017. <span>“On <span>Large</span>-<span>Batch</span> <span>Training</span> for <span>Deep</span> <span>Learning</span>: <span>Generalization</span> <span>Gap</span> and <span>Sharp</span> <span>Minima</span>.”</span> In <em>International <span>Conference</span> on <span>Learning</span> <span>Representations</span> (<span>ICLR</span>)</em>. <a href="https://arxiv.org/abs/1609.04836">https://arxiv.org/abs/1609.04836</a>.
+</div>
+<div id="ref-kuhn_nonlinear_1951" class="csl-entry" role="listitem">
+Kuhn, Harold W., and Albert W. Tucker. 1951. <span>“Nonlinear <span>Programming</span>.”</span> In <em>Proceedings of the <span>Second</span> <span>Berkeley</span> <span>Symposium</span> on <span>Mathematical</span> <span>Statistics</span> and <span>Probability</span></em>, edited by Jerzy Neyman, 481–92. Berkeley, CA: University of California Press.
+</div>
+<div id="ref-land_automatic_1960" class="csl-entry" role="listitem">
+Land, A. H., and A. G. Doig. 1960. <span>“An <span>Automatic</span> <span>Method</span> of <span>Solving</span> <span>Discrete</span> <span>Programming</span> <span>Problems</span>.”</span> <em>Econometrica</em> 28 (3): 497–520. <a href="https://doi.org/10.2307/1910129">https://doi.org/10.2307/1910129</a>.
+</div>
+<div id="ref-lecun_gradient-based_1998" class="csl-entry" role="listitem">
+LeCun, Yann, Léon Bottou, Yoshua Bengio, and Patrick Haffner. 1998. <span>“Gradient-Based Learning Applied to Document Recognition.”</span> <em>Proceedings of the IEEE</em> 86 (11): 2278–2324. <a href="https://doi.org/10.1109/5.726791">https://doi.org/10.1109/5.726791</a>.
+</div>
+<div id="ref-liu_learning_2009" class="csl-entry" role="listitem">
+Liu, Tie-Yan. 2009. <span>“Learning to <span>Rank</span> for <span>Information</span> <span>Retrieval</span>.”</span> <em>Foundations and Trends in Information Retrieval</em> 3 (3): 225–331. <a href="https://doi.org/10.1561/1500000016">https://doi.org/10.1561/1500000016</a>.
+</div>
+<div id="ref-madry_towards_2018" class="csl-entry" role="listitem">
+Madry, Aleksander, Aleksandar Makelov, Ludwig Schmidt, Dimitris Tsipras, and Adrian Vladu. 2018. <span>“Towards <span>Deep</span> <span>Learning</span> <span>Models</span> <span>Resistant</span> to <span>Adversarial</span> <span>Attacks</span>.”</span> In <em>International <span>Conference</span> on <span>Learning</span> <span>Representations</span> (<span>ICLR</span>)</em>. <a href="https://arxiv.org/abs/1706.06083">https://arxiv.org/abs/1706.06083</a>.
+</div>
+<div id="ref-magnus_matrix_2019" class="csl-entry" role="listitem">
+Magnus, Jan R., and Heinz Neudecker. 2019. <em>Matrix <span>Differential</span> <span>Calculus</span> with <span>Applications</span> in <span>Statistics</span> and <span>Econometrics</span></em>. 3rd ed. Wiley <span>Series</span> in <span>Probability</span> and <span>Statistics</span>. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/9781119541219">https://doi.org/10.1002/9781119541219</a>.
+</div>
+<div id="ref-markowitz_portfolio_1952" class="csl-entry" role="listitem">
+Markowitz, Harry. 1952. <span>“Portfolio <span>Selection</span>.”</span> <em>The Journal of Finance</em> 7 (1): 77–91. <a href="https://doi.org/10.1111/j.1540-6261.1952.tb01525.x">https://doi.org/10.1111/j.1540-6261.1952.tb01525.x</a>.
+</div>
+<div id="ref-moy_ospf_1998" class="csl-entry" role="listitem">
+Moy, John. 1998. <span>“<span>OSPF</span> <span>Version</span> 2.”</span> Request for {Comments} RFC 2328. RFC Editor. <a href="https://doi.org/10.17487/RFC2328">https://doi.org/10.17487/RFC2328</a>.
+</div>
+<div id="ref-murty_np-complete_1987" class="csl-entry" role="listitem">
+Murty, Katta G., and Santosh N. Kabadi. 1987. <span>“Some <span>NP</span>-Complete Problems in Quadratic and Nonlinear Programming.”</span> <em>Mathematical Programming</em> 39 (2): 117–29. <a href="https://doi.org/10.1007/BF02592948">https://doi.org/10.1007/BF02592948</a>.
+</div>
+<div id="ref-nesterov_interior-point_1994" class="csl-entry" role="listitem">
+Nesterov, Yurii, and Arkadii Nemirovskii. 1994. <em>Interior-<span>Point</span> <span>Polynomial</span> <span>Algorithms</span> in <span>Convex</span> <span>Programming</span></em>. Philadelphia, PA: Society for Industrial; Applied Mathematics. <a href="https://doi.org/10.1137/1.9781611970791">https://doi.org/10.1137/1.9781611970791</a>.
+</div>
+<div id="ref-nocedal_numerical_2006" class="csl-entry" role="listitem">
+Nocedal, Jorge, and Stephen J. Wright. 2006. <em>Numerical <span>Optimization</span></em>. 2nd ed. Springer <span>Series</span> in <span>Operations</span> <span>Research</span> and <span>Financial</span> <span>Engineering</span>. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-40065-5">https://doi.org/10.1007/978-0-387-40065-5</a>.
+</div>
+<div id="ref-paden_survey_2016" class="csl-entry" role="listitem">
+Paden, Brian, Michal Čáp, Sze Zheng Yong, Dmitry Yershov, and Emilio Frazzoli. 2016. <span>“A <span>Survey</span> of <span>Motion</span> <span>Planning</span> and <span>Control</span> <span>Techniques</span> for <span>Self</span>-<span>Driving</span> <span>Urban</span> <span>Vehicles</span>.”</span> <em>IEEE Transactions on Intelligent Vehicles</em> 1 (1): 33–55. <a href="https://doi.org/10.1109/TIV.2016.2578706">https://doi.org/10.1109/TIV.2016.2578706</a>.
+</div>
+<div id="ref-padhy_unit_2004" class="csl-entry" role="listitem">
+Padhy, Narayana Prasad. 2004. <span>“Unit <span>Commitment</span>—<span>A</span> <span>Bibliographical</span> <span>Survey</span>.”</span> <em>IEEE Transactions on Power Systems</em> 19 (2): 1196–1205. <a href="https://doi.org/10.1109/TPWRS.2003.821611">https://doi.org/10.1109/TPWRS.2003.821611</a>.
+</div>
+<div id="ref-polyak_methods_1964" class="csl-entry" role="listitem">
+Polyak, B. T. 1964. <span>“Some Methods of Speeding up the Convergence of Iteration Methods.”</span> <em>USSR Computational Mathematics and Mathematical Physics</em> 4 (5): 1–17. <a href="https://doi.org/10.1016/0041-5553(64)90137-5">https://doi.org/10.1016/0041-5553(64)90137-5</a>.
+</div>
+<div id="ref-robbins_stochastic_1951" class="csl-entry" role="listitem">
+Robbins, Herbert, and Sutton Monro. 1951. <span>“A <span>Stochastic</span> <span>Approximation</span> <span>Method</span>.”</span> <em>The Annals of Mathematical Statistics</em> 22 (3): 400–407. <a href="https://doi.org/10.1214/aoms/1177729586">https://doi.org/10.1214/aoms/1177729586</a>.
+</div>
+<div id="ref-rockafellar_lagrange_1993" class="csl-entry" role="listitem">
+Rockafellar, R. Tyrrell. 1993. <span>“Lagrange <span>Multipliers</span> and <span>Optimality</span>.”</span> <em>SIAM Review</em> 35 (2): 183–238. <a href="https://doi.org/10.1137/1035044">https://doi.org/10.1137/1035044</a>.
+</div>
+<div id="ref-russell_artificial_2021" class="csl-entry" role="listitem">
+Russell, Stuart, and Peter Norvig. 2021. <em>Artificial <span>Intelligence</span>: <span>A</span> <span>Modern</span> <span>Approach</span></em>. 4th ed. Hoboken, NJ: Pearson.
+</div>
+<div id="ref-schulman_proximal_2017" class="csl-entry" role="listitem">
+Schulman, John, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. 2017. <span>“Proximal <span>Policy</span> <span>Optimization</span> <span>Algorithms</span>.”</span> arXiv. <a href="https://arxiv.org/abs/1707.06347">https://arxiv.org/abs/1707.06347</a>.
+</div>
+<div id="ref-shalev-shwartz_understanding_2014" class="csl-entry" role="listitem">
+Shalev-Shwartz, Shai, and Shai Ben-David. 2014. <em>Understanding <span>Machine</span> <span>Learning</span>: <span>From</span> <span>Theory</span> to <span>Algorithms</span></em>. Cambridge: Cambridge University Press. <a href="https://doi.org/10.1017/CBO9781107298019">https://doi.org/10.1017/CBO9781107298019</a>.
+</div>
+<div id="ref-shapiro_lectures_2021" class="csl-entry" role="listitem">
+Shapiro, Alexander, Darinka Dentcheva, and Andrzej Ruszczyński. 2021. <em>Lectures on <span>Stochastic</span> <span>Programming</span>: <span>Modeling</span> and <span>Theory</span></em>. 3rd ed. Philadelphia, PA: Society for Industrial; Applied Mathematics. <a href="https://doi.org/10.1137/1.9781611976595">https://doi.org/10.1137/1.9781611976595</a>.
+</div>
+<div id="ref-snyder_fundamentals_2019" class="csl-entry" role="listitem">
+Snyder, Lawrence V., and Zuo-Jun Max Shen. 2019. <em>Fundamentals of <span>Supply</span> <span>Chain</span> <span>Theory</span></em>. 2nd ed. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/9781119584445">https://doi.org/10.1002/9781119584445</a>.
+</div>
+<div id="ref-spall_introduction_2003" class="csl-entry" role="listitem">
+Spall, James C. 2003. <em>Introduction to <span>Stochastic</span> <span>Search</span> and <span>Optimization</span>: <span>Estimation</span>, <span>Simulation</span>, and <span>Control</span></em>. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/0471722138">https://doi.org/10.1002/0471722138</a>.
+</div>
+<div id="ref-sutton_reinforcement_2018" class="csl-entry" role="listitem">
+Sutton, Richard S., and Andrew G. Barto. 2018. <em>Reinforcement <span>Learning</span>: <span>An</span> <span>Introduction</span></em>. 2nd ed. Cambridge, MA: MIT Press.
+</div>
+<div id="ref-tibshirani_regression_1996" class="csl-entry" role="listitem">
+Tibshirani, Robert. 1996. <span>“Regression <span>Shrinkage</span> and <span>Selection</span> via the <span>Lasso</span>.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 58 (1): 267–88. <a href="https://doi.org/10.1111/j.2517-6161.1996.tb02080.x">https://doi.org/10.1111/j.2517-6161.1996.tb02080.x</a>.
+</div>
+<div id="ref-toth_vehicle_2014" class="csl-entry" role="listitem">
+Toth, Paolo, and Daniele Vigo, eds. 2014. <em>Vehicle <span>Routing</span>: <span>Problems</span>, <span>Methods</span>, and <span>Applications</span></em>. 2nd ed. <span>MOS</span>-<span>SIAM</span> <span>Series</span> on <span>Optimization</span>. Philadelphia, PA: Society for Industrial; Applied Mathematics. <a href="https://doi.org/10.1137/1.9781611973594">https://doi.org/10.1137/1.9781611973594</a>.
+</div>
+<div id="ref-vaswani_attention_2017" class="csl-entry" role="listitem">
+Vaswani, Ashish, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. <span>“Attention Is <span>All</span> You <span>Need</span>.”</span> In <em>Advances in <span>Neural</span> <span>Information</span> <span>Processing</span> <span>Systems</span></em>, 30:5998–6008. <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a>.
+</div>
+<div id="ref-williams_simple_1992" class="csl-entry" role="listitem">
+Williams, Ronald J. 1992. <span>“Simple Statistical Gradient-Following Algorithms for Connectionist Reinforcement Learning.”</span> <em>Machine Learning</em> 8 (3–4): 229–56. <a href="https://doi.org/10.1007/BF00992696">https://doi.org/10.1007/BF00992696</a>.
+</div>
+<div id="ref-wolsey_integer_2020" class="csl-entry" role="listitem">
+Wolsey, Laurence A. 2020. <em>Integer <span>Programming</span></em>. 2nd ed. Hoboken, NJ: Wiley. <a href="https://doi.org/10.1002/9781119606475">https://doi.org/10.1002/9781119606475</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
