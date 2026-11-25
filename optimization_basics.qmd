@@ -58,8 +58,7 @@ The **constraints** $g_i$ and $h_j$ represents limits or restrictions we are bou
 physical, financial and logical limits. Inequality constraints ($g_i(x)\le 0$) usually represent resource limits
 or thresholds. For instance, if we want to express that the latency has to be under 100 ms, we might write
 $\operatorname{latency}(x)\le 100$, or in the canonical form $\operatorname{latency}(x)-100\le 0$. On the other
-side, equality constraints ($h_j(x)=0$) usually represent strict structural requirements. For instance, the
-conservation of flow equations we saw in @sec-monte-carlo. If both $m=0$ and $p=0$, we call the problem
+side, equality constraints ($h_j(x)=0$) usually represent strict structural requirements. If both $m=0$ and $p=0$, we call the problem
 *unconstrained* and handle it usually by means of techniques like gradient descent.
 
 The intersection of all constraints is usually referred to as the **feasible region**, denoted by $\Omega$:
@@ -80,7 +79,7 @@ $$
 f(tx_1+(1-t)x_2)\le tf(x_1)+(1-t)f(x_2)
 $$ {#eq-convexity}
 
-Prominent examples of convex functions include linear, quadratic and exponential functions. Intuitively, this means that if we draw a line segment between any points in the function's curve
+Prominent examples of convex functions include linear, (positive semidefinite) quadratic and exponential functions. Intuitively, this means that if we draw a line segment between any points in the function's curve
 $f(x_1)$ and $f(x_2)$, this line will always be either above or on the curve itself.
 When the function to optimize or any of the constraints are non-convex 
 (e.g. deep learning), finding the global optimum becomes NP-hard in general [@murty_np-complete_1987; @blum_training_1992] (although usually reasonable 
@@ -128,7 +127,7 @@ Finally, it is the *geometry* of the function and the constraints which largely 
 complexity of the problem. There are three cases that we might face:
 
 - Both the objective and the constraints are **linear**: We call this **linear programming (LP)** and there are efficient methods for solving this type of problems [@dantzig_linear_1963; @karmarkar_new_1984].
-- All functions are convex, but some are **non-linear**: The objective is curved, but has only one minimum. These are solvable in polynomial time [@nesterov_interior-point_1994].
+- All functions are convex, but some are **non-linear**: The objective is curved and can have several minima. Generally speaking, these are solvable in polynomial time [@nesterov_interior-point_1994].
 - There is some **non-convex** function: The landscape has hills, valleys, and saddle points. Finding the global minimum is generally intractable [@murty_np-complete_1987]. Most modern DL falls into this category, forcing us to rely on heuristics and accept "good enough" approximations or local optima.
 
 ## Mathematical Prerequisites
@@ -140,7 +139,7 @@ to come.
 In optimization, we treat data and parameters as vectors in space. We use norms to measure errors, gradients to find directions of improvement, 
 and Hessians to understand the landscape's terrain. 
 
-### Vector spaces and norms
+### Vector spaces and norms {#sec-vector-spaces-norms}
 
 Optimization algorithms operate in vector spaces like $\mathbb{R}^n$. To determine if one solution is "better" or "closer" to the target than another, we need a rigorous way to measure size and distance. 
 This is the role of the **norm**, which is a function $\lVert \cdot \rVert:\mathbb{R}^n\rightarrow\mathbb{R}$ that takes a vector and returns a non-negative value that indicates its "size". Some typical examples
@@ -153,7 +152,7 @@ $$
 $$
 
 This norm can be interpreted as the usual, "straight-line" distance. Geometrically, constraining the $L_2$ norm
-of a vector using an upper value e.g. $\lVert x \rVert _2 \le 1$ results in a sphere.
+of a vector using an upper value e.g. $\lVert x \rVert _2 \le 1$ results in a ball.
 
 The $L_1$ norm is also known as the **Manhattan norm** and is defined by:
 
@@ -213,12 +212,12 @@ We say that a symmetric matrix $A$ is **positive semidefinite (PSD)** if and onl
 
 For a square matrix $A$, an eigenvector $v$ and eigenvalue $\lambda$ satisfy $Av=\lambda v$. The eigenvalues represent the "scaling factors" of the matrix along its principal axes. In the context of a loss landscape, the eigenvalues of the Hessian describe the curvature in different directions: large $\lambda$ (in absolute value) indicates steep curvature, while small $\lambda$ (in absolute value) indicates flat curvature.
 
-Let $x$ be such that $\nabla f(x)=0$ (i.e. $x$ is a singular point). In order to check if $x$ is a maximum, 
+Let $x$ be such that $\nabla f(x)=0$ (i.e. $x$ is a critical point). In order to check if $x$ is a maximum, 
 minimum or a saddle point, we check the Hessian [@nocedal_numerical_2006, Sec. 2.1]:
 
 - If $\nabla^2f(x)$ is positive definite, then $x$ is a **local minimum**.
-- If $\nabla^2f(x)$ is positive negative, then $x$ is a **local maximum**.
-- If $\nabla^2f(x)$ has mixed signs, then $x$ is a **saddle point**.
+- If $\nabla^2f(x)$ is negative definite, then $x$ is a **local maximum**.
+- If $\nabla^2f(x)$ is indefinite, then $x$ is a **saddle point**.
 
 Importantly, a twice-differentiable function is convex if and only if *its Hessian is positive semidefinite everywhere* [@boyd_convex_2004, Sec. 3.1.4]. This guarantees that any local minimum is **global**.
 
@@ -248,7 +247,7 @@ $$
 f(y) \ge f(x) + \nabla f(x)^T(y-x)
 $$
 
-which means that the tangent plane (the first-order Taylor approximation of the function around any point $x$) is always *below* the function everywhere (for all $y$). So if we have that $x$ is a singular point ($\nabla f(x)=0$),
+which means that the tangent plane (the first-order Taylor approximation of the function around any point $x$) is always *below* the function everywhere (for all $y$). So if we have that $x$ is a critical point ($\nabla f(x)=0$),
 this automatically means that $x$ is a global minimum (since $f(y)\ge f(x)$).
 
 The **second-order condition** states that the Hessian is positive semidefinite everywhere $\nabla^2 f(x) \succeq 0$, which means that the curvature is always "upwards". This implies that the function is convex everywhere.
@@ -262,14 +261,14 @@ This means that, in a convex optimization problem (e.g., linear regression, Supp
 
 ## Optimality Conditions
 
-We now turn our attention to the problem of certifying if a singular point $x$ found by an optimization algorithm is indeed a global minimum (i.e. a stopping condition). In a sorting algorithm, we stop when the list is ordered. In optimization, we stop when we satisfy a specific set of mathematical conditions. These conditions differ depending on whether we are free to move anywhere (unconstrained) or are bounded by limits (constrained). Therefore, we will distinguish between unconstrained and constrained optimization problems, since the optimality conditions here differ most significantly.
+We now turn our attention to the problem of certifying if a critical point $x$ found by an optimization algorithm is indeed a global minimum (i.e. a stopping condition). In a sorting algorithm, we stop when the list is ordered. In optimization, we stop when we satisfy a specific set of mathematical conditions. These conditions differ depending on whether we are free to move anywhere (unconstrained) or are bounded by limits (constrained). Therefore, we will distinguish between unconstrained and constrained optimization problems, since the optimality conditions here differ most significantly.
 
 ### Unconstrained optimization
 
 In the case where we have no boundaries (constraints), we rely on calculus to identify "flat" spots in the landscape.
 The first condition is a necessary condition related to stationarity. If a candidate point $x*$ is a local minimizer and $f$ is continuously differentiable, then the gradient must vanish: $\nabla f(x^*)=0$. However, this condition is not enough, since $x^*$ could now be a maximum, a minimum or a saddle point.
 
-The sufficient condition is the previously mentioned second-order condition for positive semidefiniteness of the Hessian: if $\nabla f(x^*)=0$ *and* $\nabla^2 f(x^*)$ is positive definite (i.e. all eigenvalues are positive), then $x^*$ is a **strict local** minimizer [@nocedal_numerical_2006, Thm. 2.4].
+The sufficient condition is the previously mentioned second-order condition for positive semidefiniteness of the Hessian: if $\nabla f(x^*)=0$ *and* $\nabla^2 f(x^*)$ is positive semidefinite (i.e. all eigenvalues are non-negative), then $x^*$ is a **strict local** minimizer [@nocedal_numerical_2006, Thm. 2.4].
 
 In high-dimensional non-convex optimization (like DL), the Hessian often has both positive and negative eigenvalues. These are saddle points. In high dimensions, local minima are actually rare, and the vast majority of critical points are saddle points [@dauphin_identifying_2014]. Standard Gradient Descent can get "stuck" near saddle points because the gradient is zero, but the Hessian reveals there is still a direction to escape (which is the eigenvector corresponding to the negative eigenvalue) [@jin_how_2017].
 
@@ -283,7 +282,7 @@ $$
 \mathcal{L}(x, \lambda, \nu)=f(x)+\sum_{i=1}^m \lambda_i g_i(x)+\sum_{j=1}^p \nu_j h_j(x)
 $$
 
-We call the $\lambda_i$ and $\nu_j$ the **dual variables**. They represent the cost or penalty of violating a constraint. Using these dual variables, we can state the general **Karush-Kuhn-Tucker (KKT)** conditions [@karush_minima_1939; @kuhn_nonlinear_1951; @nocedal_numerical_2006, Sec. 12.3], which are fundamental conditions for a point $(x^*, \lambda^*, \nu^*)$ to be optimal in any general optimization problem:
+We call the $\lambda_i$ and $\nu_j$ the **dual variables**. They represent the cost or penalty of violating a constraint. Using these dual variables, we can state the general **Karush-Kuhn-Tucker (KKT)** conditions [@karush_minima_1939; @kuhn_nonlinear_1951; @nocedal_numerical_2006, Sec. 12.3], which are fundamental conditions for a point $(x^*, \lambda^*, \nu^*)$ to be optimal in a convex optimization problem:
 
 1. **Stationarity:** The gradient of the Lagrangian with respect to $x$ is 0 $\nabla_x \mathcal{L}=0$.
 
@@ -340,7 +339,7 @@ $$
 \theta_{t+1} = \theta_t - \eta \hat{g}_t
 $$
 
-where $E[\hat{g}_t]=\nabla L(\theta)$. This is called **Stochastic Gradient Descent (SGD)** [@robbins_stochastic_1951] and is a cornerstone of modern ML training procedures [@bottou_optimization_2018]. Because the gradient is noisy, SGD does not settle at a single point but "bounces around" the minimum. This noise can actually be beneficial, helping the algorithm escape shallow local minima and saddle points [@jin_how_2017; @keskar_large-batch_2017].
+where $E[\hat{g}_t]=\nabla L(\theta_t)$. This is called **Stochastic Gradient Descent (SGD)** [@robbins_stochastic_1951] and is a cornerstone of modern ML training procedures [@bottou_optimization_2018]. Because the gradient is noisy, SGD does not settle at a single point but "bounces around" the minimum. This noise can actually be beneficial, helping the algorithm escape shallow local minima and saddle points [@jin_how_2017; @keskar_large-batch_2017].
 
 ### Regularization
 
@@ -356,7 +355,7 @@ $$
 \min_\theta L(\theta)\text{ subject to } \lVert \theta \rVert_2^2 \le C
 $$
 
-By constraining the Euclidean norm of the weights, we force the model to be smooth and more simple. Similarly, Lasso regression uses the $L_1$ norm instead [@tibshirani_regression_1996]. As discussed in Section 2.1, the geometry of the $L_1$ ball (a diamond) tends to touch the loss contours at the axes, forcing many weights to become exactly zero. This performs automatic feature selection, identifying the most important variables in the dataset.
+By constraining the Euclidean norm of the weights, we force the model to be smooth and more simple. Similarly, Lasso regression uses the $L_1$ norm instead [@tibshirani_regression_1996]. As discussed in  @sec-vector-spaces-norms, the geometry of the $L_1$ ball (a diamond) tends to touch the loss contours at the axes, forcing many weights to become exactly zero. This performs automatic feature selection, identifying the most important variables in the dataset.
 
 ## Summary
 
@@ -364,13 +363,13 @@ Optimization is the mathematical tool that transforms the question of "is this p
 
 We began by reviewing the essential tools of multivariate calculus and linear algebra, focusing on how gradients define the direction of improvement and how Hessians and eigenvalues characterize the curvature of the search landscape. We identified convexity as the fundamental concept in optimization theory. Unlike the distinction between linear and non-linear, the distinction between convex and non-convex determines tractability: convex problems guarantee that any local minimum is a global minimum, allowing for efficient polynomial-time solutions.
 
-We stated the Karush-Kuhn-Tucker (KKT) conditions, the universal set of requirements (stationarity, primal/dual feasibility, and complementary slackness) that certify whether a solution is optimal in constrained environments. We also explored the computational complexity of these problems, noting how discrete variables (Integer Programming) and high-dimensional non-convex landscapes (Deep Learning) introduce NP-hardness and the "curse of dimensionality", forcing us to rely on approximations and heuristics.
+We stated the Karush-Kuhn-Tucker (KKT) conditions, the universal set of requirements (stationarity, primal/dual feasibility, and complementary slackness) that certify whether a solution is optimal in constrained environments. We also indicated the computational complexity of these problems, noting how discrete variables (Integer Programming) and high-dimensional non-convex landscapes (Deep Learning) introduce NP-hardness, forcing us to rely on approximations and heuristics.
 
 Finally, we connected these abstract principles to AI and ML, demonstrating that training a machine learning model is fundamentally an optimization task. By framing learning as loss minimization, we saw how concepts like Stochastic Gradient Descent and regularization are direct applications of the calculus and geometric constraints discussed throughout the chapter. This foundation sets the stage for other specialized techniques covered in the remainder of this book.
 
 ## Exercises
 
-1. A data center has $N$ servers. Each server $i$ has a maximum CPU capacity $C_i$ and a maximum RAM capacity $R_i$. It is needed to schedule $M$ different jobs. Each job $j$ requires $c_i$ units of CPU and $r_j$ units of RAM to run. Let $x_{ij}$ be a binary variable indicating if job $j$ is assigned to server $i$ ($x_{ij}=1$) or not ($x_{ij}=0$). Write down the full mathematical optimization model. Identify the objective function, the decision variables, and the constraints. Is this a convex optimization problem? Why?
+1. A data center has $N$ servers. Each server $i$ has a maximum CPU capacity $C_i$ and a maximum RAM capacity $R_i$. It is needed to schedule $M$ different jobs. Each job $j$ requires $c_j$ units of CPU and $r_j$ units of RAM to run. Let $x_{ij}$ be a binary variable indicating if job $j$ is assigned to server $i$ ($x_{ij}=1$) or not ($x_{ij}=0$). The goal is to maximize the number of jobs assigned. Write down the full mathematical optimization model. Identify the objective function, the decision variables, and the constraints. Is this a convex optimization problem? Why?
 
 2. Consider the following function $f:\mathbb{R}^2\rightarrow \mathbb{R}$:
 $$
